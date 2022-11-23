@@ -3,7 +3,7 @@
 #include <sstream>
 #include <iostream>
 
-#include "../../include/AST/AST.h"
+#include "AST/AST.h"
 
 namespace Types {
     std::string toString(Types::Type t) {

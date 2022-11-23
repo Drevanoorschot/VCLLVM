@@ -2,7 +2,7 @@
 #define VCLLVM_FUNCTIONDECLARER_H
 
 #include <llvm/IR/PassManager.h>
-#include "../AST/AST.h"
+#include "AST/AST.h"
 
 namespace llvm {
     class FunctionDeclarer : public PassInfoMixin<FunctionDeclarer> {

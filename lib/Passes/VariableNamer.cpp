@@ -3,7 +3,7 @@
 //
 #include <utility>
 
-#include "../../include/Passes/VariableNamer.h"
+#include "Passes/VariableNamer.h"
 
 namespace llvm {
     VariableNamer::VariableNamer(std::shared_ptr<AST::Program> p_AST) : p_AST(std::move(p_AST)) {}

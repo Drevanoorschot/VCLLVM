@@ -1,7 +1,7 @@
 #ifndef VCLLVM_VARNAMER_H
 #define VCLLVM_VARNAMER_H
 #include <llvm/IR/PassManager.h>
-#include "../AST/AST.h"
+#include "AST/AST.h"
 namespace llvm {
 
     class VariableNamer : public PassInfoMixin<VariableNamer> {

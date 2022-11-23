@@ -4,14 +4,13 @@
 #include <memory>
 #include <utility>
 
-#include "../../include/Passes/FunctionDeclarer.h"
+#include "Passes/FunctionDeclarer.h"
 
 namespace llvm {
     FunctionDeclarer::FunctionDeclarer(std::shared_ptr<AST::Program> p_AST) : p_AST(std::move(p_AST)) {}
 
     PreservedAnalyses FunctionDeclarer::run(Function &F, FunctionAnalysisManager &AM) {
         std::vector<AST::FunctionParam> params = std::vector<AST::FunctionParam>();
-        F.getEntryBlock().front().dump();
         for (int i = 0; i < F.arg_size(); i++) {
             auto arg = F.getArg(i);
             Types::Type type;
