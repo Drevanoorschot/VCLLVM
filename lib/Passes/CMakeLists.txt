@@ -1,15 +1,6 @@
-set(VcLLVM_PASSES
-        FunctionListToErr
-        InstructionMapper
-        )
-set(FunctionListToErr_SOURCES FunctionListToErr.cpp)
-set(InstructionMapper_SOURCES InstructionMapper.cpp)
-
-foreach (pass ${VcLLVM_PASSES})
-    add_library(${pass} SHARED ${${pass}_SOURCES})
-    target_include_directories(
-            ${pass}
-            PRIVATE
-            "${CMAKE_CURRENT_SOURCE_DIR}/../include"
-    )
-endforeach ()
+add_library(VcLLVM_PASSES SHARED
+        FunctionListToErr.cpp
+        InstructionMapper.cpp
+        FunctionDeclarer.cpp
+        VariableNamer.cpp)
+target_include_directories(VcLLVM_PASSES PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../include")

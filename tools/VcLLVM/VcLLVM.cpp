@@ -6,8 +6,11 @@
 #include <llvm/IRReader/IRReader.h>
 #include <llvm/Analysis/CGSCCPassManager.h>
 #include <llvm/Passes/PassBuilder.h>
-#include "Passes/FunctionListToErr.h"
-#include "Passes/InstructionMapper.h"
+#include <iostream>
+#include <memory>
+#include "AST/AST.h"
+#include "Passes/FunctionDeclarer.h"
+#include "Passes/VariableNamer.h"
 
 using namespace llvm;
 
@@ -29,12 +32,12 @@ int main(int argc, char **argv) {
         return 1;
     }
     Module *module = Mptr.get();
+    auto p_AST = std::make_shared<AST::Program>();
     // Create the analysis managers.
     LoopAnalysisManager LAM;
     FunctionAnalysisManager FAM;
     CGSCCAnalysisManager CGAM;
     ModuleAnalysisManager MAM;
-
     // Create the new pass manager builder.
     // Take a look at the PassBuilder constructor parameters for more
     // customization, e.g. specifying a TargetMachine or various debugging
@@ -49,11 +52,13 @@ int main(int argc, char **argv) {
     PB.crossRegisterProxies(LAM, FAM, CGAM, MAM);
 
     FunctionPassManager FPM;
-    FPM.addPass(InstructionMapper("llvm is cool and all"));
+    FPM.addPass(VariableNamer(p_AST));
+    FPM.addPass(FunctionDeclarer(p_AST));
     ModulePassManager MPM;
     MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
 
     // Optimize the IR!
     MPM.run(*module, MAM);
+    p_AST->print(std::cout);
     return EXIT_SUCCESS;
 }

@@ -9,10 +9,20 @@
 #include <vector>
 #include <memory>
 
+namespace Types {
+    enum Type {
+        POINTER, INT
+    };
+    std::string toString(Type t);
+}
+
 namespace AST {
     class Node {
     public:
         virtual std::string toString() = 0;
+
+        virtual void print(std::ostream &stream) = 0;
+
     protected:
         Node() = default;
     };
@@ -20,8 +30,9 @@ namespace AST {
     class Statement : public Node {
     protected:
         Statement() = default;
+
     public:
-        virtual ~Statement() = 0;
+        virtual ~Statement() = 0; //TODO figure this out
     };
 
     class Expression : public Node {
@@ -41,6 +52,8 @@ namespace AST {
 
         std::string toString() override;
 
+        void print(std::ostream &stream) override;
+
 
         std::unique_ptr<Expression> lhs;
         BinOp op;
@@ -54,37 +67,86 @@ namespace AST {
 
         std::string toString() override;
 
+        void print(std::ostream &stream) override;
+
 
         std::string name;
     };
 
-    class VarDecl : public Statement {
+    class Type : public Node {
     public:
-        VarDecl(Identifier lhs, std::unique_ptr<Expression> rhs);
+        explicit Type(Types::Type type);
 
         std::string toString() override;
 
-        Identifier lhs;
-        std::unique_ptr<Expression> rhs;
+        void print(std::ostream &stream) override;
+
+
+        Types::Type type;
+    };
+
+    class VarDecl : public Statement {
+    public:
+        VarDecl(std::unique_ptr<Identifier> var_name, Type type);
+
+        ~VarDecl() override;
+
+        std::string toString() override;
+
+        void print(std::ostream &stream) override;
+
+        Type type;
+        std::unique_ptr<Identifier> var_name;
+    };
+
+    class VarAss : public Statement {
+        VarAss(std::unique_ptr<Identifier> var_name, std::string literal);
+
+        std::string toString() override;
+
+        std::unique_ptr<Identifier> var_name;
+        std::string literal;
     };
 
     class ReturnStatement : public Statement {
     public:
         explicit ReturnStatement(std::unique_ptr<Expression> returnVal);
 
+        ~ReturnStatement() override;
+
         std::string toString() override;
-        std::unique_ptr<Expression> returnVal;
+
+        void print(std::ostream &stream) override;
+
+        std::unique_ptr<Expression> return_val;
+    };
+
+    class FunctionParam : Node {
+    public:
+        FunctionParam(std::unique_ptr<Type> t, std::unique_ptr<Identifier> id);
+
+        std::string toString() override;
+
+        void print(std::ostream &stream) override;
+
+
+        std::unique_ptr<Type> type;
+        std::unique_ptr<Identifier> param_name;
     };
 
     class Function : public Node {
     public:
-        Function(std::string name, std::vector<Identifier> params);
+        Function(std::string name, std::vector<FunctionParam> params, std::unique_ptr<Type> return_type);
 
         std::string toString() override;
 
+        void print(std::ostream &stream) override;
+
+
         std::string name;
-        std::vector<Identifier> params;
+        std::vector<FunctionParam> params;
         std::vector<Statement> statements;
+        std::unique_ptr<Type> return_type;
     };
 
     class Program : public Node {
@@ -93,8 +155,9 @@ namespace AST {
 
         std::string toString() override;
 
+        void print(std::ostream &stream) override;
+
         std::vector<Function> functions;
     };
-
-#endif //VCLLVM_AST_H
 }
+#endif //VCLLVM_AST_H
