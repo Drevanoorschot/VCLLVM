@@ -22,12 +22,21 @@ namespace Types {
 
 namespace AST {
 
+    BinExpression::BinExpression(std::unique_ptr<Expression> lhs, BinOp op, std::unique_ptr<Expression> rhs) :
+            lhs(std::move(lhs)), op(op), rhs(std::move(rhs)) {}
+
     std::string BinExpression::toString() {
-        return &"BinExpr"[this->op];
+        auto ret = std::string("BinExpr");
+        ret.push_back(op);
+        return ret;
     }
 
     void BinExpression::print(std::ostream &stream) {
-        stream << "STUB!"; //TODO STUB implementation
+        stream << this->toString() << ":(";
+        lhs->print(stream);
+        stream << ":";
+        rhs->print(stream);
+        stream << ")";
     }
 
     Identifier::Identifier(std::string name) : name(std::move(name)) {}
@@ -38,75 +47,70 @@ namespace AST {
     }
 
     void Identifier::print(std::ostream &stream) {
-        stream << "STUB!"; //TODO STUB implementation
+        stream << this->name;
     }
 
-    Type::Type(Types::Type type) : type(type) {}
+    VarDecl::VarDecl(std::unique_ptr<Identifier> var_name, Types::Type type) :
+            type(type), var_name(std::move(var_name)) {}
 
-    std::string Type::toString() {
-        return "Type:" + Types::toString(type);
-    }
-
-    void Type::print(std::ostream &stream) {
-        stream << "STUB!"; //TODO STUB implementation
-    }
-
-    VarDecl::VarDecl(std::unique_ptr<Identifier> var_name, Type type) :
-            type(std::move(type)), var_name(std::move(var_name)) {}
-
-    VarDecl::~VarDecl() =
-    default;
+    VarDecl::~VarDecl() = default;
 
     std::string VarDecl::toString() {
-        return Types::toString(this->type.type) + ":" + this->var_name->name;
+        return Types::toString(this->type) + ":" + this->var_name->name;
     }
 
     void VarDecl::print(std::ostream &stream) {
-        stream << "STUB!"; //TODO STUB implementation
+        stream << "\t\t" << toString() << "\n";
     }
 
-    VarAss::VarAss(std::unique_ptr<Identifier>
-                   var_name, std::string
-                   literal) :
-            var_name(std::move(var_name)), literal(std::move(literal)) {}
+    VarAss::VarAss(std::unique_ptr<Identifier> var_name,
+                   std::unique_ptr<Expression> expr) :
+            var_name(std::move(var_name)), expr(std::move(expr)) {}
 
     std::string VarAss::toString() {
-        return "VarAss";
+        return "VarAss:" + this->var_name->name;
     }
 
-    ReturnStatement::ReturnStatement(std::unique_ptr<Expression>
-                                     returnVal) :
+    void VarAss::print(std::ostream &stream) {
+        stream << "\t\t" << toString() << ":=";
+        this->expr->print(stream);
+        stream << "\n";
+    }
+
+    ReturnStatement::ReturnStatement(std::unique_ptr<Expression> returnVal) :
             return_val(std::move(returnVal)) {}
 
     ReturnStatement::~ReturnStatement() =
     default;
 
     std::string ReturnStatement::toString() {
-        return "ReturnStat";
+        return "Ret";
     }
 
     void ReturnStatement::print(std::ostream &stream) {
-        stream << "STUB!"; //TODO STUB implementation
+        stream << "\t\t" << toString() << ":";
+        this->return_val->print(stream);
+        stream << "\n";
     }
 
 
-    FunctionParam::FunctionParam(std::unique_ptr<Type> t, std::unique_ptr<Identifier> id) :
-            type(std::move(t)), param_name(std::move(id)) {}
+    FunctionParam::FunctionParam(Types::Type t, std::unique_ptr<Identifier> id) :
+            type(t), param_name(std::move(id)) {}
 
     std::string FunctionParam::toString() {
-        return Types::toString(type->type) + ":" + param_name->name;
+        return Types::toString(type) + ":" + param_name->name;
     }
 
     void FunctionParam::print(std::ostream &stream) {
-        stream << toString(); //TODO STUB implementation
+        stream << toString();
     }
 
 
-    Function::Function(std::string name, std::vector<FunctionParam> params, std::unique_ptr<Type> return_type) :
+    Function::Function(std::string name, std::vector<FunctionParam> params, Types::Type return_type) :
             name(std::move(name)),
             params(std::move(params)),
-            statements(std::vector<Statement>()),
-            return_type(std::move(return_type)) {}
+            statements(std::vector<std::unique_ptr<Statement>>()),
+            return_type(return_type) {}
 
     std::string Function::toString() {
         return "Func:" + this->name;
@@ -124,6 +128,12 @@ namespace AST {
             p.print(stream);
         }
         stream << ")";
+        //statements
+        stream << " {\n";
+        for (auto &s: this->statements) {
+            s->print(stream);
+        }
+        stream << "\t}";
     }
 
     Program::Program() {
@@ -144,5 +154,15 @@ namespace AST {
         stream << "}";
     }
 
+    Function &Program::getFunction(const std::string &functionName) {
+        for (auto &f: functions) {
+            if (f.name == functionName) return f;
+        }
+        std::cerr << "Cannot find function in program with name \"" << functionName << "\"\n";
+        exit(EXIT_FAILURE);
+    }
+
     Statement::~Statement() = default;
+
+    Expression::~Expression() = default;
 }

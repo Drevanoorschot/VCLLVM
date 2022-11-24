@@ -25,7 +25,7 @@ namespace llvm {
                     exit(EXIT_FAILURE);
             }
             params.emplace_back(
-                    std::make_unique<AST::Type>(type),
+                    type,
                     std::make_unique<AST::Identifier>(param_name));
         }
         Types::Type return_type;
@@ -40,7 +40,7 @@ namespace llvm {
         p_AST->functions.emplace_back(
                 F.getName().str(),
                 std::move(params),
-                std::make_unique<AST::Type>(return_type));
+                return_type);
         return PreservedAnalyses::all();
     }
 }

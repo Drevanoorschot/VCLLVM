@@ -11,6 +11,7 @@
 #include "AST/AST.h"
 #include "Passes/FunctionDeclarer.h"
 #include "Passes/VariableNamer.h"
+#include "Passes/EntryBlockParser.h"
 
 using namespace llvm;
 
@@ -54,6 +55,7 @@ int main(int argc, char **argv) {
     FunctionPassManager FPM;
     FPM.addPass(VariableNamer(p_AST));
     FPM.addPass(FunctionDeclarer(p_AST));
+    FPM.addPass(EntryBlockParser(p_AST));
     ModulePassManager MPM;
     MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
 
