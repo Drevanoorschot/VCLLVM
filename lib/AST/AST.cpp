@@ -5,8 +5,8 @@
 
 #include "AST/AST.h"
 
-namespace Types {
-    std::string toString(Types::Type t) {
+namespace types {
+    std::string toString(types::Type t) {
         switch (t) {
             case POINTER:
                 return "POINTER";
@@ -50,25 +50,25 @@ namespace AST {
         stream << this->name;
     }
 
-    VarDecl::VarDecl(std::unique_ptr<Identifier> var_name, Types::Type type) :
-            type(type), var_name(std::move(var_name)) {}
+    VarDecl::VarDecl(std::unique_ptr<Identifier> varName, types::Type type) :
+            type(type), varName(std::move(varName)) {}
 
     VarDecl::~VarDecl() = default;
 
     std::string VarDecl::toString() {
-        return Types::toString(this->type) + ":" + this->var_name->name;
+        return types::toString(this->type) + ":" + this->varName->name;
     }
 
     void VarDecl::print(std::ostream &stream) {
         stream << "\t\t" << toString() << "\n";
     }
 
-    VarAss::VarAss(std::unique_ptr<Identifier> var_name,
+    VarAss::VarAss(std::unique_ptr<Identifier> varName,
                    std::unique_ptr<Expression> expr) :
-            var_name(std::move(var_name)), expr(std::move(expr)) {}
+            varName(std::move(varName)), expr(std::move(expr)) {}
 
     std::string VarAss::toString() {
-        return "VarAss:" + this->var_name->name;
+        return "VarAss:" + this->varName->name;
     }
 
     void VarAss::print(std::ostream &stream) {
@@ -78,7 +78,7 @@ namespace AST {
     }
 
     ReturnStatement::ReturnStatement(std::unique_ptr<Expression> returnVal) :
-            return_val(std::move(returnVal)) {}
+            returnVal(std::move(returnVal)) {}
 
     ReturnStatement::~ReturnStatement() =
     default;
@@ -89,16 +89,16 @@ namespace AST {
 
     void ReturnStatement::print(std::ostream &stream) {
         stream << "\t\t" << toString() << ":";
-        this->return_val->print(stream);
+        this->returnVal->print(stream);
         stream << "\n";
     }
 
 
-    FunctionParam::FunctionParam(Types::Type t, std::unique_ptr<Identifier> id) :
-            type(t), param_name(std::move(id)) {}
+    FunctionParam::FunctionParam(types::Type t, std::unique_ptr<Identifier> id) :
+            type(t), paramName(std::move(id)) {}
 
     std::string FunctionParam::toString() {
-        return Types::toString(type) + ":" + param_name->name;
+        return types::toString(type) + ":" + paramName->name;
     }
 
     void FunctionParam::print(std::ostream &stream) {
@@ -106,11 +106,11 @@ namespace AST {
     }
 
 
-    Function::Function(std::string name, std::vector<FunctionParam> params, Types::Type return_type) :
+    Function::Function(std::string name, std::vector<FunctionParam> params, types::Type returnType) :
             name(std::move(name)),
             params(std::move(params)),
             statements(std::vector<std::unique_ptr<Statement>>()),
-            return_type(return_type) {}
+            returnType(returnType) {}
 
     std::string Function::toString() {
         return "Func:" + this->name;
@@ -128,6 +128,8 @@ namespace AST {
             p.print(stream);
         }
         stream << ")";
+        // return type
+        stream << " -> " << types::toString(returnType);
         //statements
         stream << " {\n";
         for (auto &s: this->statements) {

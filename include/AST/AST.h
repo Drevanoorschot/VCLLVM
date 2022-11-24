@@ -9,7 +9,7 @@
 #include <vector>
 #include <memory>
 
-namespace Types {
+namespace types {
     enum Type {
         POINTER, INT
     };
@@ -78,7 +78,7 @@ namespace AST {
 
     class VarDecl : public Statement {
     public:
-        VarDecl(std::unique_ptr<Identifier> var_name, Types::Type type);
+        VarDecl(std::unique_ptr<Identifier> varName, types::Type type);
 
         ~VarDecl() override;
 
@@ -86,20 +86,20 @@ namespace AST {
 
         void print(std::ostream &stream) override;
 
-        Types::Type type;
-        std::unique_ptr<Identifier> var_name;
+        types::Type type;
+        std::unique_ptr<Identifier> varName;
     };
 
     class VarAss : public Statement {
     public:
-        VarAss(std::unique_ptr<Identifier> var_name, std::unique_ptr<Expression> expr);
+        VarAss(std::unique_ptr<Identifier> varName, std::unique_ptr<Expression> expr);
 
         std::string toString() override;
 
         void print(std::ostream &stream) override;
 
 
-        std::unique_ptr<Identifier> var_name;
+        std::unique_ptr<Identifier> varName;
         std::unique_ptr<Expression> expr;
 
     };
@@ -114,25 +114,25 @@ namespace AST {
 
         void print(std::ostream &stream) override;
 
-        std::unique_ptr<Expression> return_val;
+        std::unique_ptr<Expression> returnVal;
     };
 
     class FunctionParam : Node {
     public:
-        FunctionParam(Types::Type t, std::unique_ptr<Identifier> id);
+        FunctionParam(types::Type t, std::unique_ptr<Identifier> id);
 
         std::string toString() override;
 
         void print(std::ostream &stream) override;
 
 
-        Types::Type type;
-        std::unique_ptr<Identifier> param_name;
+        types::Type type;
+        std::unique_ptr<Identifier> paramName;
     };
 
     class Function : public Node {
     public:
-        Function(std::string name, std::vector<FunctionParam> params, Types::Type return_type);
+        Function(std::string name, std::vector<FunctionParam> params, types::Type returnType);
 
         std::string toString() override;
 
@@ -142,7 +142,7 @@ namespace AST {
         std::string name;
         std::vector<FunctionParam> params;
         std::vector<std::unique_ptr<Statement>> statements;
-        Types::Type return_type;
+        types::Type returnType;
     };
 
     class Program : public Node {

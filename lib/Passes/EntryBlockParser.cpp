@@ -8,46 +8,46 @@
 
 namespace llvm {
 
-    EntryBlockParser::EntryBlockParser(std::shared_ptr<AST::Program> p_AST) : p_AST(std::move(p_AST)) {}
+    EntryBlockParser::EntryBlockParser(std::shared_ptr<AST::Program> pAst) : pAst(std::move(pAst)) {}
 
-    PreservedAnalyses EntryBlockParser::run(Function &F, FunctionAnalysisManager &AM) {
-        AST::Function &function = p_AST->getFunction(F.getName().str());
-        for (auto &I: F.getEntryBlock()) {
-            auto opCode = I.getOpcode();
+    PreservedAnalyses EntryBlockParser::run(Function &f, FunctionAnalysisManager &am) {
+        AST::Function &function = pAst->getFunction(f.getName().str());
+        for (auto &instr: f.getEntryBlock()) {
+            auto opCode = instr.getOpcode();
             switch (opCode) {
                 case Instruction::Add:
                 case Instruction::Sub:
                 case Instruction::Mul:
                 case Instruction::SDiv:
-                    appendBinExpr(function, I);
+                    appendBinExpr(function, instr);
                     break;
                 case Instruction::Alloca:
                     // Ignoring variable allocations
                     // it's free real estate
                     break;
                 case Instruction::Store:
-                    appendSimpleAssignment(function, I, STORE);
+                    appendSimpleAssignment(function, instr, STORE);
                     break;
                 case Instruction::Load:
-                    appendSimpleAssignment(function, I, LOAD);
+                    appendSimpleAssignment(function, instr, LOAD);
                     break;
                 case Instruction::Ret:
-                    appendReturnStatement(function, I);
+                    appendReturnStatement(function, instr);
                     break;
                 default:
-                    errs() << "Unsupported Opcode: " << I.getOpcodeName() << "\n";
+                    errs() << "Unsupported Opcode: " << instr.getOpcodeName() << "\n";
                     exit(EXIT_FAILURE);
             }
         }
         return PreservedAnalyses::all();
     }
 
-    Types::Type EntryBlockParser::determineType(Type *t) {
+    types::Type EntryBlockParser::determineType(Type *t) {
         switch (t->getTypeID()) {
             case Type::IntegerTyID:
                 switch (t->getIntegerBitWidth()) {
                     case 32:
-                        return Types::INT;
+                        return types::INT;
                     default:
                         errs() << "Unsupported bit width integer\n";
                         exit(EXIT_FAILURE);
@@ -60,20 +60,20 @@ namespace llvm {
         }
     }
 
-    void EntryBlockParser::appendDeclaration(AST::Function &function, Type *llvmType, std::string varName) {
-        Types::Type type = determineType(llvmType);
+    void EntryBlockParser::appendDeclaration(AST::Function &function, Type *llvmType, const std::string& varName) {
+        types::Type type = determineType(llvmType);
         std::unique_ptr<AST::Identifier> varId = std::make_unique<AST::Identifier>(varName);
         auto varDecl = std::make_unique<AST::VarDecl>(std::move(varId), type);
         function.statements.push_back(std::move(varDecl));
     }
 
-    void EntryBlockParser::appendBinExpr(AST::Function &function, Instruction &I) {
+    void EntryBlockParser::appendBinExpr(AST::Function &function, Instruction &instr) {
         // insert variable declaration first (we don't support direct assignment in this wonky AST)
-        appendDeclaration(function, I.getType(), I.getName().str());
+        appendDeclaration(function, instr.getType(), instr.getName().str());
         // now we can assign the expression (assuming no constants are used, just other vars)
         // TODO support constants
         AST::BinOp op;
-        switch (I.getOpcode()) {
+        switch (instr.getOpcode()) {
             case Instruction::Add:
                 op = AST::ADD;
                 break;
@@ -87,12 +87,12 @@ namespace llvm {
                 op = AST::DIV;
                 break;
             default:
-                errs() << "Unsupported Opcode: " << I.getOpcodeName() << "\n";
+                errs() << "Unsupported Opcode: " << instr.getOpcodeName() << "\n";
                 exit(EXIT_FAILURE);
         }
-        auto varName = std::make_unique<AST::Identifier>(I.getName().str());
-        auto var1 = std::make_unique<AST::Identifier>(I.getOperand(0)->getName().str());
-        auto var2 = std::make_unique<AST::Identifier>(I.getOperand(1)->getName().str());
+        auto varName = std::make_unique<AST::Identifier>(instr.getName().str());
+        auto var1 = std::make_unique<AST::Identifier>(instr.getOperand(0)->getName().str());
+        auto var2 = std::make_unique<AST::Identifier>(instr.getOperand(1)->getName().str());
         auto binExpr = std::make_unique<AST::BinExpression>(
                 std::move(var1),
                 op,
@@ -103,20 +103,20 @@ namespace llvm {
     }
 
     void
-    EntryBlockParser::appendSimpleAssignment(AST::Function &function, Instruction &I, SimpleAssignmentType saType) {
+    EntryBlockParser::appendSimpleAssignment(AST::Function &function, Instruction &instr, SimpleAssignmentType saType) {
         std::string lhs;
         std::string rhs;
         Type *type;
         switch (saType) {
             case STORE:
-                lhs = I.getOperand(0)->getName().str();
-                rhs = I.getOperand(1)->getName().str();
-                type = I.getOperand(0)->getType();
+                lhs = instr.getOperand(0)->getName().str();
+                rhs = instr.getOperand(1)->getName().str();
+                type = instr.getOperand(0)->getType();
                 break;
             case LOAD:
-                lhs = I.getOperand(0)->getName().str();
-                rhs = I.getName();
-                type = I.getType();
+                lhs = instr.getOperand(0)->getName().str();
+                rhs = instr.getName();
+                type = instr.getType();
                 break;
         }
         appendDeclaration(function, type, rhs);
@@ -127,9 +127,9 @@ namespace llvm {
         function.statements.push_back(std::move(varAss));
     }
 
-    void EntryBlockParser::appendReturnStatement(AST::Function &function, Instruction &I) {
+    void EntryBlockParser::appendReturnStatement(AST::Function &function, Instruction &instr) {
         auto returnStat = std::make_unique<AST::ReturnStatement>(
-                std::make_unique<AST::Identifier>(I.getOperand(0)->getName().str())
+                std::make_unique<AST::Identifier>(instr.getOperand(0)->getName().str())
         );
         function.statements.push_back(std::move(returnStat));
     }

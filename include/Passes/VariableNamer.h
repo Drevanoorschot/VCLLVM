@@ -6,10 +6,10 @@ namespace llvm {
 
     class VariableNamer : public PassInfoMixin<VariableNamer> {
     private:
-        std::shared_ptr<AST::Program> p_AST;
+        std::shared_ptr<AST::Program> pAst;
     public:
-        explicit VariableNamer(std::shared_ptr<AST::Program> p_AST);
-        PreservedAnalyses run(Function &F, FunctionAnalysisManager &AM);
+        explicit VariableNamer(std::shared_ptr<AST::Program> pAst);
+        PreservedAnalyses run(Function &f, FunctionAnalysisManager &am);
     };
 
 }

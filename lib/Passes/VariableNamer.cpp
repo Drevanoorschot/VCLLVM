@@ -6,22 +6,22 @@
 #include "Passes/VariableNamer.h"
 
 namespace llvm {
-    VariableNamer::VariableNamer(std::shared_ptr<AST::Program> p_AST) : p_AST(std::move(p_AST)) {}
+    VariableNamer::VariableNamer(std::shared_ptr<AST::Program> pAst) : pAst(std::move(pAst)) {}
 
-    PreservedAnalyses VariableNamer::run(Function &F, FunctionAnalysisManager &AM) {
-        int var_counter = 0;
-        int arg_counter = 0;
-        for (auto &A: F.args()) {
-            if (!A.hasName()) {
-                A.setName("arg" + itostr(arg_counter));
-                arg_counter++;
+    PreservedAnalyses VariableNamer::run(Function &f, FunctionAnalysisManager &am) {
+        int varCounter = 0;
+        int argCounter = 0;
+        for (auto &arg: f.args()) {
+            if (!arg.hasName()) {
+                arg.setName("arg" + itostr(argCounter));
+                argCounter++;
             }
         }
         // TODO add support for multiblock at some point
-        for (auto &I: F.getEntryBlock()) {
-            if (!I.hasName()) {
-                I.setName("var" + itostr(var_counter));
-                var_counter++;
+        for (auto &instr: f.getEntryBlock()) {
+            if (!instr.hasName()) {
+                instr.setName("var" + itostr(varCounter));
+                varCounter++;
             }
         }
         return PreservedAnalyses::all();

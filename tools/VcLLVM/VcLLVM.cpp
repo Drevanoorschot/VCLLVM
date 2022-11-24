@@ -15,7 +15,7 @@
 
 using namespace llvm;
 
-static cl::opt<std::string> InputFileName{cl::Positional,
+static cl::opt<std::string> inputFileName{cl::Positional,
                                           cl::desc{"<Module to analyze>"},
                                           cl::value_desc{"IR filename"},
                                           cl::init(""),
@@ -24,43 +24,43 @@ static cl::opt<std::string> InputFileName{cl::Positional,
 int main(int argc, char **argv) {
     cl::ParseCommandLineOptions(argc, argv);
 
-    LLVMContext Ctx;
-    SMDiagnostic SMDiag;
-    auto Mptr = parseIRFile(InputFileName,
-                            SMDiag, Ctx);
-    if (!Mptr) {
-        errs() << SMDiag.getMessage() << "\n";
+    LLVMContext context;
+    SMDiagnostic smDiag;
+    auto pModule = parseIRFile(inputFileName,
+                               smDiag, context);
+    if (!pModule) {
+        errs() << smDiag.getMessage() << "\n";
         return 1;
     }
-    Module *module = Mptr.get();
-    auto p_AST = std::make_shared<AST::Program>();
+    Module *module = pModule.get();
+    auto pAst = std::make_shared<AST::Program>();
     // Create the analysis managers.
-    LoopAnalysisManager LAM;
-    FunctionAnalysisManager FAM;
-    CGSCCAnalysisManager CGAM;
-    ModuleAnalysisManager MAM;
+    LoopAnalysisManager lam;
+    FunctionAnalysisManager fam;
+    CGSCCAnalysisManager cgam;
+    ModuleAnalysisManager mam;
     // Create the new pass manager builder.
     // Take a look at the PassBuilder constructor parameters for more
     // customization, e.g. specifying a TargetMachine or various debugging
     // options.
-    PassBuilder PB;
+    PassBuilder pb;
 
     // Register all the basic analyses with the managers.
-    PB.registerModuleAnalyses(MAM);
-    PB.registerCGSCCAnalyses(CGAM);
-    PB.registerFunctionAnalyses(FAM);
-    PB.registerLoopAnalyses(LAM);
-    PB.crossRegisterProxies(LAM, FAM, CGAM, MAM);
+    pb.registerModuleAnalyses(mam);
+    pb.registerCGSCCAnalyses(cgam);
+    pb.registerFunctionAnalyses(fam);
+    pb.registerLoopAnalyses(lam);
+    pb.crossRegisterProxies(lam, fam, cgam, mam);
 
-    FunctionPassManager FPM;
-    FPM.addPass(VariableNamer(p_AST));
-    FPM.addPass(FunctionDeclarer(p_AST));
-    FPM.addPass(EntryBlockParser(p_AST));
-    ModulePassManager MPM;
-    MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
+    FunctionPassManager fpm;
+    fpm.addPass(VariableNamer(pAst));
+    fpm.addPass(FunctionDeclarer(pAst));
+    fpm.addPass(EntryBlockParser(pAst));
+    ModulePassManager mpm;
+    mpm.addPass(createModuleToFunctionPassAdaptor(std::move(fpm)));
 
     // Optimize the IR!
-    MPM.run(*module, MAM);
-    p_AST->print(std::cout);
+    mpm.run(*module, mam);
+    pAst->print(std::cout);
     return EXIT_SUCCESS;
 }

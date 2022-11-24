@@ -7,40 +7,40 @@
 #include "Passes/FunctionDeclarer.h"
 
 namespace llvm {
-    FunctionDeclarer::FunctionDeclarer(std::shared_ptr<AST::Program> p_AST) : p_AST(std::move(p_AST)) {}
+    FunctionDeclarer::FunctionDeclarer(std::shared_ptr<AST::Program> pAst) : pAst(std::move(pAst)) {}
 
-    PreservedAnalyses FunctionDeclarer::run(Function &F, FunctionAnalysisManager &AM) {
+    PreservedAnalyses FunctionDeclarer::run(Function &f, FunctionAnalysisManager &am) {
         std::vector<AST::FunctionParam> params = std::vector<AST::FunctionParam>();
-        for (int i = 0; i < F.arg_size(); i++) {
-            auto arg = F.getArg(i);
-            Types::Type type;
-            std::string param_name = arg->getName().str();
-            auto type_id = F.getArg(i)->getType()->getTypeID();
-            switch (type_id) {
+        for (int i = 0; i < f.arg_size(); i++) {
+            auto arg = f.getArg(i);
+            types::Type type;
+            std::string paramName = arg->getName().str();
+            auto typeId = f.getArg(i)->getType()->getTypeID();
+            switch (typeId) {
                 case Type::IntegerTyID:
-                    type = Types::INT;
+                    type = types::INT;
                     break;
                 default:
-                    errs() << "Unsupported Parameter Type: " << type_id;
+                    errs() << "Unsupported Parameter Type: " << typeId;
                     exit(EXIT_FAILURE);
             }
             params.emplace_back(
                     type,
-                    std::make_unique<AST::Identifier>(param_name));
+                    std::make_unique<AST::Identifier>(paramName));
         }
-        Types::Type return_type;
-        switch (F.getReturnType()->getTypeID()) {
+        types::Type returnType;
+        switch (f.getReturnType()->getTypeID()) {
             case Type::IntegerTyID:
-                return_type = Types::INT;
+                returnType = types::INT;
                 break;
             default:
-                errs() << "Unsupported Return Type: " << F.getReturnType()->getTypeID();
+                errs() << "Unsupported Return Type: " << f.getReturnType()->getTypeID();
                 exit(EXIT_FAILURE);
         }
-        p_AST->functions.emplace_back(
-                F.getName().str(),
+        pAst->functions.emplace_back(
+                f.getName().str(),
                 std::move(params),
-                return_type);
+                returnType);
         return PreservedAnalyses::all();
     }
 }

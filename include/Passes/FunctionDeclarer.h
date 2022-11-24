@@ -7,10 +7,10 @@
 namespace llvm {
     class FunctionDeclarer : public PassInfoMixin<FunctionDeclarer> {
     private:
-        std::shared_ptr<AST::Program> p_AST;
+        std::shared_ptr<AST::Program> pAst;
     public:
-        explicit FunctionDeclarer(std::shared_ptr<AST::Program> p_AST);
-        PreservedAnalyses run(Function &F, FunctionAnalysisManager &AM);
+        explicit FunctionDeclarer(std::shared_ptr<AST::Program> pAst);
+        PreservedAnalyses run(Function &f, FunctionAnalysisManager &am);
     };
 
 }

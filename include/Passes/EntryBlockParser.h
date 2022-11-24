@@ -14,21 +14,21 @@ namespace llvm {
         enum SimpleAssignmentType {
             STORE, LOAD
         };
-        std::shared_ptr<AST::Program> p_AST;
+        std::shared_ptr<AST::Program> pAst;
     public:
-        explicit EntryBlockParser(std::shared_ptr<AST::Program> p_AST);
+        explicit EntryBlockParser(std::shared_ptr<AST::Program> pAst);
 
-        PreservedAnalyses run(Function &F, FunctionAnalysisManager &AM);
+        PreservedAnalyses run(Function &f, FunctionAnalysisManager &am);
 
-        static Types::Type determineType(Type *t);
+        static types::Type determineType(Type *t);
 
-        static void appendDeclaration(AST::Function &function, Type *llvmType, std::string varName);
+        static void appendDeclaration(AST::Function &function, Type *llvmType, const std::string& varName);
 
-        static void appendBinExpr(AST::Function &function, Instruction &I);
+        static void appendBinExpr(AST::Function &function, Instruction &instr);
 
-        static void appendSimpleAssignment(AST::Function &function, Instruction &I, SimpleAssignmentType saType);
+        static void appendSimpleAssignment(AST::Function &function, Instruction &instr, SimpleAssignmentType saType);
 
-        static void appendReturnStatement(AST::Function &function, Instruction &I);
+        static void appendReturnStatement(AST::Function &function, Instruction &instr);
     };
 
 }
