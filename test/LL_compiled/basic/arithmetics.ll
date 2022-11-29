@@ -61,4 +61,4 @@ attributes #0 = { noinline nounwind optnone uwtable "frame-pointer"="all" "min-l
 !2 = !{i32 7, !"PIE Level", i32 2}
 !3 = !{i32 7, !"uwtable", i32 2}
 !4 = !{i32 7, !"frame-pointer", i32 2}
-!5 = !{!"Debian clang version 15.0.4"}
+!5 = !{!"Debian clang version 15.0.6"}

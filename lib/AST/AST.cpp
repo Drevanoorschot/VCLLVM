@@ -3,6 +3,8 @@
 #include <sstream>
 #include <iostream>
 
+#include "AST/proto/ast.pb.h"
+
 #include "AST/AST.h"
 
 namespace types {

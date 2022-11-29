@@ -1,5 +1,6 @@
 import glob
 import os
+import shutil
 import subprocess
 
 TEST_DIR = "test/"
@@ -24,9 +25,14 @@ def copy_dir_structure():
 
 
 def clean():
-    subprocess.call(["rm", "-rf", f"{TEST_DIR}{LL_NAME}"])
+    if os.path.isdir(f"{TEST_DIR}{LL_NAME}"):
+        shutil.rmtree(f"{TEST_DIR}{LL_NAME}")
 
 
+"""
+This script generates LLVM IR files (.ll files) recursively for all *.c files located in test/C and puts them in the
+test/LL_compiled directory
+"""
 if __name__ == '__main__':
     clean()
     copy_dir_structure()

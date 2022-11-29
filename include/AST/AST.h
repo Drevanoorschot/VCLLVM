@@ -9,6 +9,8 @@
 #include <vector>
 #include <memory>
 
+#include "AST/proto/ast.pb.h"
+
 namespace types {
     enum Type {
         POINTER, INT
@@ -39,6 +41,7 @@ namespace AST {
     class Expression : public Node {
     protected:
         Expression() = default;
+
     public:
         virtual ~Expression() = 0;
     };
@@ -101,7 +104,6 @@ namespace AST {
 
         std::unique_ptr<Identifier> varName;
         std::unique_ptr<Expression> expr;
-
     };
 
     class ReturnStatement : public Statement {
@@ -155,7 +157,7 @@ namespace AST {
 
         std::vector<Function> functions;
 
-        Function &getFunction(const std::string& functionName);
+        Function &getFunction(const std::string &functionName);
     };
 }
 #endif //VCLLVM_AST_H
