@@ -6,7 +6,7 @@
 - Protobuf (3.21.9)
 - Python (>=3.9)
 
-In order to use the `llgen.py` scripts, you will also need:
+In order to use the `llgen.py` script, you will also need:
 - Clang (15.0.6)
 ## Development Notes
 - All proto files should go in `lib/AST/proto` directly.
