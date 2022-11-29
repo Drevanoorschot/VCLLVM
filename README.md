@@ -8,6 +8,7 @@
 
 In order to use the `llgen.py` scripts, you will also need:
 - Clang (15.0.6)
-## Development install
-When using CLion:
-- TODO
+## Development Notes
+- All proto files should go in `lib/AST/proto` directly.
+- Make sure to run `protogen.py` before building the project for the first
+time or when changing/adding any `*.proto` file in `lib/AST/proto`.
