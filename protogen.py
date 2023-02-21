@@ -2,8 +2,8 @@ import os.path
 import shutil
 import subprocess
 
-PROTO_SRC_DIR = "lib/AST/proto"
-PROTO_INCLUDE_DIR = "include/AST/proto"
+PROTO_SRC_DIR = "proto/COL/proto"
+PROTO_INCLUDE_DIR = "include/COL/proto"
 TEMP_GEN_DIR = "temp"
 
 
@@ -20,14 +20,24 @@ def protogen():
     shutil.rmtree(TEMP_GEN_DIR)
 
 
+"""
+Some keywords like "assert" generate syntactically wrong c++ code as assert is a keyword in de c++ language
+and is not escaped properly
+"""
+
+
+def escape_keywords():
+    pass
+
+
 def clean():
     if os.path.isdir(PROTO_INCLUDE_DIR):
         shutil.rmtree(PROTO_INCLUDE_DIR)
 
 
 """
-This script generates protobuf header files for *.proto files located in lib/AST/proto and puts them in the
-include/AST/proto directory.
+This script generates protobuf header files for *.proto files located in lib/COL/proto and puts them in the
+include/COL/proto directory.
 """
 if __name__ == '__main__':
     clean()

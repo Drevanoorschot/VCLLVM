@@ -1,0 +1,3158 @@
+syntax = "proto2";
+package vct.col.serialize;
+
+message BigInt {
+  required bytes data = 1;
+}
+
+message BigDecimal {
+  required int64 scale = 1;
+  required BigInt unscaled_value = 2;
+}
+
+message Ref {
+  required int64 index = 1;
+}
+
+message ExpectedErrors {
+
+}
+
+message GlobalDeclaration {
+  oneof v {
+    SimplificationRule simplification_rule = 1;
+    AxiomaticDataType axiomatic_data_type = 2;
+    VctClass vct_class = 3;
+    Model model = 4;
+    Function function = 5;
+    Procedure procedure = 6;
+    Predicate predicate = 7;
+    Enum enum = 8;
+    CTranslationUnit c_translation_unit = 9;
+    CGlobalDeclaration c_global_declaration = 10;
+    CFunctionDefinition c_function_definition = 11;
+    JavaNamespace java_namespace = 12;
+    JavaClass java_class = 13;
+    JavaInterface java_interface = 14;
+    JavaAnnotationInterface java_annotation_interface = 15;
+    SilverField silver_field = 16;
+  }
+}
+
+message ClassDeclaration {
+  oneof v {
+    InstanceFunction instance_function = 1;
+    InstanceMethod instance_method = 2;
+    InstancePredicate instance_predicate = 3;
+    InstanceField instance_field = 4;
+    RunMethod run_method = 5;
+    InstanceOperatorFunction instance_operator_function = 6;
+    InstanceOperatorMethod instance_operator_method = 7;
+    JavaSharedInitialization java_shared_initialization = 8;
+    JavaFields java_fields = 9;
+    JavaConstructor java_constructor = 10;
+    JavaMethod java_method = 11;
+    JavaAnnotationMethod java_annotation_method = 12;
+    PVLConstructor p_v_l_constructor = 13;
+  }
+}
+
+message ADTDeclaration {
+  oneof v {
+    ADTAxiom a_d_t_axiom = 1;
+    ADTFunction a_d_t_function = 2;
+  }
+}
+
+message ModelDeclaration {
+  oneof v {
+    ModelField model_field = 1;
+    ModelProcess model_process = 2;
+    ModelAction model_action = 3;
+  }
+}
+
+message Type {
+  oneof v {
+    TNotAValue t_not_a_value = 1;
+    TUnion t_union = 2;
+    TArray t_array = 3;
+    TPointer t_pointer = 4;
+    TType t_type = 5;
+    TVar t_var = 6;
+    TSeq t_seq = 7;
+    TSet t_set = 8;
+    TBag t_bag = 9;
+    TMap t_map = 10;
+    TOption t_option = 11;
+    TTuple t_tuple = 12;
+    TEither t_either = 13;
+    TMatrix t_matrix = 14;
+    TAny t_any = 15;
+    TNothing t_nothing = 16;
+    TVoid t_void = 17;
+    TNull t_null = 18;
+    TBool t_bool = 19;
+    TResource t_resource = 20;
+    TChar t_char = 21;
+    TString t_string = 22;
+    TRef t_ref = 23;
+    TProcess t_process = 24;
+    TInt t_int = 25;
+    TBoundedInt t_bounded_int = 26;
+    TFloat t_float = 27;
+    TRational t_rational = 28;
+    TFraction t_fraction = 29;
+    TZFraction t_z_fraction = 30;
+    TModel t_model = 31;
+    TClass t_class = 32;
+    TAnyClass t_any_class = 33;
+    TAxiomatic t_axiomatic = 34;
+    TEnum t_enum = 35;
+    CPrimitiveType c_primitive_type = 36;
+    CTPointer c_t_pointer = 37;
+    CTArray c_t_array = 38;
+    CTCudaVec c_t_cuda_vec = 39;
+    JavaNamedType java_named_type = 40;
+    JavaTClass java_t_class = 41;
+    JavaWildcard java_wildcard = 42;
+    PVLNamedType p_v_l_named_type = 43;
+    SilverPartialTAxiomatic silver_partial_t_axiomatic = 44;
+  }
+}
+
+message ParRegion {
+  oneof v {
+    ParParallel par_parallel = 1;
+    ParSequential par_sequential = 2;
+    ParBlock par_block = 3;
+  }
+}
+
+message LoopContract {
+  oneof v {
+    LoopInvariant loop_invariant = 1;
+    IterationContract iteration_contract = 2;
+  }
+}
+
+message Statement {
+  oneof v {
+    LocalDecl local_decl = 1;
+    SpecIgnoreStart spec_ignore_start = 2;
+    SpecIgnoreEnd spec_ignore_end = 3;
+    Assign assign = 4;
+    Send send = 5;
+    Recv recv = 6;
+    DefaultCase default_case = 7;
+    Case case = 8;
+    Label label = 9;
+    Goto goto = 10;
+    Exhale exhale = 11;
+    Assert _assert = 12;
+    Refute refute = 13;
+    Inhale inhale = 14;
+    Assume assume = 15;
+    Wait wait = 16;
+    Notify notify = 17;
+    Fork fork = 18;
+    Join join = 19;
+    Lock lock = 20;
+    Unlock unlock = 21;
+    Commit commit = 22;
+    Fold fold = 23;
+    Unfold unfold = 24;
+    WandApply wand_apply = 25;
+    Havoc havoc = 26;
+    FramedProof framed_proof = 27;
+    Extract extract = 28;
+    Eval eval = 29;
+    InvokeProcedure invoke_procedure = 30;
+    InvokeMethod invoke_method = 31;
+    Return return = 32;
+    Throw throw = 33;
+    Break break = 34;
+    Continue continue = 35;
+    Block block = 36;
+    Scope scope = 37;
+    Branch branch = 38;
+    IndetBranch indet_branch = 39;
+    Switch switch = 40;
+    Loop loop = 41;
+    TryCatchFinally try_catch_finally = 42;
+    Synchronized synchronized = 43;
+    ParInvariant par_invariant = 44;
+    ParAtomic par_atomic = 45;
+    ParBarrier par_barrier = 46;
+    ParStatement par_statement = 47;
+    VecBlock vec_block = 48;
+    WandPackage wand_package = 49;
+    ModelDo model_do = 50;
+    CDeclarationStatement c_declaration_statement = 51;
+    CGoto c_goto = 52;
+    GpgpuBarrier gpgpu_barrier = 53;
+    GpgpuAtomic gpgpu_atomic = 54;
+    JavaLocalDeclarationStatement java_local_declaration_statement = 55;
+    SilverNewRef silver_new_ref = 56;
+    SilverFieldAssign silver_field_assign = 57;
+    SilverLocalAssign silver_local_assign = 58;
+  }
+}
+
+message Operator {
+  oneof v {
+    OperatorLeftPlus operator_left_plus = 1;
+    OperatorRightPlus operator_right_plus = 2;
+  }
+}
+
+message DecreasesClause {
+  oneof v {
+    DecreasesClauseAssume decreases_clause_assume = 1;
+    DecreasesClauseNoRecursion decreases_clause_no_recursion = 2;
+    DecreasesClauseTuple decreases_clause_tuple = 3;
+  }
+}
+
+message AccountedPredicate {
+  oneof v {
+    UnitAccountedPredicate unit_accounted_predicate = 1;
+    SplitAccountedPredicate split_accounted_predicate = 2;
+  }
+}
+
+message FieldFlag {
+  oneof v {
+    Final final = 1;
+  }
+}
+
+message Coercion {
+  oneof v {
+    CoerceIdentity coerce_identity = 1;
+    CoercionSequence coercion_sequence = 2;
+    CoerceNothingSomething coerce_nothing_something = 3;
+    CoerceSomethingAny coerce_something_any = 4;
+    CoerceJoinUnion coerce_join_union = 5;
+    CoerceSelectUnion coerce_select_union = 6;
+    CoerceBoolResource coerce_bool_resource = 7;
+    CoerceNullRef coerce_null_ref = 8;
+    CoerceNullArray coerce_null_array = 9;
+    CoerceNullClass coerce_null_class = 10;
+    CoerceNullJavaClass coerce_null_java_class = 11;
+    CoerceNullAnyClass coerce_null_any_class = 12;
+    CoerceNullPointer coerce_null_pointer = 13;
+    CoerceNullEnum coerce_null_enum = 14;
+    CoerceCArrayPointer coerce_c_array_pointer = 15;
+    CoerceFracZFrac coerce_frac_z_frac = 16;
+    CoerceZFracRat coerce_z_frac_rat = 17;
+    CoerceFloatRat coerce_float_rat = 18;
+    CoerceIntRat coerce_int_rat = 19;
+    CoerceIncreasePrecision coerce_increase_precision = 20;
+    CoerceWidenBound coerce_widen_bound = 21;
+    CoerceUnboundInt coerce_unbound_int = 22;
+    CoerceBoundIntFrac coerce_bound_int_frac = 23;
+    CoerceBoundIntZFrac coerce_bound_int_z_frac = 24;
+    CoerceBoundIntFloat coerce_bound_int_float = 25;
+    CoerceSupports coerce_supports = 26;
+    CoerceJavaSupports coerce_java_supports = 27;
+    CoerceClassAnyClass coerce_class_any_class = 28;
+    CoerceJavaClassAnyClass coerce_java_class_any_class = 29;
+    CoerceCPrimitiveToCol coerce_c_primitive_to_col = 30;
+    CoerceColToCPrimitive coerce_col_to_c_primitive = 31;
+    CoerceMapOption coerce_map_option = 32;
+    CoerceMapTuple coerce_map_tuple = 33;
+    CoerceMapEither coerce_map_either = 34;
+    CoerceMapSeq coerce_map_seq = 35;
+    CoerceMapSet coerce_map_set = 36;
+    CoerceMapBag coerce_map_bag = 37;
+    CoerceMapMatrix coerce_map_matrix = 38;
+    CoerceMapMap coerce_map_map = 39;
+    CoerceMapType coerce_map_type = 40;
+    CoerceRatZFrac coerce_rat_z_frac = 41;
+    CoerceZFracFrac coerce_z_frac_frac = 42;
+  }
+}
+
+message Expr {
+  oneof v {
+    IntegerValue integer_value = 1;
+    BooleanValue boolean_value = 2;
+    FloatValue float_value = 3;
+    StringValue string_value = 4;
+    CharValue char_value = 5;
+    LiteralSeq literal_seq = 6;
+    LiteralSet literal_set = 7;
+    LiteralBag literal_bag = 8;
+    LiteralTuple literal_tuple = 9;
+    LiteralMap literal_map = 10;
+    UntypedLiteralSeq untyped_literal_seq = 11;
+    UntypedLiteralSet untyped_literal_set = 12;
+    UntypedLiteralBag untyped_literal_bag = 13;
+    Void void = 14;
+    Null null = 15;
+    NoPerm no_perm = 16;
+    WritePerm write_perm = 17;
+    OptSome opt_some = 18;
+    OptSomeTyped opt_some_typed = 19;
+    OptNone opt_none = 20;
+    OptNoneTyped opt_none_typed = 21;
+    Range range = 22;
+    EitherLeft either_left = 23;
+    EitherRight either_right = 24;
+    MapCons map_cons = 25;
+    AmbiguousThis ambiguous_this = 26;
+    ThisObject this_object = 27;
+    ThisModel this_model = 28;
+    AmbiguousResult ambiguous_result = 29;
+    Result result = 30;
+    CurrentThreadId current_thread_id = 31;
+    LocalThreadId local_thread_id = 32;
+    GlobalThreadId global_thread_id = 33;
+    Any any = 34;
+    ReadPerm read_perm = 35;
+    Values values = 36;
+    MapEq map_eq = 37;
+    MapDisjoint map_disjoint = 38;
+    MapKeySet map_key_set = 39;
+    MapValueSet map_value_set = 40;
+    MapItemSet map_item_set = 41;
+    MapRemove map_remove = 42;
+    Forall forall = 43;
+    Starall starall = 44;
+    Exists exists = 45;
+    Sum sum = 46;
+    Product product = 47;
+    Let let = 48;
+    InlinePattern inline_pattern = 49;
+    ScopedExpr scoped_expr = 50;
+    Local local = 51;
+    EnumUse enum_use = 52;
+    Deref deref = 53;
+    ModelDeref model_deref = 54;
+    DerefPointer deref_pointer = 55;
+    PointerAdd pointer_add = 56;
+    AddrOf addr_of = 57;
+    FunctionOf function_of = 58;
+    ApplyCoercion apply_coercion = 59;
+    ADTFunctionInvocation a_d_t_function_invocation = 60;
+    PredicateApply predicate_apply = 61;
+    InstancePredicateApply instance_predicate_apply = 62;
+    CoalesceInstancePredicateApply coalesce_instance_predicate_apply = 63;
+    ProcedureInvocation procedure_invocation = 64;
+    MethodInvocation method_invocation = 65;
+    FunctionInvocation function_invocation = 66;
+    InstanceFunctionInvocation instance_function_invocation = 67;
+    UMinus u_minus = 68;
+    BitNot bit_not = 69;
+    Not not = 70;
+    AmbiguousMult ambiguous_mult = 71;
+    AmbiguousPlus ambiguous_plus = 72;
+    AmbiguousMinus ambiguous_minus = 73;
+    AmbiguousOr ambiguous_or = 74;
+    AmbiguousComputationalOr ambiguous_computational_or = 75;
+    AmbiguousComputationalXor ambiguous_computational_xor = 76;
+    AmbiguousComputationalAnd ambiguous_computational_and = 77;
+    ComputationalOr computational_or = 78;
+    ComputationalXor computational_xor = 79;
+    ComputationalAnd computational_and = 80;
+    Exp exp = 81;
+    Plus plus = 82;
+    Minus minus = 83;
+    Mult mult = 84;
+    Div div = 85;
+    FloorDiv floor_div = 86;
+    Mod mod = 87;
+    StringConcat string_concat = 88;
+    BitAnd bit_and = 89;
+    BitOr bit_or = 90;
+    BitXor bit_xor = 91;
+    BitShl bit_shl = 92;
+    BitShr bit_shr = 93;
+    BitUShr bit_u_shr = 94;
+    And and = 95;
+    Or or = 96;
+    Implies implies = 97;
+    Star star = 98;
+    Wand wand = 99;
+    Scale scale = 100;
+    ScaleByParBlock scale_by_par_block = 101;
+    Unfolding unfolding = 102;
+    Perm perm = 103;
+    PointsTo points_to = 104;
+    CurPerm cur_perm = 105;
+    Value value = 106;
+    ValidArray valid_array = 107;
+    ValidMatrix valid_matrix = 108;
+    PermPointer perm_pointer = 109;
+    PermPointerIndex perm_pointer_index = 110;
+    Eq eq = 111;
+    Neq neq = 112;
+    AmbiguousGreater ambiguous_greater = 113;
+    AmbiguousLess ambiguous_less = 114;
+    AmbiguousGreaterEq ambiguous_greater_eq = 115;
+    AmbiguousLessEq ambiguous_less_eq = 116;
+    Greater greater = 117;
+    Less less = 118;
+    GreaterEq greater_eq = 119;
+    LessEq less_eq = 120;
+    SubSet sub_set = 121;
+    SubSetEq sub_set_eq = 122;
+    SubBag sub_bag = 123;
+    SubBagEq sub_bag_eq = 124;
+    Select select = 125;
+    NewObject new_object = 126;
+    NewArray new_array = 127;
+    Old old = 128;
+    AmbiguousSubscript ambiguous_subscript = 129;
+    SeqSubscript seq_subscript = 130;
+    ArraySubscript array_subscript = 131;
+    PointerSubscript pointer_subscript = 132;
+    Length length = 133;
+    Size size = 134;
+    PointerBlockLength pointer_block_length = 135;
+    PointerBlockOffset pointer_block_offset = 136;
+    PointerLength pointer_length = 137;
+    SharedMemSize shared_mem_size = 138;
+    NdIndex nd_index = 139;
+    NdPartialIndex nd_partial_index = 140;
+    NdLength nd_length = 141;
+    Cons cons = 142;
+    Head head = 143;
+    Tail tail = 144;
+    Drop drop = 145;
+    Take take = 146;
+    Slice slice = 147;
+    SeqUpdate seq_update = 148;
+    Concat concat = 149;
+    RemoveAt remove_at = 150;
+    VctEmpty vct_empty = 151;
+    SetIntersection set_intersection = 152;
+    BagLargestCommon bag_largest_common = 153;
+    SetMinus set_minus = 154;
+    BagMinus bag_minus = 155;
+    SetUnion set_union = 156;
+    BagAdd bag_add = 157;
+    AmbiguousMember ambiguous_member = 158;
+    SetMember set_member = 159;
+    SeqMember seq_member = 160;
+    MapMember map_member = 161;
+    BagMemberCount bag_member_count = 162;
+    Permutation permutation = 163;
+    OptEmpty opt_empty = 164;
+    OptGet opt_get = 165;
+    OptGetOrElse opt_get_or_else = 166;
+    MapGet map_get = 167;
+    TupGet tup_get = 168;
+    GetLeft get_left = 169;
+    GetRight get_right = 170;
+    IsLeft is_left = 171;
+    IsRight is_right = 172;
+    VectorSum vector_sum = 173;
+    VectorCompare vector_compare = 174;
+    VectorRepeat vector_repeat = 175;
+    MatrixSum matrix_sum = 176;
+    MatrixCompare matrix_compare = 177;
+    MatrixRepeat matrix_repeat = 178;
+    CastFloat cast_float = 179;
+    TypeValue type_value = 180;
+    TypeOf type_of = 181;
+    VctInstanceOf vct_instance_of = 182;
+    Cast cast = 183;
+    SubType sub_type = 184;
+    SuperType super_type = 185;
+    IndeterminateInteger indeterminate_integer = 186;
+    PreAssignExpression pre_assign_expression = 187;
+    PostAssignExpression post_assign_expression = 188;
+    With with = 189;
+    Then then = 190;
+    Held held = 191;
+    Committed committed = 192;
+    IdleToken idle_token = 193;
+    JoinToken join_token = 194;
+    EmptyProcess empty_process = 195;
+    ActionApply action_apply = 196;
+    ProcessApply process_apply = 197;
+    ProcessSeq process_seq = 198;
+    ProcessChoice process_choice = 199;
+    ProcessPar process_par = 200;
+    ProcessSelect process_select = 201;
+    ModelNew model_new = 202;
+    ModelState model_state = 203;
+    ModelAbstractState model_abstract_state = 204;
+    ModelCreate model_create = 205;
+    ModelDestroy model_destroy = 206;
+    ModelSplit model_split = 207;
+    ModelMerge model_merge = 208;
+    ModelChoose model_choose = 209;
+    ModelPerm model_perm = 210;
+    ActionPerm action_perm = 211;
+    CLocal c_local = 212;
+    CInvocation c_invocation = 213;
+    CStructAccess c_struct_access = 214;
+    CStructDeref c_struct_deref = 215;
+    GpgpuCudaKernelInvocation gpgpu_cuda_kernel_invocation = 216;
+    CCast c_cast = 217;
+    JavaLocal java_local = 218;
+    JavaDeref java_deref = 219;
+    JavaLiteralArray java_literal_array = 220;
+    JavaInvocation java_invocation = 221;
+    JavaNewClass java_new_class = 222;
+    JavaNewLiteralArray java_new_literal_array = 223;
+    JavaNewDefaultArray java_new_default_array = 224;
+    JavaStringValue java_string_value = 225;
+    PVLLocal p_v_l_local = 226;
+    PVLDeref p_v_l_deref = 227;
+    PVLInvocation p_v_l_invocation = 228;
+    PVLNew p_v_l_new = 229;
+    SilverDeref silver_deref = 230;
+    SilverIntToRat silver_int_to_rat = 231;
+    SilverNull silver_null = 232;
+    SilverSeqSize silver_seq_size = 233;
+    SilverSetSize silver_set_size = 234;
+    SilverBagSize silver_bag_size = 235;
+    SilverMapSize silver_map_size = 236;
+    SilverCurFieldPerm silver_cur_field_perm = 237;
+    SilverCurPredPerm silver_cur_pred_perm = 238;
+    SilverPartialADTFunctionInvocation silver_partial_a_d_t_function_invocation = 239;
+    SilverUntypedNonemptyLiteralMap silver_untyped_nonempty_literal_map = 240;
+  }
+}
+
+message Location {
+  oneof v {
+    FieldLocation field_location = 1;
+    ModelLocation model_location = 2;
+    SilverFieldLocation silver_field_location = 3;
+    ArrayLocation array_location = 4;
+    PointerLocation pointer_location = 5;
+    PredicateLocation predicate_location = 6;
+    InstancePredicateLocation instance_predicate_location = 7;
+    AmbiguousLocation ambiguous_location = 8;
+  }
+}
+
+message CDeclarationSpecifier {
+  oneof v {
+    CPure c_pure = 1;
+    CInline c_inline = 2;
+    CTypedef c_typedef = 3;
+    CExtern c_extern = 4;
+    CStatic c_static = 5;
+    GPULocal g_p_u_local = 6;
+    GPUGlobal g_p_u_global = 7;
+    CVoid c_void = 8;
+    CChar c_char = 9;
+    CShort c_short = 10;
+    CInt c_int = 11;
+    CLong c_long = 12;
+    CSigned c_signed = 13;
+    CUnsigned c_unsigned = 14;
+    CBool c_bool = 15;
+    CTypedefName c_typedef_name = 16;
+    CSpecificationType c_specification_type = 17;
+    CTypeQualifierDeclarationSpecifier c_type_qualifier_declaration_specifier = 18;
+    CUDAKernel c_u_d_a_kernel = 19;
+    OpenCLKernel open_c_l_kernel = 20;
+  }
+}
+
+message CTypeQualifier {
+  oneof v {
+    CConst c_const = 1;
+    CRestrict c_restrict = 2;
+    CVolatile c_volatile = 3;
+    CAtomic c_atomic = 4;
+  }
+}
+
+message CDeclarator {
+  oneof v {
+    CPointerDeclarator c_pointer_declarator = 1;
+    CArrayDeclarator c_array_declarator = 2;
+    CTypedFunctionDeclarator c_typed_function_declarator = 3;
+    CAnonymousFunctionDeclarator c_anonymous_function_declarator = 4;
+    CName c_name = 5;
+  }
+}
+
+message GpuMemoryFence {
+  oneof v {
+    GpuLocalMemoryFence gpu_local_memory_fence = 1;
+    GpuGlobalMemoryFence gpu_global_memory_fence = 2;
+    GpuZeroMemoryFence gpu_zero_memory_fence = 3;
+  }
+}
+
+message JavaModifier {
+  oneof v {
+    JavaPublic java_public = 1;
+    JavaProtected java_protected = 2;
+    JavaPrivate java_private = 3;
+    JavaStatic java_static = 4;
+    JavaAbstract java_abstract = 5;
+    JavaFinal java_final = 6;
+    JavaStrictFP java_strict_f_p = 7;
+    JavaNative java_native = 8;
+    JavaSynchronized java_synchronized = 9;
+    JavaTransient java_transient = 10;
+    JavaVolatile java_volatile = 11;
+    JavaAnnotation java_annotation = 12;
+    JavaPure java_pure = 13;
+    JavaInline java_inline = 14;
+  }
+}
+
+message SimplificationRule {
+  required Expr axiom = 1;
+}
+
+message AxiomaticDataType {
+  repeated ADTDeclaration decls = 1;
+  repeated Variable type_args = 2;
+}
+
+message VctClass {
+  repeated ClassDeclaration declarations = 1;
+  repeated Ref supports = 2;
+  required Expr intrinsic_lock_invariant = 3;
+}
+
+message Model {
+  repeated ModelDeclaration declarations = 1;
+}
+
+message Function {
+  required Type return_type = 1;
+  repeated Variable args = 2;
+  repeated Variable type_args = 3;
+  optional Expr body = 4;
+  required ApplicableContract contract = 5;
+  required bool inline = 6;
+  required bool thread_local = 7;
+}
+
+message Procedure {
+  required Type return_type = 1;
+  repeated Variable args = 2;
+  repeated Variable out_args = 3;
+  repeated Variable type_args = 4;
+  optional Statement body = 5;
+  required ApplicableContract contract = 6;
+  required bool inline = 7;
+  required bool pure = 8;
+}
+
+message Predicate {
+  repeated Variable args = 1;
+  optional Expr body = 2;
+  required bool thread_local = 3;
+  required bool inline = 4;
+}
+
+message Enum {
+  repeated EnumConstant constants = 1;
+}
+
+message EnumConstant {
+
+}
+
+message InstanceFunction {
+  required Type return_type = 1;
+  repeated Variable args = 2;
+  repeated Variable type_args = 3;
+  optional Expr body = 4;
+  required ApplicableContract contract = 5;
+  required bool inline = 6;
+  required bool thread_local = 7;
+}
+
+message InstanceMethod {
+  required Type return_type = 1;
+  repeated Variable args = 2;
+  repeated Variable out_args = 3;
+  repeated Variable type_args = 4;
+  optional Statement body = 5;
+  required ApplicableContract contract = 6;
+  required bool inline = 7;
+  required bool pure = 8;
+}
+
+message InstancePredicate {
+  repeated Variable args = 1;
+  optional Expr body = 2;
+  required bool thread_local = 3;
+  required bool inline = 4;
+}
+
+message InstanceField {
+  required Type t = 1;
+  repeated FieldFlag flags = 2;
+}
+
+message RunMethod {
+  optional Statement body = 1;
+  required ApplicableContract contract = 2;
+}
+
+message InstanceOperatorFunction {
+  required Type return_type = 1;
+  required Operator operator = 2;
+  repeated Variable args = 3;
+  optional Expr body = 4;
+  required ApplicableContract contract = 5;
+  required bool inline = 6;
+  required bool thread_local = 7;
+}
+
+message InstanceOperatorMethod {
+  required Type return_type = 1;
+  required Operator operator = 2;
+  repeated Variable args = 3;
+  optional Statement body = 4;
+  required ApplicableContract contract = 5;
+  required bool inline = 6;
+  required bool pure = 7;
+}
+
+message ModelField {
+  required Type t = 1;
+}
+
+message ModelProcess {
+  repeated Variable args = 1;
+  required Expr impl = 2;
+  required Expr requires = 3;
+  required Expr ensures = 4;
+  repeated Ref modifies = 5;
+  repeated Ref accessible = 6;
+}
+
+message ModelAction {
+  repeated Variable args = 1;
+  required Expr requires = 2;
+  required Expr ensures = 3;
+  repeated Ref modifies = 4;
+  repeated Ref accessible = 5;
+}
+
+message ADTAxiom {
+  required Expr axiom = 1;
+}
+
+message ADTFunction {
+  repeated Variable args = 1;
+  required Type return_type = 2;
+}
+
+message Variable {
+  required Type t = 1;
+}
+
+message LabelDecl {
+
+}
+
+message SendDecl {
+
+}
+
+message ParBlockDecl {
+
+}
+
+message ParInvariantDecl {
+
+}
+
+message CParam {
+  repeated CDeclarationSpecifier specifiers = 1;
+  required CDeclarator declarator = 2;
+}
+
+message CTranslationUnit {
+  repeated GlobalDeclaration declarations = 1;
+}
+
+message CGlobalDeclaration {
+  required CDeclaration decl = 1;
+}
+
+message CLocalDeclaration {
+  required CDeclaration decl = 1;
+}
+
+message CFunctionDefinition {
+  required ApplicableContract contract = 1;
+  repeated CDeclarationSpecifier specs = 2;
+  required CDeclarator declarator = 3;
+  required Statement body = 4;
+}
+
+message JavaNamespace {
+  optional JavaName pkg = 1;
+  repeated JavaImport imports = 2;
+  repeated GlobalDeclaration declarations = 3;
+}
+
+message JavaClass {
+  required string name = 1;
+  repeated JavaModifier modifiers = 2;
+  repeated Variable type_params = 3;
+  required Expr intrinsic_lock_invariant = 4;
+  required Type ext = 5;
+  repeated Type imp = 6;
+  repeated ClassDeclaration decls = 7;
+}
+
+message JavaInterface {
+  required string name = 1;
+  repeated JavaModifier modifiers = 2;
+  repeated Variable type_params = 3;
+  repeated Type ext = 4;
+  repeated ClassDeclaration decls = 5;
+}
+
+message JavaAnnotationInterface {
+  required string name = 1;
+  repeated JavaModifier modifiers = 2;
+  required Type ext = 3;
+  repeated ClassDeclaration decls = 4;
+}
+
+message JavaSharedInitialization {
+  required bool is_static = 1;
+  required Statement initialization = 2;
+}
+
+message JavaFields {
+  repeated JavaModifier modifiers = 1;
+  required Type t = 2;
+  repeated JavaVariableDeclaration decls = 3;
+}
+
+message JavaConstructor {
+  repeated JavaModifier modifiers = 1;
+  required string name = 2;
+  repeated Variable parameters = 3;
+  repeated Variable type_parameters = 4;
+  repeated Type signals = 5;
+  required Statement body = 6;
+  required ApplicableContract contract = 7;
+}
+
+message JavaMethod {
+  repeated JavaModifier modifiers = 1;
+  required Type return_type = 2;
+  required int64 dims = 3;
+  required string name = 4;
+  repeated Variable parameters = 5;
+  repeated Variable type_parameters = 6;
+  repeated Type signals = 7;
+  optional Statement body = 8;
+  required ApplicableContract contract = 9;
+}
+
+message JavaAnnotationMethod {
+  required Type return_type = 1;
+  required string name = 2;
+  optional Expr default = 3;
+}
+
+message JavaLocalDeclaration {
+  repeated JavaModifier modifiers = 1;
+  required Type t = 2;
+  repeated JavaVariableDeclaration decls = 3;
+}
+
+message PVLConstructor {
+  required ApplicableContract contract = 1;
+  repeated Variable args = 2;
+  optional Statement body = 3;
+}
+
+message SilverField {
+  required Type t = 1;
+}
+
+message Verification {
+  repeated VerificationContext tasks = 1;
+  required ExpectedErrors expected_errors = 2;
+}
+
+message VerificationContext {
+  required Program program = 1;
+}
+
+message Program {
+  repeated GlobalDeclaration declarations = 1;
+}
+
+message TNotAValue {
+
+}
+
+message TUnion {
+  repeated Type types = 1;
+}
+
+message TArray {
+  required Type element = 1;
+}
+
+message TPointer {
+  required Type element = 1;
+}
+
+message TType {
+  required Type t = 1;
+}
+
+message TVar {
+  required Ref ref = 1;
+}
+
+message TSeq {
+  required Type element = 1;
+}
+
+message TSet {
+  required Type element = 1;
+}
+
+message TBag {
+  required Type element = 1;
+}
+
+message TMap {
+  required Type key = 1;
+  required Type value = 2;
+}
+
+message TOption {
+  required Type element = 1;
+}
+
+message TTuple {
+  repeated Type elements = 1;
+}
+
+message TEither {
+  required Type left = 1;
+  required Type right = 2;
+}
+
+message TMatrix {
+  required Type element = 1;
+}
+
+message TAny {
+
+}
+
+message TNothing {
+
+}
+
+message TVoid {
+
+}
+
+message TNull {
+
+}
+
+message TBool {
+
+}
+
+message TResource {
+
+}
+
+message TChar {
+
+}
+
+message TString {
+
+}
+
+message TRef {
+
+}
+
+message TProcess {
+
+}
+
+message TInt {
+
+}
+
+message TBoundedInt {
+  required BigInt gte = 1;
+  required BigInt lt = 2;
+}
+
+message TFloat {
+  required int64 exponent = 1;
+  required int64 mantissa = 2;
+}
+
+message TRational {
+
+}
+
+message TFraction {
+
+}
+
+message TZFraction {
+
+}
+
+message TModel {
+  required Ref model = 1;
+}
+
+message TClass {
+  required Ref cls = 1;
+}
+
+message TAnyClass {
+
+}
+
+message TAxiomatic {
+  required Ref adt = 1;
+  repeated Type args = 2;
+}
+
+message TEnum {
+  required Ref enum = 1;
+}
+
+message ParParallel {
+  repeated ParRegion regions = 1;
+}
+
+message ParSequential {
+  repeated ParRegion regions = 1;
+}
+
+message ParBlock {
+  required ParBlockDecl decl = 1;
+  repeated IterVariable iters = 2;
+  required Expr context_everywhere = 3;
+  required Expr requires = 4;
+  required Expr ensures = 5;
+  required Statement content = 6;
+}
+
+message LoopInvariant {
+  required Expr invariant = 1;
+  optional DecreasesClause decreases = 2;
+}
+
+message IterationContract {
+  required Expr requires = 1;
+  required Expr ensures = 2;
+  required Expr context_everywhere = 3;
+}
+
+message CatchClause {
+  required Variable decl = 1;
+  required Statement body = 2;
+}
+
+message IterVariable {
+  required Variable variable = 1;
+  required Expr from = 2;
+  required Expr to = 3;
+}
+
+message LocalDecl {
+  required Variable local = 1;
+}
+
+message SpecIgnoreStart {
+
+}
+
+message SpecIgnoreEnd {
+
+}
+
+message Assign {
+  required Expr target = 1;
+  required Expr value = 2;
+}
+
+message Send {
+  required SendDecl decl = 1;
+  required BigInt delta = 2;
+  required Expr res = 3;
+}
+
+message Recv {
+  required Ref ref = 1;
+}
+
+message DefaultCase {
+
+}
+
+message Case {
+  required Expr pattern = 1;
+}
+
+message Label {
+  required LabelDecl decl = 1;
+  required Statement stat = 2;
+}
+
+message Goto {
+  required Ref lbl = 1;
+}
+
+message Exhale {
+  required Expr res = 1;
+}
+
+message Assert {
+  required Expr res = 1;
+}
+
+message Refute {
+  required Expr assn = 1;
+}
+
+message Inhale {
+  required Expr res = 1;
+}
+
+message Assume {
+  required Expr assn = 1;
+}
+
+message Wait {
+  required Expr obj = 1;
+}
+
+message Notify {
+  required Expr obj = 1;
+}
+
+message Fork {
+  required Expr obj = 1;
+}
+
+message Join {
+  required Expr obj = 1;
+}
+
+message Lock {
+  required Expr obj = 1;
+}
+
+message Unlock {
+  required Expr obj = 1;
+}
+
+message Commit {
+  required Expr obj = 1;
+}
+
+message Fold {
+  required Expr res = 1;
+}
+
+message Unfold {
+  required Expr res = 1;
+}
+
+message WandApply {
+  required Expr res = 1;
+}
+
+message Havoc {
+  required Expr loc = 1;
+}
+
+message FramedProof {
+  required Expr pre = 1;
+  required Statement body = 2;
+  required Expr post = 3;
+}
+
+message Extract {
+  required Statement contracted_statement = 1;
+}
+
+message Eval {
+  required Expr expr = 1;
+}
+
+message InvokeProcedure {
+  required Ref ref = 1;
+  repeated Expr args = 2;
+  repeated Expr out_args = 3;
+  repeated Type type_args = 4;
+  repeated RefExpr given_map = 5;
+  repeated ExprRef yields = 6;
+}
+
+message InvokeMethod {
+  required Expr obj = 1;
+  required Ref ref = 2;
+  repeated Expr args = 3;
+  repeated Expr out_args = 4;
+  repeated Type type_args = 5;
+  repeated RefExpr given_map = 6;
+  repeated ExprRef yields = 7;
+}
+
+message Return {
+  required Expr result = 1;
+}
+
+message Throw {
+  required Expr obj = 1;
+}
+
+message Break {
+  optional Ref label = 1;
+}
+
+message Continue {
+  optional Ref label = 1;
+}
+
+message Block {
+  repeated Statement statements = 1;
+}
+
+message Scope {
+  repeated Variable locals = 1;
+  required Statement body = 2;
+}
+
+message Branch {
+  repeated ExprStatement branches = 1;
+}
+
+message IndetBranch {
+  repeated Statement branches = 1;
+}
+
+message Switch {
+  required Expr expr = 1;
+  required Statement body = 2;
+}
+
+message Loop {
+  required Statement init = 1;
+  required Expr cond = 2;
+  required Statement update = 3;
+  required LoopContract contract = 4;
+  required Statement body = 5;
+}
+
+message TryCatchFinally {
+  required Statement body = 1;
+  required Statement after = 2;
+  repeated CatchClause catches = 3;
+}
+
+message Synchronized {
+  required Expr obj = 1;
+  required Statement body = 2;
+}
+
+message ParInvariant {
+  required ParInvariantDecl decl = 1;
+  required Expr inv = 2;
+  required Statement content = 3;
+}
+
+message ParAtomic {
+  repeated Ref inv = 1;
+  required Statement content = 2;
+}
+
+message ParBarrier {
+  required Ref block = 1;
+  repeated Ref invs = 2;
+  required Expr requires = 3;
+  required Expr ensures = 4;
+  required Statement content = 5;
+}
+
+message ParStatement {
+  required ParRegion impl = 1;
+}
+
+message VecBlock {
+  repeated IterVariable iters = 1;
+  required Expr requires = 2;
+  required Expr ensures = 3;
+  required Statement content = 4;
+}
+
+message WandPackage {
+  required Expr res = 1;
+  required Statement proof = 2;
+}
+
+message ModelDo {
+  required Expr model = 1;
+  required Expr perm = 2;
+  required Expr after = 3;
+  required Expr action = 4;
+  required Statement impl = 5;
+}
+
+message OperatorLeftPlus {
+
+}
+
+message OperatorRightPlus {
+
+}
+
+message SignalsClause {
+  required Variable binding = 1;
+  required Expr assn = 2;
+}
+
+message DecreasesClauseAssume {
+
+}
+
+message DecreasesClauseNoRecursion {
+
+}
+
+message DecreasesClauseTuple {
+  repeated Expr exprs = 1;
+}
+
+message ApplicableContract {
+  required AccountedPredicate requires = 1;
+  required AccountedPredicate ensures = 2;
+  required Expr context_everywhere = 3;
+  repeated SignalsClause signals = 4;
+  repeated Variable given_args = 5;
+  repeated Variable yields_args = 6;
+  optional DecreasesClause decreases = 7;
+}
+
+message UnitAccountedPredicate {
+  required Expr pred = 1;
+}
+
+message SplitAccountedPredicate {
+  required AccountedPredicate left = 1;
+  required AccountedPredicate right = 2;
+}
+
+message Final {
+
+}
+
+message CoerceIdentity {
+  required Type source = 1;
+}
+
+message CoercionSequence {
+  repeated Coercion coercions = 1;
+}
+
+message CoerceNothingSomething {
+  required Type target = 1;
+}
+
+message CoerceSomethingAny {
+  required Type source = 1;
+}
+
+message CoerceJoinUnion {
+  repeated Coercion inner = 1;
+  repeated Type source = 2;
+  required Type target = 3;
+}
+
+message CoerceSelectUnion {
+  required Coercion inner = 1;
+  required Type source = 2;
+  repeated Type target_alts = 3;
+  required int64 index = 4;
+}
+
+message CoerceBoolResource {
+
+}
+
+message CoerceNullRef {
+
+}
+
+message CoerceNullArray {
+  required Type array_element_type = 1;
+}
+
+message CoerceNullClass {
+  required Ref target_class = 1;
+}
+
+message CoerceNullJavaClass {
+  required Ref target_class = 1;
+}
+
+message CoerceNullAnyClass {
+
+}
+
+message CoerceNullPointer {
+  required Type pointer_element_type = 1;
+}
+
+message CoerceNullEnum {
+  required Ref target_enum = 1;
+}
+
+message CoerceCArrayPointer {
+  required Type element_type = 1;
+}
+
+message CoerceFracZFrac {
+
+}
+
+message CoerceZFracRat {
+
+}
+
+message CoerceFloatRat {
+  required Type source = 1;
+}
+
+message CoerceIntRat {
+
+}
+
+message CoerceIncreasePrecision {
+  required Type source = 1;
+  required Type target = 2;
+}
+
+message CoerceWidenBound {
+  required Type source = 1;
+  required Type target = 2;
+}
+
+message CoerceUnboundInt {
+  required Type source = 1;
+}
+
+message CoerceBoundIntFrac {
+
+}
+
+message CoerceBoundIntZFrac {
+  required Type source = 1;
+}
+
+message CoerceBoundIntFloat {
+  required Type source = 1;
+  required Type target = 2;
+}
+
+message CoerceSupports {
+  required Ref source_class = 1;
+  required Ref target_class = 2;
+}
+
+message CoerceJavaSupports {
+  required Ref source_class = 1;
+  required Ref target_class = 2;
+}
+
+message CoerceClassAnyClass {
+  required Ref source_class = 1;
+}
+
+message CoerceJavaClassAnyClass {
+  required Ref source_class = 1;
+}
+
+message CoerceCPrimitiveToCol {
+  required Type source = 1;
+  required Type target = 2;
+}
+
+message CoerceColToCPrimitive {
+  required Type source = 1;
+  required Type target = 2;
+}
+
+message CoerceMapOption {
+  required Coercion inner = 1;
+  required Type source_option_element = 2;
+  required Type target_option_element = 3;
+}
+
+message CoerceMapTuple {
+  repeated Coercion inner = 1;
+  repeated Type source_types = 2;
+  repeated Type target_types = 3;
+}
+
+message CoerceMapEither {
+  required CoercionCoercion inner = 1;
+  required TypeType source_types = 2;
+  required TypeType target_types = 3;
+}
+
+message CoerceMapSeq {
+  required Coercion inner = 1;
+  required Type source_seq_element = 2;
+  required Type target_seq_element = 3;
+}
+
+message CoerceMapSet {
+  required Coercion inner = 1;
+  required Type source_set_element = 2;
+  required Type target_set_element = 3;
+}
+
+message CoerceMapBag {
+  required Coercion inner = 1;
+  required Type source_bag_element = 2;
+  required Type target_bag_element = 3;
+}
+
+message CoerceMapMatrix {
+  required Coercion inner = 1;
+  required Type source_matrix_element = 2;
+  required Type target_matrix_element = 3;
+}
+
+message CoerceMapMap {
+  required Coercion inner = 1;
+  required TypeType source_types = 2;
+  required TypeType target_types = 3;
+}
+
+message CoerceMapType {
+  required Coercion inner = 1;
+  required Type source_bound = 2;
+  required Type target_bound = 3;
+}
+
+message CoerceRatZFrac {
+
+}
+
+message CoerceZFracFrac {
+
+}
+
+message IntegerValue {
+  required BigInt value = 1;
+}
+
+message BooleanValue {
+  required bool value = 1;
+}
+
+message FloatValue {
+  required BigDecimal value = 1;
+  required Type t = 2;
+}
+
+message StringValue {
+  required string value = 1;
+}
+
+message CharValue {
+  required int64 value = 1;
+}
+
+message LiteralSeq {
+  required Type element = 1;
+  repeated Expr values = 2;
+}
+
+message LiteralSet {
+  required Type element = 1;
+  repeated Expr values = 2;
+}
+
+message LiteralBag {
+  required Type element = 1;
+  repeated Expr values = 2;
+}
+
+message LiteralTuple {
+  repeated Type ts = 1;
+  repeated Expr values = 2;
+}
+
+message LiteralMap {
+  required Type k = 1;
+  required Type v = 2;
+  repeated ExprExpr values = 3;
+}
+
+message UntypedLiteralSeq {
+  repeated Expr values = 1;
+}
+
+message UntypedLiteralSet {
+  repeated Expr values = 1;
+}
+
+message UntypedLiteralBag {
+  repeated Expr values = 1;
+}
+
+message Void {
+
+}
+
+message Null {
+
+}
+
+message NoPerm {
+
+}
+
+message WritePerm {
+
+}
+
+message OptSome {
+  required Expr e = 1;
+}
+
+message OptSomeTyped {
+  required Type element = 1;
+  required Expr e = 2;
+}
+
+message OptNone {
+
+}
+
+message OptNoneTyped {
+  required Type element = 1;
+}
+
+message Range {
+  required Expr from = 1;
+  required Expr to = 2;
+}
+
+message EitherLeft {
+  required Expr e = 1;
+}
+
+message EitherRight {
+  required Expr e = 1;
+}
+
+message MapCons {
+  required Expr map = 1;
+  required Expr k = 2;
+  required Expr v = 3;
+}
+
+message AmbiguousThis {
+
+}
+
+message ThisObject {
+  required Ref cls = 1;
+}
+
+message ThisModel {
+  required Ref cls = 1;
+}
+
+message AmbiguousResult {
+
+}
+
+message Result {
+  required Ref applicable = 1;
+}
+
+message CurrentThreadId {
+
+}
+
+message LocalThreadId {
+
+}
+
+message GlobalThreadId {
+
+}
+
+message Any {
+
+}
+
+message ReadPerm {
+
+}
+
+message Values {
+  required Expr arr = 1;
+  required Expr from = 2;
+  required Expr to = 3;
+}
+
+message MapEq {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message MapDisjoint {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message MapKeySet {
+  required Expr map = 1;
+}
+
+message MapValueSet {
+  required Expr map = 1;
+}
+
+message MapItemSet {
+  required Expr map = 1;
+}
+
+message MapRemove {
+  required Expr map = 1;
+  required Expr k = 2;
+}
+
+message Forall {
+  repeated Variable bindings = 1;
+  repeated SeqExpr triggers = 2;
+  required Expr body = 3;
+}
+
+message Starall {
+  repeated Variable bindings = 1;
+  repeated SeqExpr triggers = 2;
+  required Expr body = 3;
+}
+
+message Exists {
+  repeated Variable bindings = 1;
+  repeated SeqExpr triggers = 2;
+  required Expr body = 3;
+}
+
+message Sum {
+  repeated Variable bindings = 1;
+  required Expr condition = 2;
+  required Expr main = 3;
+}
+
+message Product {
+  repeated Variable bindings = 1;
+  required Expr condition = 2;
+  required Expr main = 3;
+}
+
+message Let {
+  required Variable binding = 1;
+  required Expr value = 2;
+  required Expr main = 3;
+}
+
+message InlinePattern {
+  required Expr inner = 1;
+  required int64 parent = 2;
+  required int64 group = 3;
+}
+
+message ScopedExpr {
+  repeated Variable declarations = 1;
+  required Expr body = 2;
+}
+
+message Local {
+  required Ref ref = 1;
+}
+
+message EnumUse {
+  required Ref enum = 1;
+  required Ref const = 2;
+}
+
+message Deref {
+  required Expr obj = 1;
+  required Ref ref = 2;
+}
+
+message ModelDeref {
+  required Expr obj = 1;
+  required Ref ref = 2;
+}
+
+message DerefPointer {
+  required Expr pointer = 1;
+}
+
+message PointerAdd {
+  required Expr pointer = 1;
+  required Expr offset = 2;
+}
+
+message AddrOf {
+  required Expr e = 1;
+}
+
+message FunctionOf {
+  required Ref binding = 1;
+  repeated Ref vars = 2;
+}
+
+message ApplyCoercion {
+  required Expr e = 1;
+  required Coercion coercion = 2;
+}
+
+message ADTFunctionInvocation {
+  optional RefSeqType type_args = 1;
+  required Ref ref = 2;
+  repeated Expr args = 3;
+}
+
+message PredicateApply {
+  required Ref ref = 1;
+  repeated Expr args = 2;
+  required Expr perm = 3;
+}
+
+message InstancePredicateApply {
+  required Expr obj = 1;
+  required Ref ref = 2;
+  repeated Expr args = 3;
+  required Expr perm = 4;
+}
+
+message CoalesceInstancePredicateApply {
+  required Expr obj = 1;
+  required Ref ref = 2;
+  repeated Expr args = 3;
+  required Expr perm = 4;
+}
+
+message ProcedureInvocation {
+  required Ref ref = 1;
+  repeated Expr args = 2;
+  repeated Expr out_args = 3;
+  repeated Type type_args = 4;
+  repeated RefExpr given_map = 5;
+  repeated ExprRef yields = 6;
+}
+
+message MethodInvocation {
+  required Expr obj = 1;
+  required Ref ref = 2;
+  repeated Expr args = 3;
+  repeated Expr out_args = 4;
+  repeated Type type_args = 5;
+  repeated RefExpr given_map = 6;
+  repeated ExprRef yields = 7;
+}
+
+message FunctionInvocation {
+  required Ref ref = 1;
+  repeated Expr args = 2;
+  repeated Type type_args = 3;
+  repeated RefExpr given_map = 4;
+  repeated ExprRef yields = 5;
+}
+
+message InstanceFunctionInvocation {
+  required Expr obj = 1;
+  required Ref ref = 2;
+  repeated Expr args = 3;
+  repeated Type type_args = 4;
+  repeated RefExpr given_map = 5;
+  repeated ExprRef yields = 6;
+}
+
+message UMinus {
+  required Expr arg = 1;
+}
+
+message BitNot {
+  required Expr arg = 1;
+}
+
+message Not {
+  required Expr arg = 1;
+}
+
+message AmbiguousMult {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message AmbiguousPlus {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message AmbiguousMinus {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message AmbiguousOr {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message AmbiguousComputationalOr {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message AmbiguousComputationalXor {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message AmbiguousComputationalAnd {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message ComputationalOr {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message ComputationalXor {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message ComputationalAnd {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Exp {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Plus {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Minus {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Mult {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Div {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message FloorDiv {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Mod {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message StringConcat {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message BitAnd {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message BitOr {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message BitXor {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message BitShl {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message BitShr {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message BitUShr {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message And {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Or {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Implies {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Star {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Wand {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Scale {
+  required Expr scale = 1;
+  required Expr res = 2;
+}
+
+message ScaleByParBlock {
+  required Ref block = 1;
+  required Expr res = 2;
+}
+
+message Unfolding {
+  required Expr res = 1;
+  required Expr body = 2;
+}
+
+message FieldLocation {
+  required Expr obj = 1;
+  required Ref field = 2;
+}
+
+message ModelLocation {
+  required Expr obj = 1;
+  required Ref field = 2;
+}
+
+message SilverFieldLocation {
+  required Expr obj = 1;
+  required Ref field = 2;
+}
+
+message ArrayLocation {
+  required Expr array = 1;
+  required Expr subscript = 2;
+}
+
+message PointerLocation {
+  required Expr pointer = 1;
+}
+
+message PredicateLocation {
+  required Ref predicate = 1;
+  repeated Expr args = 2;
+}
+
+message InstancePredicateLocation {
+  required Ref predicate = 1;
+  required Expr obj = 2;
+  repeated Expr args = 3;
+}
+
+message AmbiguousLocation {
+  required Expr expr = 1;
+}
+
+message Perm {
+  required Location loc = 1;
+  required Expr perm = 2;
+}
+
+message PointsTo {
+  required Location loc = 1;
+  required Expr perm = 2;
+  required Expr value = 3;
+}
+
+message CurPerm {
+  required Location loc = 1;
+}
+
+message Value {
+  required Location loc = 1;
+}
+
+message ValidArray {
+  required Expr arr = 1;
+  required Expr len = 2;
+}
+
+message ValidMatrix {
+  required Expr mat = 1;
+  required Expr w = 2;
+  required Expr h = 3;
+}
+
+message PermPointer {
+  required Expr p = 1;
+  required Expr len = 2;
+  required Expr perm = 3;
+}
+
+message PermPointerIndex {
+  required Expr p = 1;
+  required Expr idx = 2;
+  required Expr perm = 3;
+}
+
+message Eq {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Neq {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message AmbiguousGreater {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message AmbiguousLess {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message AmbiguousGreaterEq {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message AmbiguousLessEq {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Greater {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Less {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message GreaterEq {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message LessEq {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message SubSet {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message SubSetEq {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message SubBag {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message SubBagEq {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message Select {
+  required Expr condition = 1;
+  required Expr when_true = 2;
+  required Expr when_false = 3;
+}
+
+message NewObject {
+  required Ref cls = 1;
+}
+
+message NewArray {
+  required Type element = 1;
+  repeated Expr dims = 2;
+  required int64 more_dims = 3;
+}
+
+message Old {
+  required Expr expr = 1;
+  optional Ref at = 2;
+}
+
+message AmbiguousSubscript {
+  required Expr collection = 1;
+  required Expr index = 2;
+}
+
+message SeqSubscript {
+  required Expr seq = 1;
+  required Expr index = 2;
+}
+
+message ArraySubscript {
+  required Expr arr = 1;
+  required Expr index = 2;
+}
+
+message PointerSubscript {
+  required Expr pointer = 1;
+  required Expr index = 2;
+}
+
+message Length {
+  required Expr arr = 1;
+}
+
+message Size {
+  required Expr obj = 1;
+}
+
+message PointerBlockLength {
+  required Expr pointer = 1;
+}
+
+message PointerBlockOffset {
+  required Expr pointer = 1;
+}
+
+message PointerLength {
+  required Expr pointer = 1;
+}
+
+message SharedMemSize {
+  required Expr pointer = 1;
+}
+
+message NdIndex {
+  repeated Expr indices = 1;
+  repeated Expr dimensions = 2;
+}
+
+message NdPartialIndex {
+  repeated Expr indices = 1;
+  required Expr linear_index = 2;
+  repeated Expr dimensions = 3;
+}
+
+message NdLength {
+  repeated Expr dimensions = 1;
+}
+
+message Cons {
+  required Expr x = 1;
+  required Expr xs = 2;
+}
+
+message Head {
+  required Expr xs = 1;
+}
+
+message Tail {
+  required Expr xs = 1;
+}
+
+message Drop {
+  required Expr xs = 1;
+  required Expr count = 2;
+}
+
+message Take {
+  required Expr xs = 1;
+  required Expr count = 2;
+}
+
+message Slice {
+  required Expr xs = 1;
+  required Expr from = 2;
+  required Expr to = 3;
+}
+
+message SeqUpdate {
+  required Expr xs = 1;
+  required Expr i = 2;
+  required Expr x = 3;
+}
+
+message Concat {
+  required Expr xs = 1;
+  required Expr ys = 2;
+}
+
+message RemoveAt {
+  required Expr xs = 1;
+  required Expr i = 2;
+}
+
+message VctEmpty {
+  required Expr obj = 1;
+}
+
+message SetIntersection {
+  required Expr xs = 1;
+  required Expr ys = 2;
+}
+
+message BagLargestCommon {
+  required Expr xs = 1;
+  required Expr ys = 2;
+}
+
+message SetMinus {
+  required Expr xs = 1;
+  required Expr ys = 2;
+}
+
+message BagMinus {
+  required Expr xs = 1;
+  required Expr ys = 2;
+}
+
+message SetUnion {
+  required Expr xs = 1;
+  required Expr ys = 2;
+}
+
+message BagAdd {
+  required Expr xs = 1;
+  required Expr ys = 2;
+}
+
+message AmbiguousMember {
+  required Expr x = 1;
+  required Expr xs = 2;
+}
+
+message SetMember {
+  required Expr x = 1;
+  required Expr xs = 2;
+}
+
+message SeqMember {
+  required Expr x = 1;
+  required Expr xs = 2;
+}
+
+message MapMember {
+  required Expr x = 1;
+  required Expr xs = 2;
+}
+
+message BagMemberCount {
+  required Expr x = 1;
+  required Expr xs = 2;
+}
+
+message Permutation {
+  required Expr xs = 1;
+  required Expr ys = 2;
+}
+
+message OptEmpty {
+  required Expr opt = 1;
+}
+
+message OptGet {
+  required Expr opt = 1;
+}
+
+message OptGetOrElse {
+  required Expr opt = 1;
+  required Expr alt = 2;
+}
+
+message MapGet {
+  required Expr map = 1;
+  required Expr k = 2;
+}
+
+message TupGet {
+  required Expr tup = 1;
+  required int64 index = 2;
+}
+
+message GetLeft {
+  required Expr either = 1;
+}
+
+message GetRight {
+  required Expr either = 1;
+}
+
+message IsLeft {
+  required Expr either = 1;
+}
+
+message IsRight {
+  required Expr either = 1;
+}
+
+message VectorSum {
+  required Expr indices = 1;
+  required Expr vec = 2;
+}
+
+message VectorCompare {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message VectorRepeat {
+  required Expr e = 1;
+}
+
+message MatrixSum {
+  required Expr indices = 1;
+  required Expr mat = 2;
+}
+
+message MatrixCompare {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message MatrixRepeat {
+  required Expr e = 1;
+}
+
+message CastFloat {
+  required Expr e = 1;
+  required Type t = 2;
+}
+
+message TypeValue {
+  required Type value = 1;
+}
+
+message TypeOf {
+  required Expr expr = 1;
+}
+
+message VctInstanceOf {
+  required Expr value = 1;
+  required Expr type_value = 2;
+}
+
+message Cast {
+  required Expr value = 1;
+  required Expr type_value = 2;
+}
+
+message SubType {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message SuperType {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message IndeterminateInteger {
+  required Expr min = 1;
+  required Expr max = 2;
+}
+
+message PreAssignExpression {
+  required Expr target = 1;
+  required Expr value = 2;
+}
+
+message PostAssignExpression {
+  required Expr target = 1;
+  required Expr value = 2;
+}
+
+message With {
+  required Statement pre = 1;
+  required Expr value = 2;
+}
+
+message Then {
+  required Expr value = 1;
+  required Statement post = 2;
+}
+
+message Held {
+  required Expr obj = 1;
+}
+
+message Committed {
+  required Expr obj = 1;
+}
+
+message IdleToken {
+  required Expr thread = 1;
+}
+
+message JoinToken {
+  required Expr thread = 1;
+}
+
+message EmptyProcess {
+
+}
+
+message ActionApply {
+  required Ref action = 1;
+  repeated Expr args = 2;
+}
+
+message ProcessApply {
+  required Ref process = 1;
+  repeated Expr args = 2;
+}
+
+message ProcessSeq {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message ProcessChoice {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message ProcessPar {
+  required Expr left = 1;
+  required Expr right = 2;
+}
+
+message ProcessSelect {
+  required Expr cond = 1;
+  required Expr when_true = 2;
+  required Expr when_false = 3;
+}
+
+message ModelNew {
+  required Ref ref = 1;
+}
+
+message ModelState {
+  required Expr model = 1;
+  required Expr perm = 2;
+  required Expr state = 3;
+}
+
+message ModelAbstractState {
+  required Expr model = 1;
+  required Expr state = 2;
+}
+
+message ModelCreate {
+  required Expr model = 1;
+  required Expr init = 2;
+}
+
+message ModelDestroy {
+  required Expr model = 1;
+}
+
+message ModelSplit {
+  required Expr model = 1;
+  required Expr left_perm = 2;
+  required Expr left_process = 3;
+  required Expr right_perm = 4;
+  required Expr right_process = 5;
+}
+
+message ModelMerge {
+  required Expr model = 1;
+  required Expr left_perm = 2;
+  required Expr left_process = 3;
+  required Expr right_perm = 4;
+  required Expr right_process = 5;
+}
+
+message ModelChoose {
+  required Expr model = 1;
+  required Expr perm = 2;
+  required Expr total_process = 3;
+  required Expr choice = 4;
+}
+
+message ModelPerm {
+  required Expr loc = 1;
+  required Expr perm = 2;
+}
+
+message ActionPerm {
+  required Expr loc = 1;
+  required Expr perm = 2;
+}
+
+message CPure {
+
+}
+
+message CInline {
+
+}
+
+message CTypedef {
+
+}
+
+message CExtern {
+
+}
+
+message CStatic {
+
+}
+
+message GPULocal {
+
+}
+
+message GPUGlobal {
+
+}
+
+message CVoid {
+
+}
+
+message CChar {
+
+}
+
+message CShort {
+
+}
+
+message CInt {
+
+}
+
+message CLong {
+
+}
+
+message CSigned {
+
+}
+
+message CUnsigned {
+
+}
+
+message CBool {
+
+}
+
+message CTypedefName {
+  required string name = 1;
+}
+
+message CSpecificationType {
+  required Type t = 1;
+}
+
+message CTypeQualifierDeclarationSpecifier {
+  required CTypeQualifier type_qual = 1;
+}
+
+message CConst {
+
+}
+
+message CRestrict {
+
+}
+
+message CVolatile {
+
+}
+
+message CAtomic {
+
+}
+
+message CUDAKernel {
+
+}
+
+message OpenCLKernel {
+
+}
+
+message CPointer {
+  repeated CTypeQualifier qualifiers = 1;
+}
+
+message CPointerDeclarator {
+  repeated CPointer pointers = 1;
+  required CDeclarator inner = 2;
+}
+
+message CArrayDeclarator {
+  repeated CTypeQualifier qualifiers = 1;
+  optional Expr size = 2;
+  required CDeclarator inner = 3;
+}
+
+message CTypedFunctionDeclarator {
+  repeated CParam params = 1;
+  required bool varargs = 2;
+  required CDeclarator inner = 3;
+}
+
+message CAnonymousFunctionDeclarator {
+  repeated string params = 1;
+  required CDeclarator inner = 2;
+}
+
+message CName {
+  required string name = 1;
+}
+
+message CInit {
+  required CDeclarator decl = 1;
+  optional Expr init = 2;
+}
+
+message CDeclaration {
+  required ApplicableContract contract = 1;
+  required Expr kernel_invariant = 2;
+  repeated CDeclarationSpecifier specs = 3;
+  repeated CInit inits = 4;
+}
+
+message CDeclarationStatement {
+  required CLocalDeclaration decl = 1;
+}
+
+message CGoto {
+  required string label = 1;
+}
+
+message GpuLocalMemoryFence {
+
+}
+
+message GpuGlobalMemoryFence {
+
+}
+
+message GpuZeroMemoryFence {
+  required BigInt value = 1;
+}
+
+message GpgpuBarrier {
+  required Expr requires = 1;
+  required Expr ensures = 2;
+  repeated GpuMemoryFence specifiers = 3;
+}
+
+message GpgpuAtomic {
+  required Statement impl = 1;
+  required Statement before = 2;
+  required Statement after = 3;
+}
+
+message CLocal {
+  required string name = 1;
+}
+
+message CInvocation {
+  required Expr applicable = 1;
+  repeated Expr args = 2;
+  repeated RefExpr given_args = 3;
+  repeated ExprRef yields = 4;
+}
+
+message CStructAccess {
+  required Expr struct = 1;
+  required string field = 2;
+}
+
+message CStructDeref {
+  required Expr struct = 1;
+  required string field = 2;
+}
+
+message GpgpuCudaKernelInvocation {
+  required string kernel = 1;
+  required Expr blocks = 2;
+  required Expr threads = 3;
+  repeated Expr args = 4;
+  repeated RefExpr given_args = 5;
+  repeated ExprRef yields = 6;
+}
+
+message CCast {
+  required Expr expr = 1;
+  required Type t = 2;
+}
+
+message CPrimitiveType {
+  repeated CDeclarationSpecifier specifiers = 1;
+}
+
+message CTPointer {
+  required Type inner_type = 1;
+}
+
+message CTArray {
+  optional Expr size = 1;
+  required Type inner_type = 2;
+}
+
+message CTCudaVec {
+
+}
+
+message JavaName {
+  repeated string names = 1;
+}
+
+message JavaImport {
+  required bool is_static = 1;
+  required JavaName name = 2;
+  required bool star = 3;
+}
+
+message JavaPublic {
+
+}
+
+message JavaProtected {
+
+}
+
+message JavaPrivate {
+
+}
+
+message JavaStatic {
+
+}
+
+message JavaAbstract {
+
+}
+
+message JavaFinal {
+
+}
+
+message JavaStrictFP {
+
+}
+
+message JavaNative {
+
+}
+
+message JavaSynchronized {
+
+}
+
+message JavaTransient {
+
+}
+
+message JavaVolatile {
+
+}
+
+message JavaAnnotation {
+  required Type name = 1;
+  repeated StringExpr args = 2;
+}
+
+message JavaPure {
+
+}
+
+message JavaInline {
+
+}
+
+message JavaVariableDeclaration {
+  required string name = 1;
+  required int64 more_dims = 2;
+  optional Expr init = 3;
+}
+
+message JavaLocalDeclarationStatement {
+  required JavaLocalDeclaration decl = 1;
+}
+
+message JavaNamedType {
+  repeated StringOptSeqType names = 1;
+}
+
+message JavaTClass {
+  required Ref ref = 1;
+  repeated Type type_args = 2;
+}
+
+message JavaWildcard {
+
+}
+
+message JavaLocal {
+  required string name = 1;
+}
+
+message JavaDeref {
+  required Expr obj = 1;
+  required string field = 2;
+}
+
+message JavaLiteralArray {
+  repeated Expr exprs = 1;
+}
+
+message JavaInvocation {
+  optional Expr obj = 1;
+  repeated Type type_params = 2;
+  required string method = 3;
+  repeated Expr arguments = 4;
+  repeated RefExpr given_args = 5;
+  repeated ExprRef yields = 6;
+}
+
+message JavaNewClass {
+  repeated Expr args = 1;
+  repeated Type type_args = 2;
+  required Type name = 3;
+  repeated RefExpr given_args = 4;
+  repeated ExprRef yields = 5;
+}
+
+message JavaNewLiteralArray {
+  required Type base_type = 1;
+  required int64 dims = 2;
+  required Expr initializer = 3;
+}
+
+message JavaNewDefaultArray {
+  required Type base_type = 1;
+  repeated Expr specified_dims = 2;
+  required int64 more_dims = 3;
+}
+
+message JavaStringValue {
+  required string data = 1;
+  required Type t = 2;
+}
+
+message PVLNamedType {
+  required string name = 1;
+  repeated Type type_args = 2;
+}
+
+message PVLLocal {
+  required string name = 1;
+}
+
+message PVLDeref {
+  required Expr obj = 1;
+  required string field = 2;
+}
+
+message PVLInvocation {
+  optional Expr obj = 1;
+  required string method = 2;
+  repeated Expr args = 3;
+  repeated Type type_args = 4;
+  repeated RefExpr given_map = 5;
+  repeated ExprRef yields = 6;
+}
+
+message PVLNew {
+  required Type t = 1;
+  repeated Expr args = 2;
+  repeated RefExpr given_map = 3;
+  repeated ExprRef yields = 4;
+}
+
+message SilverDeref {
+  required Expr obj = 1;
+  required Ref field = 2;
+}
+
+message SilverIntToRat {
+  required Expr perm = 1;
+}
+
+message SilverNull {
+
+}
+
+message SilverSeqSize {
+  required Expr seq = 1;
+}
+
+message SilverSetSize {
+  required Expr set = 1;
+}
+
+message SilverBagSize {
+  required Expr bag = 1;
+}
+
+message SilverMapSize {
+  required Expr map = 1;
+}
+
+message SilverCurFieldPerm {
+  required Expr obj = 1;
+  required Ref field = 2;
+}
+
+message SilverCurPredPerm {
+  required Ref ref = 1;
+  repeated Expr args = 2;
+}
+
+message SilverPartialADTFunctionInvocation {
+  required string name = 1;
+  repeated Expr args = 2;
+  repeated RefType partial_type_args = 3;
+}
+
+message SilverUntypedNonemptyLiteralMap {
+  repeated ExprExpr values = 1;
+}
+
+message SilverNewRef {
+  required Ref v = 1;
+  repeated Ref fields = 2;
+}
+
+message SilverFieldAssign {
+  required Expr obj = 1;
+  required Ref field = 2;
+  required Expr value = 3;
+}
+
+message SilverLocalAssign {
+  required Ref v = 1;
+  required Expr value = 2;
+}
+
+message SilverPartialTAxiomatic {
+  required Ref ref = 1;
+  repeated RefType partial_type_args = 2;
+}
+
+message StringOptSeqType {
+  required string v1 = 1;
+  optional SeqType v2 = 2;
+}
+
+message RefType {
+  required Ref v1 = 1;
+  required Type v2 = 2;
+}
+
+message RefExpr {
+  required Ref v1 = 1;
+  required Expr v2 = 2;
+}
+
+message ExprExpr {
+  required Expr v1 = 1;
+  required Expr v2 = 2;
+}
+
+message TypeType {
+  required Type v1 = 1;
+  required Type v2 = 2;
+}
+
+message SeqExpr {
+  repeated Expr v = 1;
+}
+
+message ExprRef {
+  required Expr v1 = 1;
+  required Ref v2 = 2;
+}
+
+message RefSeqType {
+  required Ref v1 = 1;
+  repeated Type v2 = 2;
+}
+
+message ExprStatement {
+  required Expr v1 = 1;
+  required Statement v2 = 2;
+}
+
+message SeqType {
+  repeated Type v = 1;
+}
+
+message StringExpr {
+  required string v1 = 1;
+  required Expr v2 = 2;
+}
+
+message CoercionCoercion {
+  required Coercion v1 = 1;
+  required Coercion v2 = 2;
+}

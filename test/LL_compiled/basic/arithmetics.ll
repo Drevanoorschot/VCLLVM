@@ -16,8 +16,13 @@ define dso_local i32 @add(i32 noundef %0, i32 noundef %1) #0 {
 }
 
 ; Function Attrs: noinline nounwind optnone uwtable
-define dso_local i32 @subtract(i32 noundef %0, i32 noundef %1) #0 {
-  %3 = alloca i32, align 4
+define dso_local i32 @subtract(i32 noundef %0, i32 noundef %1) #0 
+!VC.contract !{
+  !"$cVar1",
+  !"test2"
+}
+{
+  %3 = alloca i32, align 4, !VC.var !{!"cVar1"}
   %4 = alloca i32, align 4
   store i32 %0, ptr %3, align 4
   store i32 %1, ptr %4, align 4
