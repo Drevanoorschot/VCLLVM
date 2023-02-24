@@ -11,7 +11,7 @@ message BigDecimal {
 }
 
 message Ref {
-  required int64 index = 1;
+  required int64 id = 1;
 }
 
 message ExpectedErrors {
@@ -19,56 +19,64 @@ message ExpectedErrors {
 }
 
 message GlobalDeclaration {
+  required int64 id = 1;
+
   oneof v {
-    SimplificationRule simplification_rule = 1;
-    AxiomaticDataType axiomatic_data_type = 2;
-    VctClass vct_class = 3;
-    Model model = 4;
-    Function function = 5;
-    Procedure procedure = 6;
-    Predicate predicate = 7;
-    Enum enum = 8;
-    CTranslationUnit c_translation_unit = 9;
-    CGlobalDeclaration c_global_declaration = 10;
-    CFunctionDefinition c_function_definition = 11;
-    JavaNamespace java_namespace = 12;
-    JavaClass java_class = 13;
-    JavaInterface java_interface = 14;
-    JavaAnnotationInterface java_annotation_interface = 15;
-    SilverField silver_field = 16;
+    SimplificationRule simplification_rule = 2;
+    AxiomaticDataType axiomatic_data_type = 3;
+    VctClass vct_class = 4;
+    Model model = 5;
+    Function function = 6;
+    Procedure procedure = 7;
+    Predicate predicate = 8;
+    Enum enum = 9;
+    CTranslationUnit c_translation_unit = 10;
+    CGlobalDeclaration c_global_declaration = 11;
+    CFunctionDefinition c_function_definition = 12;
+    JavaNamespace java_namespace = 13;
+    JavaClass java_class = 14;
+    JavaInterface java_interface = 15;
+    JavaAnnotationInterface java_annotation_interface = 16;
+    SilverField silver_field = 17;
   }
 }
 
 message ClassDeclaration {
+  required int64 id = 1;
+
   oneof v {
-    InstanceFunction instance_function = 1;
-    InstanceMethod instance_method = 2;
-    InstancePredicate instance_predicate = 3;
-    InstanceField instance_field = 4;
-    RunMethod run_method = 5;
-    InstanceOperatorFunction instance_operator_function = 6;
-    InstanceOperatorMethod instance_operator_method = 7;
-    JavaSharedInitialization java_shared_initialization = 8;
-    JavaFields java_fields = 9;
-    JavaConstructor java_constructor = 10;
-    JavaMethod java_method = 11;
-    JavaAnnotationMethod java_annotation_method = 12;
-    PVLConstructor p_v_l_constructor = 13;
+    InstanceFunction instance_function = 2;
+    InstanceMethod instance_method = 3;
+    InstancePredicate instance_predicate = 4;
+    InstanceField instance_field = 5;
+    RunMethod run_method = 6;
+    InstanceOperatorFunction instance_operator_function = 7;
+    InstanceOperatorMethod instance_operator_method = 8;
+    JavaSharedInitialization java_shared_initialization = 9;
+    JavaFields java_fields = 10;
+    JavaConstructor java_constructor = 11;
+    JavaMethod java_method = 12;
+    JavaAnnotationMethod java_annotation_method = 13;
+    PVLConstructor p_v_l_constructor = 14;
   }
 }
 
 message ADTDeclaration {
+  required int64 id = 1;
+
   oneof v {
-    ADTAxiom a_d_t_axiom = 1;
-    ADTFunction a_d_t_function = 2;
+    ADTAxiom a_d_t_axiom = 2;
+    ADTFunction a_d_t_function = 3;
   }
 }
 
 message ModelDeclaration {
+  required int64 id = 1;
+
   oneof v {
-    ModelField model_field = 1;
-    ModelProcess model_process = 2;
-    ModelAction model_action = 3;
+    ModelField model_field = 2;
+    ModelProcess model_process = 3;
+    ModelAction model_action = 4;
   }
 }
 
@@ -149,7 +157,7 @@ message Statement {
     Label label = 9;
     Goto goto = 10;
     Exhale exhale = 11;
-    Assert _assert = 12;
+    VctAssert vct_assert = 12;
     Refute refute = 13;
     Inhale inhale = 14;
     Assume assume = 15;
@@ -1121,7 +1129,7 @@ message Exhale {
   required Expr res = 1;
 }
 
-message Assert {
+message VctAssert {
   required Expr res = 1;
 }
 

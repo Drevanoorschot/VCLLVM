@@ -2,8 +2,8 @@ import os.path
 import shutil
 import subprocess
 
-PROTO_SRC_DIR = "proto/COL/proto"
-PROTO_INCLUDE_DIR = "include/COL/proto"
+PROTO_SRC_DIR = "proto"
+PROTO_INCLUDE_DIR = "include"
 TEMP_GEN_DIR = "temp"
 
 
