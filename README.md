@@ -27,8 +27,10 @@ This requires Python (>=3.9) to be installed as well the lit package:
 ```bash
 $ pip install lit==15.0.6
 ```
-Running the test depends on the build system being used. We'll use ninja as an example. Once the project is build, go
+Furthermore, to compile the tests, clang (15.0.6) should be installed. Running the test depends on the build system being used. We'll use ninja as an example. Once the project is build, go
 into the build directory and run:
 ```bash
 $ ninja check
 ```
+The regression tests only test whether VCLLVM crashes on any inputs. It does not attempt to test correctness of the 
+program.
