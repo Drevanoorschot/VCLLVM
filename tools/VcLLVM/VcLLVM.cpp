@@ -1,11 +1,11 @@
-#include <llvm/Support/CommandLine.h>
-#include <llvm/IR/LLVMContext.h>
-#include <llvm/Support/SourceMgr.h>
+#include <llvm/Analysis/CGSCCPassManager.h>
 #include <llvm/Analysis/LoopAnalysisManager.h>
+#include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/PassManager.h>
 #include <llvm/IRReader/IRReader.h>
-#include <llvm/Analysis/CGSCCPassManager.h>
 #include <llvm/Passes/PassBuilder.h>
+#include <llvm/Support/CommandLine.h>
+#include <llvm/Support/SourceMgr.h>
 
 #include "COL/col.pb.h"
 
@@ -54,22 +54,24 @@ GlobalDeclaration sampleCol() {
     return classDeclaration;
 }
 
-static cl::opt<std::string> inputFileName{"input",
+static cl::opt<std::string> inputFileName{"",
                                           cl::desc{"Module to analyze"},
-                                          cl::value_desc{"IR filename"}};
+                                          cl::value_desc{"IR filename"},
+                                          cl::Positional};
 static cl::opt<bool> testCol{"sample-col",
                              cl::desc{"Output a sample COL buffer for testing"}};
 
 int main(int argc, char **argv) {
     cl::ParseCommandLineOptions(argc, argv);
+    // sample mode
     if (testCol.getValue()) {
         std::cout << sampleCol().SerializeAsString() << '\n';
         return 0;
     }
-    // normal mode
+    // parse mode
     if (inputFileName.empty()) {
-        errs() << "no valid arguments given, either run with --input, --samplecol, or --help" << '\n';
-        return -1;
+        errs() << "no input file given" << '\n';
+        return 1;
     }
     LLVMContext context;
     SMDiagnostic smDiag;

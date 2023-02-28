@@ -4,11 +4,31 @@
 - CMake (>=3.4.3)
 - LLVM (15.0.6)
 - Protobuf (3.21.9)
-- Python (>=3.9)
 
-In order to use the `llgen.py` script, you will also need:
-- Clang (15.0.6)
-## Development Notes
-- All proto files should go in `lib/AST/proto` directly.
-- Make sure to run `protogen.py` before building the project for the first
-time or when changing/adding any `*.proto` file in `lib/AST/proto`.
+## Building
+To build the project with ninja, run the following:
+```bash
+$ cmake -G ninja -B _build
+$ cmake --build _build --target VCLLVM
+```
+Run with:
+```bash
+$ ./_build/bin/VCLLVM <input_file>
+```
+Installation is required to be used alongside [VerCors](https://github.com/utwente-fmt/vercors):
+```bash
+$ cmake --install _build
+```
+
+## Testing
+Regression testing is implemented using LLVM 
+[lit](https://llvm.org/docs/CommandGuide/lit.html#local-configuration-files).
+This requires Python (>=3.9) to be installed as well the lit package:
+```bash
+$ pip install lit==15.0.6
+```
+Running the test depends on the build system being used. We'll use ninja as an example. Once the project is build, go
+into the build directory and run:
+```bash
+$ ninja check
+```

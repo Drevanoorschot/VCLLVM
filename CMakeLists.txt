@@ -45,5 +45,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
 
 add_subdirectory(lib)
 add_subdirectory(tools)
+add_subdirectory(test)
 
 install(TARGETS VCLLVM DESTINATION bin)
