@@ -24,25 +24,26 @@ endif ()
 
 
 # proto
-find_package(Protobuf REQUIRED PATHS /usr/local/lib/cmake/protobuf)
-
-add_library(proto-objects OBJECT "proto/COL/col.proto")
-
-target_link_libraries(proto-objects PUBLIC protobuf::libprotobuf)
-
-set(PROTO_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
-
-target_include_directories(proto-objects PUBLIC "$<BUILD_INTERFACE:${PROTO_BINARY_DIR}>")
-
-protobuf_generate(
-        TARGET proto-objects
-        IMPORT_DIRS "proto"
-        PROTOC_OUT_DIR "${PROTO_BINARY_DIR}")
+#find_package(Protobuf REQUIRED PATHS /usr/local/lib/cmake/protobuf)
+#
+#add_library(proto-objects OBJECT "proto/col.proto")
+#
+#target_link_libraries(proto-objects PUBLIC protobuf::libprotobuf)
+#
+#set(PROTO_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
+#
+#target_include_directories(proto-objects PUBLIC "$<BUILD_INTERFACE:${PROTO_BINARY_DIR}>")
+#
+#protobuf_generate(
+#        TARGET proto-objects
+#        IMPORT_DIRS "proto"
+#        PROTOC_OUT_DIR "${PROTO_BINARY_DIR}")
 # end proto
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
 
+add_subdirectory(proto)
 add_subdirectory(lib)
 add_subdirectory(tools)
 add_subdirectory(test)

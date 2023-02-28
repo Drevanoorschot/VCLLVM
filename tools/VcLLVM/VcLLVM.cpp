@@ -7,7 +7,7 @@
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/SourceMgr.h>
 
-#include "COL/col.pb.h"
+#include "col.pb.h"
 #include "Passes/FunctionDeclarer.h"
 
 #include <iostream>

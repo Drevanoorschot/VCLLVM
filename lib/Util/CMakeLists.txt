@@ -1,5 +1,7 @@
-add_library(Util SHARED
+add_library(Util STATIC
         UtilIR.cpp)
+target_link_libraries(Util proto-objects)
 target_include_directories(Util PRIVATE
-        "${CMAKE_CURRENT_SOURCE_DIR}/../../include"
-        "$<BUILD_INTERFACE:${PROTO_BINARY_DIR}>")
+        "${CMAKE_SOURCE_DIR}/include"
+        "${PROTO_BINARY_DIR}"
+        )

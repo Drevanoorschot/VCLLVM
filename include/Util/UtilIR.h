@@ -1,6 +1,6 @@
 #ifndef VCLLVM_UTILIR_H
 #define VCLLVM_UTILIR_H
-#include "COL/col.pb.h"
+#include "col.pb.h"
 namespace llvm::util {
 
 
