@@ -1,8 +1,8 @@
-add_library(VcLLVM_PASSES STATIC
-        FunctionDeclarer.cpp
-        )
-target_link_libraries(VcLLVM_PASSES proto-objects)
-target_include_directories(VcLLVM_PASSES PRIVATE
+add_library(VCLLVM_PASSES STATIC
+        Function/FunctionDeclarer.cpp
+        Function/PureAssigner.cpp)
+target_link_libraries(VCLLVM_PASSES proto-objects Util)
+target_include_directories(VCLLVM_PASSES PRIVATE
         "${CMAKE_SOURCE_DIR}/include"
         "${PROTO_BINARY_DIR}"
         )

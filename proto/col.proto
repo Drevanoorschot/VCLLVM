@@ -6,12 +6,12 @@ message BigInt {
 }
 
 message BigDecimal {
-  required int64 scale = 1;
+  required int32 scale = 1;
   required BigInt unscaled_value = 2;
 }
 
 message Ref {
-  required int64 id = 1;
+  required int64 index = 1;
 }
 
 message ExpectedErrors {
@@ -37,7 +37,12 @@ message GlobalDeclaration {
     JavaClass java_class = 14;
     JavaInterface java_interface = 15;
     JavaAnnotationInterface java_annotation_interface = 16;
-    SilverField silver_field = 17;
+    JavaBipGlueContainer java_bip_glue_container = 17;
+    BipGlue bip_glue = 18;
+    BipPortSynchronization bip_port_synchronization = 19;
+    BipTransitionSynchronization bip_transition_synchronization = 20;
+    LlvmFunctionDefinition llvm_function_definition = 21;
+    SilverField silver_field = 22;
   }
 }
 
@@ -57,7 +62,14 @@ message ClassDeclaration {
     JavaConstructor java_constructor = 11;
     JavaMethod java_method = 12;
     JavaAnnotationMethod java_annotation_method = 13;
-    PVLConstructor p_v_l_constructor = 14;
+    BipIncomingData bip_incoming_data = 14;
+    BipOutgoingData bip_outgoing_data = 15;
+    BipStatePredicate bip_state_predicate = 16;
+    BipTransition bip_transition = 17;
+    BipGuard bip_guard = 18;
+    BipComponent bip_component = 19;
+    BipPort bip_port = 20;
+    PVLConstructor p_v_l_constructor = 21;
   }
 }
 
@@ -509,21 +521,24 @@ message Expr {
     JavaNewLiteralArray java_new_literal_array = 223;
     JavaNewDefaultArray java_new_default_array = 224;
     JavaStringValue java_string_value = 225;
-    PVLLocal p_v_l_local = 226;
-    PVLDeref p_v_l_deref = 227;
-    PVLInvocation p_v_l_invocation = 228;
-    PVLNew p_v_l_new = 229;
-    SilverDeref silver_deref = 230;
-    SilverIntToRat silver_int_to_rat = 231;
-    SilverNull silver_null = 232;
-    SilverSeqSize silver_seq_size = 233;
-    SilverSetSize silver_set_size = 234;
-    SilverBagSize silver_bag_size = 235;
-    SilverMapSize silver_map_size = 236;
-    SilverCurFieldPerm silver_cur_field_perm = 237;
-    SilverCurPredPerm silver_cur_pred_perm = 238;
-    SilverPartialADTFunctionInvocation silver_partial_a_d_t_function_invocation = 239;
-    SilverUntypedNonemptyLiteralMap silver_untyped_nonempty_literal_map = 240;
+    JavaBipGlue java_bip_glue = 226;
+    BipLocalIncomingData bip_local_incoming_data = 227;
+    BipGuardInvocation bip_guard_invocation = 228;
+    PVLLocal p_v_l_local = 229;
+    PVLDeref p_v_l_deref = 230;
+    PVLInvocation p_v_l_invocation = 231;
+    PVLNew p_v_l_new = 232;
+    SilverDeref silver_deref = 233;
+    SilverIntToRat silver_int_to_rat = 234;
+    SilverNull silver_null = 235;
+    SilverSeqSize silver_seq_size = 236;
+    SilverSetSize silver_set_size = 237;
+    SilverBagSize silver_bag_size = 238;
+    SilverMapSize silver_map_size = 239;
+    SilverCurFieldPerm silver_cur_field_perm = 240;
+    SilverCurPredPerm silver_cur_pred_perm = 241;
+    SilverPartialADTFunctionInvocation silver_partial_a_d_t_function_invocation = 242;
+    SilverUntypedNonemptyLiteralMap silver_untyped_nonempty_literal_map = 243;
   }
 }
 
@@ -608,6 +623,24 @@ message JavaModifier {
     JavaAnnotation java_annotation = 12;
     JavaPure java_pure = 13;
     JavaInline java_inline = 14;
+    JavaBipAnnotation java_bip_annotation = 15;
+  }
+}
+
+message JavaBipGlueElement {
+  oneof v {
+    JavaBipGlueRequires java_bip_glue_requires = 1;
+    JavaBipGlueAccepts java_bip_glue_accepts = 2;
+    JavaBipGlueSynchron java_bip_glue_synchron = 3;
+    JavaBipGlueDataWire java_bip_glue_data_wire = 4;
+  }
+}
+
+message BipPortType {
+  oneof v {
+    BipEnforceable bip_enforceable = 1;
+    BipSpontaneous bip_spontaneous = 2;
+    BipInternal bip_internal = 3;
   }
 }
 
@@ -663,7 +696,7 @@ message Enum {
 }
 
 message EnumConstant {
-
+  required int64 id = 1;
 }
 
 message InstanceFunction {
@@ -755,28 +788,30 @@ message ADTFunction {
 }
 
 message Variable {
-  required Type t = 1;
+  required int64 id = 1;
+  required Type t = 2;
 }
 
 message LabelDecl {
-
+  required int64 id = 1;
 }
 
 message SendDecl {
-
+  required int64 id = 1;
 }
 
 message ParBlockDecl {
-
+  required int64 id = 1;
 }
 
 message ParInvariantDecl {
-
+  required int64 id = 1;
 }
 
 message CParam {
-  repeated CDeclarationSpecifier specifiers = 1;
-  required CDeclarator declarator = 2;
+  required int64 id = 1;
+  repeated CDeclarationSpecifier specifiers = 2;
+  required CDeclarator declarator = 3;
 }
 
 message CTranslationUnit {
@@ -788,7 +823,8 @@ message CGlobalDeclaration {
 }
 
 message CLocalDeclaration {
-  required CDeclaration decl = 1;
+  required int64 id = 1;
+  required CDeclaration decl = 2;
 }
 
 message CFunctionDefinition {
@@ -843,19 +879,26 @@ message JavaFields {
 message JavaConstructor {
   repeated JavaModifier modifiers = 1;
   required string name = 2;
-  repeated Variable parameters = 3;
+  repeated JavaParam parameters = 3;
   repeated Variable type_parameters = 4;
   repeated Type signals = 5;
   required Statement body = 6;
   required ApplicableContract contract = 7;
 }
 
+message JavaParam {
+  required int64 id = 1;
+  repeated JavaModifier modifiers = 2;
+  required string name = 3;
+  required Type t = 4;
+}
+
 message JavaMethod {
   repeated JavaModifier modifiers = 1;
   required Type return_type = 2;
-  required int64 dims = 3;
+  required int32 dims = 3;
   required string name = 4;
-  repeated Variable parameters = 5;
+  repeated JavaParam parameters = 5;
   repeated Variable type_parameters = 6;
   repeated Type signals = 7;
   optional Statement body = 8;
@@ -869,9 +912,81 @@ message JavaAnnotationMethod {
 }
 
 message JavaLocalDeclaration {
-  repeated JavaModifier modifiers = 1;
-  required Type t = 2;
-  repeated JavaVariableDeclaration decls = 3;
+  required int64 id = 1;
+  repeated JavaModifier modifiers = 2;
+  required Type t = 3;
+  repeated JavaVariableDeclaration decls = 4;
+}
+
+message JavaBipGlueContainer {
+  required Expr job = 1;
+}
+
+message BipGlue {
+  repeated BipGlueRequires requires = 1;
+  repeated BipGlueAccepts accepts = 2;
+  repeated BipGlueDataWire data_wires = 3;
+}
+
+message BipIncomingData {
+  required Type t = 1;
+}
+
+message BipOutgoingData {
+  required Type t = 1;
+  required Statement body = 2;
+  required bool pure = 3;
+}
+
+message BipStatePredicate {
+  required Expr expr = 1;
+}
+
+message BipTransition {
+  required BipTransitionSignature signature = 1;
+  required Ref port = 2;
+  required Ref source = 3;
+  required Ref target = 4;
+  repeated Ref data = 5;
+  required Expr guard = 6;
+  required Expr requires = 7;
+  required Expr ensures = 8;
+  required Statement body = 9;
+}
+
+message BipGuard {
+  repeated Ref data = 1;
+  required Statement body = 2;
+  required bool pure = 3;
+}
+
+message BipComponent {
+  repeated string fqn = 1;
+  repeated Ref constructors = 2;
+  required Expr invariant = 3;
+  required Ref initial = 4;
+}
+
+message BipPort {
+  required BipPortType t = 1;
+}
+
+message BipPortSynchronization {
+  repeated Ref ports = 1;
+  repeated BipGlueDataWire wires = 2;
+}
+
+message BipTransitionSynchronization {
+  repeated Ref transitions = 1;
+  repeated BipGlueDataWire wires = 2;
+}
+
+message LlvmFunctionDefinition {
+  required Type return_type = 1;
+  repeated Variable args = 2;
+  required Statement body = 3;
+  required LlvmFunctionContract contract = 4;
+  required bool pure = 5;
 }
 
 message PVLConstructor {
@@ -1005,8 +1120,8 @@ message TBoundedInt {
 }
 
 message TFloat {
-  required int64 exponent = 1;
-  required int64 mantissa = 2;
+  required int32 exponent = 1;
+  required int32 mantissa = 2;
 }
 
 message TRational {
@@ -1396,7 +1511,7 @@ message CoerceSelectUnion {
   required Coercion inner = 1;
   required Type source = 2;
   repeated Type target_alts = 3;
-  required int64 index = 4;
+  required int32 index = 4;
 }
 
 message CoerceBoolResource {
@@ -1586,7 +1701,7 @@ message StringValue {
 }
 
 message CharValue {
-  required int64 value = 1;
+  required int32 value = 1;
 }
 
 message LiteralSeq {
@@ -1790,8 +1905,8 @@ message Let {
 
 message InlinePattern {
   required Expr inner = 1;
-  required int64 parent = 2;
-  required int64 group = 3;
+  required int32 parent = 2;
+  required int32 group = 3;
 }
 
 message ScopedExpr {
@@ -2239,7 +2354,7 @@ message NewObject {
 message NewArray {
   required Type element = 1;
   repeated Expr dims = 2;
-  required int64 more_dims = 3;
+  required int32 more_dims = 3;
 }
 
 message Old {
@@ -2435,7 +2550,7 @@ message MapGet {
 
 message TupGet {
   required Expr tup = 1;
-  required int64 index = 2;
+  required int32 index = 2;
 }
 
 message GetLeft {
@@ -2937,9 +3052,13 @@ message JavaInline {
 
 }
 
+message JavaBipAnnotation {
+
+}
+
 message JavaVariableDeclaration {
   required string name = 1;
-  required int64 more_dims = 2;
+  required int32 more_dims = 2;
   optional Expr init = 3;
 }
 
@@ -2992,19 +3111,96 @@ message JavaNewClass {
 
 message JavaNewLiteralArray {
   required Type base_type = 1;
-  required int64 dims = 2;
+  required int32 dims = 2;
   required Expr initializer = 3;
 }
 
 message JavaNewDefaultArray {
   required Type base_type = 1;
   repeated Expr specified_dims = 2;
-  required int64 more_dims = 3;
+  required int32 more_dims = 3;
 }
 
 message JavaStringValue {
   required string data = 1;
   required Type t = 2;
+}
+
+message JavaBipGlue {
+  repeated JavaBipGlueElement elems = 1;
+}
+
+message JavaBipGlueName {
+  required Type t = 1;
+  required Expr e = 2;
+}
+
+message JavaBipGlueRequires {
+  required JavaBipGlueName port = 1;
+  repeated JavaBipGlueName others = 2;
+}
+
+message JavaBipGlueAccepts {
+  required JavaBipGlueName port = 1;
+  repeated JavaBipGlueName others = 2;
+}
+
+message JavaBipGlueSynchron {
+  required JavaBipGlueName port0 = 1;
+  required JavaBipGlueName port1 = 2;
+}
+
+message JavaBipGlueDataWire {
+  required JavaBipGlueName data_out = 1;
+  required JavaBipGlueName data_in = 2;
+}
+
+message BipGlueRequires {
+  required Ref port = 1;
+  repeated Ref others = 2;
+}
+
+message BipGlueAccepts {
+  required Ref port = 1;
+  repeated Ref others = 2;
+}
+
+message BipGlueDataWire {
+  required Ref data_out = 1;
+  required Ref data_in = 2;
+}
+
+message BipLocalIncomingData {
+  required Ref ref = 1;
+}
+
+message BipTransitionSignature {
+  required string port_name = 1;
+  required string source_state_name = 2;
+  required string target_state_name = 3;
+  optional string textual_guard = 4;
+}
+
+message BipGuardInvocation {
+  required Expr obj = 1;
+  required Ref guard = 2;
+}
+
+message BipEnforceable {
+
+}
+
+message BipSpontaneous {
+
+}
+
+message BipInternal {
+
+}
+
+message LlvmFunctionContract {
+  required string value = 1;
+  repeated StringRef references = 2;
 }
 
 message PVLNamedType {
@@ -3112,14 +3308,14 @@ message StringOptSeqType {
   optional SeqType v2 = 2;
 }
 
-message RefType {
-  required Ref v1 = 1;
-  required Type v2 = 2;
-}
-
 message RefExpr {
   required Ref v1 = 1;
   required Expr v2 = 2;
+}
+
+message RefType {
+  required Ref v1 = 1;
+  required Type v2 = 2;
 }
 
 message ExprExpr {
@@ -3132,12 +3328,17 @@ message TypeType {
   required Type v2 = 2;
 }
 
+message ExprRef {
+  required Expr v1 = 1;
+  required Ref v2 = 2;
+}
+
 message SeqExpr {
   repeated Expr v = 1;
 }
 
-message ExprRef {
-  required Expr v1 = 1;
+message StringRef {
+  required string v1 = 1;
   required Ref v2 = 2;
 }
 
@@ -3151,13 +3352,13 @@ message ExprStatement {
   required Statement v2 = 2;
 }
 
-message SeqType {
-  repeated Type v = 1;
-}
-
 message StringExpr {
   required string v1 = 1;
   required Expr v2 = 2;
+}
+
+message SeqType {
+  repeated Type v = 1;
 }
 
 message CoercionCoercion {

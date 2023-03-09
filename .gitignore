@@ -1,5 +1,3 @@
-# user defined:
-_venv
 _build
 
 # Created by https://www.toptal.com/developers/gitignore/api/c++,cmake,jetbrains+all,clion+all,venv,python
@@ -201,3 +199,5 @@ _deps
 # protobuf
 *.pb.h
 temp
+
+test/private

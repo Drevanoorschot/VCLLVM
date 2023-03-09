@@ -1,1 +1,1 @@
-add_subdirectory(VcLLVM)
+add_subdirectory(VCLLVM)
