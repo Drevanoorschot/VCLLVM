@@ -7,6 +7,7 @@
 #include "Passes/Function/FunctionDeclarer.h"
 #include "Passes/Function/PureAssigner.h"
 #include "Util/Conversion.h"
+#include "Util/Exceptions.h"
 
 #include <iostream>
 #include <memory>
@@ -90,8 +91,8 @@ int main(int argc, char **argv) {
     llvm::FunctionAnalysisManager FAM;
     llvm::CGSCCAnalysisManager CGAM;
     llvm::ModuleAnalysisManager MAM;
-    FAM.registerPass([&]{
-       return llvm::FunctionDeclarer(pProgram);
+    FAM.registerPass([&] {
+        return llvm::FunctionDeclarer(pProgram);
     });
     // Create the new pass manager builder.
     // Take a look at the PassBuilder constructor parameters for more
@@ -111,6 +112,14 @@ int main(int argc, char **argv) {
     llvm::ModulePassManager MPM;
     MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
     MPM.run(*module, MAM);
+    if (vcllvm::ErrorCollector::hasErrors()) {
+        llvm::errs() << "While parsing \"" << inputFileName << "\" VCLLVM has encountered "
+                     << vcllvm::ErrorCollector::errorCount() << " error(s):\n";
+        for (auto &E: *vcllvm::ErrorCollector::getErrors()) {
+            llvm::errs() << E << '\n';
+        }
+        return EXIT_FAILURE;
+    }
     std::cout << pProgram->SerializeAsString();
     return EXIT_SUCCESS;
 }

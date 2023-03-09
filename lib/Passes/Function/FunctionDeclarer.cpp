@@ -48,8 +48,9 @@ namespace llvm {
         try {
             llvm2Col::convertAndSetType(F.getReturnType(), colFunction->mutable_return_type());
         } catch (vcllvm::UnsupportedTypeException &e) {
-            errs() << e.what() << " in return type of function \"" << F.getName() << "\"\n";
-            exit(EXIT_FAILURE);
+            std::stringstream errorStream;
+            errorStream << e.what() << " in return type of function \"" << F.getName().str() << "\"\n";
+            vcllvm::ErrorCollector::addError("Passes::Function::FunctionDeclarer", errorStream.str());
         }
         // set args (if present)
         for (llvm::Argument &llvmArg: F.args()) {
@@ -58,9 +59,10 @@ namespace llvm {
             try {
                 llvm2Col::convertAndSetType(llvmArg.getType(), colArg->mutable_t());
             } catch (vcllvm::UnsupportedTypeException &e) {
-                errs() << e.what() << " in argument #" << llvmArg.getArgNo() << " of function \""
-                       << F.getName() << "\"\n";
-                exit(EXIT_FAILURE);
+                std::stringstream errorStream;
+                errorStream << e.what() << " in argument #" << llvmArg.getArgNo() << " of function \""
+                            << F.getName().str() << "\"\n";
+                vcllvm::ErrorCollector::addError("Passes::Function::FunctionDeclarer", errorStream.str());
             }
         }
         //TODO body (separate pass)
