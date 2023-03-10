@@ -10,12 +10,12 @@ namespace llvm {
      * Function Declarer Result
      */
 
+    FDResult::FDResult(col::LlvmFunctionDefinition *colFuncDef) :
+            associatedColFuncDef(colFuncDef) {}
+
     col::LlvmFunctionDefinition *FDResult::getAssociatedColFuncDef() {
         return associatedColFuncDef;
     }
-
-    FDResult::FDResult(col::LlvmFunctionDefinition *colFuncDef) :
-            associatedColFuncDef(colFuncDef) {}
 
     /*
      * Function Declarer (Analysis)
@@ -35,7 +35,7 @@ namespace llvm {
     }
 
     /*
-     * Function declarer pass
+     * Function Declarer Pass
      */
     FunctionDeclarerPass::FunctionDeclarerPass(std::shared_ptr<col::Program> pProgram) :
             pProgram(std::move(pProgram)) {}
@@ -49,7 +49,7 @@ namespace llvm {
             llvm2Col::convertAndSetType(F.getReturnType(), colFunction->mutable_return_type());
         } catch (vcllvm::UnsupportedTypeException &e) {
             std::stringstream errorStream;
-            errorStream << e.what() << " in return type of function \"" << F.getName().str() << "\"\n";
+            errorStream << e.what() << " in return type of function \"" << F.getName().str() << "\"";
             vcllvm::ErrorCollector::addError("Passes::Function::FunctionDeclarer", errorStream.str());
         }
         // set args (if present)
@@ -61,13 +61,12 @@ namespace llvm {
             } catch (vcllvm::UnsupportedTypeException &e) {
                 std::stringstream errorStream;
                 errorStream << e.what() << " in argument #" << llvmArg.getArgNo() << " of function \""
-                            << F.getName().str() << "\"\n";
+                            << F.getName().str() << "\"";
                 vcllvm::ErrorCollector::addError("Passes::Function::FunctionDeclarer", errorStream.str());
             }
         }
         //TODO body (separate pass)
         //TODO contract (separate pass)
-        //TODO pure (separate pass)
         return PreservedAnalyses::all();
     }
 }

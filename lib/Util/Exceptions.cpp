@@ -21,7 +21,7 @@ namespace vcllvm {
 
     void ErrorCollector::addError(const std::string &source, const std::string &message) {
         std::stringstream stream;
-        stream << "[" << source << "] " << message;
+        stream << "[" << source << "] " << message << '\n';
         ErrorCollector::errors.push_back(stream.str());
     }
 

@@ -17,12 +17,12 @@ namespace llvm {
         std::ostringstream errorStream;
         FDResult result = FAM.getResult<FunctionDeclarer>(F);
         col::LlvmFunctionDefinition *colFunction = result.getAssociatedColFuncDef();
-        // Check if pure keyword is present, else assume unpure function
+        // check if pure keyword is present, else assume unpure function
         if (!F.hasMetadata(vcllvm::constants::METADATA_PURE_KEYWORD)) {
             colFunction->set_pure(false);
             return PreservedAnalyses::all();
         }
-        // Check if the 'pure' metadata has only 1 operand, else exit with error
+        // check if the 'pure' metadata has only 1 operand, else exit with error
         MDNode *pureMDNode = F.getMetadata(vcllvm::constants::METADATA_PURE_KEYWORD);
         if (pureMDNode->getNumOperands() != 1) {
             errorStream << "Expected 1 argument but got " << pureMDNode->getNumOperands();
@@ -45,7 +45,7 @@ namespace llvm {
     void reportError(Function &F, const std::string &explanation) {
         std::stringstream errorStream;
         errorStream << "Malformed Metadata node of type \"" << vcllvm::constants::METADATA_PURE_KEYWORD <<
-                    "\" in function \"" << F.getName().str() << "\": " << explanation << '\n';
+                    "\" in function \"" << F.getName().str() << "\": " << explanation;
         vcllvm::ErrorCollector::addError("Passes::Function::PureAssigner", errorStream.str());
     }
 }

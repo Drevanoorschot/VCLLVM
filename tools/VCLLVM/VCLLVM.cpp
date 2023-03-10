@@ -4,6 +4,7 @@
 #include <llvm/Support/CommandLine.h>
 
 #include "col.pb.h"
+#include "Passes/Function/FunctionContractDeclarer.h"
 #include "Passes/Function/FunctionDeclarer.h"
 #include "Passes/Function/PureAssigner.h"
 #include "Util/Conversion.h"
@@ -91,9 +92,8 @@ int main(int argc, char **argv) {
     llvm::FunctionAnalysisManager FAM;
     llvm::CGSCCAnalysisManager CGAM;
     llvm::ModuleAnalysisManager MAM;
-    FAM.registerPass([&] {
-        return llvm::FunctionDeclarer(pProgram);
-    });
+    FAM.registerPass([&] { return llvm::FunctionDeclarer(pProgram); });
+    FAM.registerPass([&] { return llvm::FunctionContractDeclarer(pProgram); });
     // Create the new pass manager builder.
     // Take a look at the PassBuilder constructor parameters for more
     // customization, e.g. specifying a TargetMachine or various debugging
@@ -109,6 +109,7 @@ int main(int argc, char **argv) {
     llvm::FunctionPassManager FPM;
     FPM.addPass(llvm::FunctionDeclarerPass(pProgram));
     FPM.addPass(llvm::PureAssignerPass(pProgram));
+    FPM.addPass(llvm::FunctionContractDeclarerPass(pProgram));
     llvm::ModulePassManager MPM;
     MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
     MPM.run(*module, MAM);

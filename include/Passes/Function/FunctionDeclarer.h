@@ -6,7 +6,7 @@
 
 /**
  * Pass that creates a signature for a LLVMFunctionDefinition in COL and exposes an <code>FDResult</code> object that
- * binds the the LLVM IR Funtion to a LLVMFunctionDefinition COL object.
+ * binds the the LLVM IR Function to a LLVMFunctionDefinition COL object.
  */
 namespace llvm {
     namespace col = vct::col::serialize;
@@ -39,6 +39,7 @@ namespace llvm {
         std::shared_ptr<col::Program> pProgram;
     public:
         explicit FunctionDeclarerPass(std::shared_ptr<col::Program> pProgram);
+
         PreservedAnalyses run(Function &F, FunctionAnalysisManager &FAM);
     };
 }
