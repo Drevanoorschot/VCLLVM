@@ -1,8 +1,8 @@
-
-
+// RUN: clang -S -O2 -emit-llvm %s -o %t
+// RUN: %VCLLVM %t
 int for_for_loop_mult(int x, int y) {
     int res = 0;
-    for(int i = 0; i < x; i++) {
+    for (int i = 0; i < x; i++) {
         for (int j = 0; j < y; j++) {
             res++;
         }
@@ -13,9 +13,9 @@ int for_for_loop_mult(int x, int y) {
 int while_while_loop_mult(int x, int y) {
     int res = 0;
     int i = 0;
-    while(i < x) {
+    while (i < x) {
         int j = 0;
-        while(j < y) {
+        while (j < y) {
             res++;
             j++;
         }
@@ -39,7 +39,7 @@ int for_while_loop_mult(int x, int y) {
 int while_for_loop_mult(int x, int y) {
     int res = 0;
     int i = 0;
-    while(i < x) {
+    while (i < x) {
         for (int j = 0; j < y; j++) {
             res++;
         }
