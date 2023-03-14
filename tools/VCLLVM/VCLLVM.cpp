@@ -129,11 +129,9 @@ int main(int argc, char **argv) {
     }
     // TODO end
     if (vcllvm::ErrorCollector::hasErrors()) {
-        llvm::errs() << "While parsing \"" << inputFileName << "\" VCLLVM has encountered "
-                     << vcllvm::ErrorCollector::errorCount() << " error(s):\n";
-        for (auto &E: *vcllvm::ErrorCollector::getErrors()) {
-            llvm::errs() << E << '\n';
-        }
+        llvm::errs() << "While processing \"" << inputFileName << "\" VCLLVM has encountered "
+                     << vcllvm::ErrorCollector::getErrorCount() << " error(s).\n"
+                     << "Exiting with failure code...";
         return EXIT_FAILURE;
     }
     std::cout << pProgram->SerializeAsString();

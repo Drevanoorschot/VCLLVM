@@ -16,15 +16,13 @@ namespace vcllvm {
 
     class ErrorCollector {
     private:
-         static std::vector<std::string> errors;
+         static u_int32_t errorCount;
     public:
         static void addError(const std::string &source, const std::string &message);
 
-        static std::vector<std::string> *getErrors();
-
         static bool hasErrors();
 
-        static u_int32_t errorCount();
+        static u_int32_t getErrorCount();
     };
 }
 #endif //VCLLVM_EXCEPTIONS_H

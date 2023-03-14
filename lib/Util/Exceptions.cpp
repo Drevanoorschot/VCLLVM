@@ -2,6 +2,7 @@
 
 #include <utility>
 #include <sstream>
+#include <llvm/Support/raw_ostream.h>
 
 namespace vcllvm {
 
@@ -13,23 +14,18 @@ namespace vcllvm {
         this->message = std::move(message);
     }
 
-    std::vector<std::string> ErrorCollector::errors;
+    u_int32_t ErrorCollector::errorCount;
 
     void ErrorCollector::addError(const std::string &source, const std::string &message) {
-        std::stringstream stream;
-        stream << "[" << source << "] " << message << '\n';
-        ErrorCollector::errors.push_back(stream.str());
-    }
-
-    std::vector<std::string> *ErrorCollector::getErrors() {
-        return &ErrorCollector::errors;
+        llvm::errs() << "[" << source << "] " << message << '\n';
+        ErrorCollector::errorCount++;
     }
 
     bool ErrorCollector::hasErrors() {
-        return !ErrorCollector::errors.empty();
+        return ErrorCollector::errorCount > 0;
     }
 
-    u_int32_t ErrorCollector::errorCount() {
-        return ErrorCollector::errors.size();
+    u_int32_t ErrorCollector::getErrorCount() {
+        return ErrorCollector::errorCount;
     }
 }
