@@ -8,7 +8,6 @@
 #include "Util/Exceptions.h"
 
 namespace llvm {
-    namespace col = vct::col::serialize;
 
     PureAssignerPass::PureAssignerPass(std::shared_ptr<col::Program> pProgram) :
             pProgram(std::move(pProgram)) {}
@@ -36,7 +35,7 @@ namespace llvm {
             reportError(F, errorStream.str());
             return PreservedAnalyses::all();
         }
-        // attempt down cast to ConstantInt
+        // attempt down cast to ConstantInt (which shouldn't fail given previous checks)
         bool purity = cast<ConstantAsMetadata>(pureMDValue)->getValue()->isOneValue();
         colFunction->set_pure(purity);
         return PreservedAnalyses::all();

@@ -4,9 +4,12 @@
 #include <llvm/Support/CommandLine.h>
 
 #include "col.pb.h"
+
+#include "Passes/Function/BlockMapper.h"
 #include "Passes/Function/FunctionContractDeclarer.h"
 #include "Passes/Function/FunctionDeclarer.h"
 #include "Passes/Function/PureAssigner.h"
+
 #include "Util/Conversion.h"
 #include "Util/Exceptions.h"
 
@@ -82,7 +85,7 @@ int main(int argc, char **argv) {
     llvm::SMDiagnostic smDiag;
     auto pModule = parseIRFile(inputFileName, smDiag, context);
     if (!pModule) {
-        llvm::errs() << smDiag.getMessage() << '\n';
+        smDiag.print(inputFileName.c_str(), llvm::errs());
         return EXIT_FAILURE;
     }
     llvm::Module *module = pModule.release();
@@ -94,6 +97,7 @@ int main(int argc, char **argv) {
     llvm::ModuleAnalysisManager MAM;
     FAM.registerPass([&] { return llvm::FunctionDeclarer(pProgram); });
     FAM.registerPass([&] { return llvm::FunctionContractDeclarer(pProgram); });
+    FAM.registerPass([&] { return llvm::BlockMapper(pProgram); });
     // Create the new pass manager builder.
     // Take a look at the PassBuilder constructor parameters for more
     // customization, e.g. specifying a TargetMachine or various debugging
@@ -106,6 +110,8 @@ int main(int argc, char **argv) {
     PB.registerLoopAnalyses(LAM);
     PB.crossRegisterProxies(LAM, FAM, CGAM, MAM);
 
+    llvm::LoopPassManager LPM;
+
     llvm::FunctionPassManager FPM;
     FPM.addPass(llvm::FunctionDeclarerPass(pProgram));
     FPM.addPass(llvm::PureAssignerPass(pProgram));
@@ -113,6 +119,15 @@ int main(int argc, char **argv) {
     llvm::ModulePassManager MPM;
     MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
     MPM.run(*module, MAM);
+    // TODO just for exposition should be removed in the future
+    for (auto &F : module->getFunctionList()) {
+        llvm::BMAResult result = FAM.getResult<llvm::BlockMapper>(F);
+        llvm::errs() << result.getRetBlock2ColBlock().size() << '\n';
+        for(auto &p : result.getRetBlock2ColBlock()) {
+           llvm::errs() << p.first->getParent()->getName().str() << "=>" << p.second << '\n';
+        }
+    }
+    // TODO end
     if (vcllvm::ErrorCollector::hasErrors()) {
         llvm::errs() << "While parsing \"" << inputFileName << "\" VCLLVM has encountered "
                      << vcllvm::ErrorCollector::errorCount() << " error(s):\n";

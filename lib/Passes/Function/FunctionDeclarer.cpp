@@ -4,17 +4,20 @@
 
 
 namespace llvm {
-    namespace col = vct::col::serialize;
 
     /*
      * Function Declarer Result
      */
 
-    FDResult::FDResult(col::LlvmFunctionDefinition *colFuncDef) :
-            associatedColFuncDef(colFuncDef) {}
+    FDResult::FDResult(col::LlvmFunctionDefinition *colFuncDef, col::Block *colFuncBody) :
+            associatedColFuncDef(colFuncDef), associatedColFuncBody(colFuncBody) {}
 
     col::LlvmFunctionDefinition *FDResult::getAssociatedColFuncDef() {
         return associatedColFuncDef;
+    }
+
+    col::Block *FDResult::getAssociatedColFuncBody() {
+        return associatedColFuncBody;
     }
 
     /*
@@ -31,7 +34,9 @@ namespace llvm {
         // generate id
         llvm2Col::setColNodeId(llvmFuncDefDecl);
         col::LlvmFunctionDefinition *llvmFuncDef = llvmFuncDefDecl->mutable_llvm_function_definition();
-        return FDResult(llvmFuncDef);
+        // add body block + scope
+        col::Block *funcBody = llvm2Col::setAndReturnScopedBlock(llvmFuncDef->mutable_body());
+        return FDResult(llvmFuncDef, funcBody);
     }
 
     /*

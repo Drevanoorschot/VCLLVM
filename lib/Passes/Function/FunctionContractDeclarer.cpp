@@ -9,7 +9,6 @@
 
 
 namespace llvm {
-    namespace col = vct::col::serialize;
 
     /*
      * Function Contract Declarer Result

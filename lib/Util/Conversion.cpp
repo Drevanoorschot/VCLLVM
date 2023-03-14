@@ -24,3 +24,7 @@ void llvm2Col::convertAndSetType(llvm::Type *llvmType, col::Type *colType) {
             throw vcllvm::UnsupportedTypeException("Type not supported");
     }
 }
+
+col::Block *llvm2Col::setAndReturnScopedBlock(col::Statement *statement) {
+    return statement->mutable_scope()->mutable_body()->mutable_block();
+}

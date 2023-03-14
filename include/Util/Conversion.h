@@ -1,4 +1,4 @@
-#ifndef VCLLVM_CONVERSION_HUtilIR
+#ifndef VCLLVM_CONVERSION_H
 #define VCLLVM_CONVERSION_H
 
 #include <llvm/IR/Type.h>
@@ -14,5 +14,8 @@ namespace llvm2Col {
     void setColNodeId(IDNode *idNode) {
         idNode->set_id(reinterpret_cast<int64_t>(idNode));
     }
+
+    col::Block *setAndReturnScopedBlock(col::Statement *statement);
+
 }
 #endif //VCLLVM_CONVERSION_H
