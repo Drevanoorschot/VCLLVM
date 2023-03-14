@@ -1,6 +1,3 @@
-//
-// Created by dre on 11/24/22.
-//
 #include <llvm/IR/DerivedTypes.h>
 #include "Util/Conversion.h"
 #include "Util/Exceptions.h"

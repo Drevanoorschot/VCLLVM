@@ -1,7 +1,3 @@
-//
-// Created by dre on 3/10/23.
-//
-
 #ifndef VCLLVM_BLOCKMAPPER_H
 #define VCLLVM_BLOCKMAPPER_H
 

@@ -1,7 +1,3 @@
-//
-// Created by dre on 3/9/23.
-//
-
 #ifndef VCLLVM_FUNCTIONCONTRACTDECLARER_H
 #define VCLLVM_FUNCTIONCONTRACTDECLARER_H
 

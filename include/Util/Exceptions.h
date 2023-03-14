@@ -1,7 +1,3 @@
-//
-// Created by dre on 3/3/23.
-//
-
 #ifndef VCLLVM_EXCEPTIONS_H
 #define VCLLVM_EXCEPTIONS_H
 

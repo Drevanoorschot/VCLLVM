@@ -33,4 +33,4 @@ into the build directory and run:
 $ ninja check
 ```
 The regression tests only test whether VCLLVM crashes on any inputs. It does not attempt to test correctness of the 
-program.
+output.

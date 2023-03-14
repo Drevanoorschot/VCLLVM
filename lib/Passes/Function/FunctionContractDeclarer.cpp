@@ -1,7 +1,3 @@
-//
-// Created by dre on 3/9/23.
-//
-
 #include "Passes/Function/FunctionContractDeclarer.h"
 #include "Passes/Function/FunctionDeclarer.h"
 #include "Util/Constants.h"
