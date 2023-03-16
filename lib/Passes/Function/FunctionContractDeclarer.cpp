@@ -10,10 +10,10 @@ namespace llvm {
      * Function Contract Declarer Result
      */
 
-    FDCResult::FDCResult(vct::col::serialize::LlvmFunctionContract *colFuncContract) :
+    FDCResult::FDCResult(vct::col::serialize::LlvmFunctionContract &colFuncContract) :
             associatedColFuncContract(colFuncContract) {}
 
-    col::LlvmFunctionContract *FDCResult::getAssociatedColFuncContract() {
+    col::LlvmFunctionContract &FDCResult::getAssociatedColFuncContract() {
         return associatedColFuncContract;
     }
 
@@ -30,9 +30,9 @@ namespace llvm {
     FunctionContractDeclarer::Result FunctionContractDeclarer::run(Function &F, FunctionAnalysisManager &FAM) {
         // fetch relevant function from the Function Declarer
         FDResult fdResult = FAM.getResult<FunctionDeclarer>(F);
-        col::LlvmFunctionDefinition *colFunction = fdResult.getAssociatedColFuncDef();
+        col::LlvmFunctionDefinition &colFunction = fdResult.getAssociatedColFuncDef();
         // set a contract in the buffer as well as make and return a result object
-        return FDCResult(colFunction->mutable_contract());
+        return FDCResult(*colFunction.mutable_contract());
     }
 
     /*
@@ -45,11 +45,11 @@ namespace llvm {
     PreservedAnalyses FunctionContractDeclarerPass::run(Function &F, FunctionAnalysisManager &FAM) {
         // get col contract
         FDCResult result = FAM.getResult<FunctionContractDeclarer>(F);
-        col::LlvmFunctionContract *colContract = result.getAssociatedColFuncContract();
+        col::LlvmFunctionContract &colContract = result.getAssociatedColFuncContract();
         // check if contract keyword is present
         if (!F.hasMetadata(vcllvm::constants::METADATA_CONTRACT_KEYWORD)) {
             // empty contract
-            colContract->set_value("");
+            colContract.set_value("");
             return PreservedAnalyses::all();
         }
         // concatenate all contract lines with new lines
@@ -66,7 +66,7 @@ namespace llvm {
             }
             contractStream << contractLine->getString().str() << '\n';
         }
-        colContract->set_value(contractStream.str());
+        colContract.set_value(contractStream.str());
         return PreservedAnalyses::all();
     }
 }

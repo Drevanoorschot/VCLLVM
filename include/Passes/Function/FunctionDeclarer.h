@@ -13,14 +13,14 @@ namespace llvm {
 
     class FDResult {
     private:
-        col::LlvmFunctionDefinition *associatedColFuncDef;
-        col::Block *associatedColFuncBody;
+        col::LlvmFunctionDefinition &associatedColFuncDef;
+        col::Block &associatedColFuncBody;
     public:
-        explicit FDResult(col::LlvmFunctionDefinition *colFuncDef, col::Block *associatedColFuncBody);
+        explicit FDResult(col::LlvmFunctionDefinition &colFuncDef, col::Block &associatedColFuncBody);
 
-        col::LlvmFunctionDefinition *getAssociatedColFuncDef();
+        col::LlvmFunctionDefinition &getAssociatedColFuncDef();
 
-        col::Block *getAssociatedColFuncBody();
+        col::Block &getAssociatedColFuncBody();
     };
 
     class FunctionDeclarer : public AnalysisInfoMixin<FunctionDeclarer> {

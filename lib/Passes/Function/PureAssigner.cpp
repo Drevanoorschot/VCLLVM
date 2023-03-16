@@ -11,10 +11,10 @@ namespace llvm {
     PreservedAnalyses PureAssignerPass::run(Function &F, FunctionAnalysisManager &FAM) {
         std::ostringstream errorStream;
         FDResult result = FAM.getResult<FunctionDeclarer>(F);
-        col::LlvmFunctionDefinition *colFunction = result.getAssociatedColFuncDef();
+        col::LlvmFunctionDefinition &colFunction = result.getAssociatedColFuncDef();
         // check if pure keyword is present, else assume unpure function
         if (!F.hasMetadata(vcllvm::constants::METADATA_PURE_KEYWORD)) {
-            colFunction->set_pure(false);
+            colFunction.set_pure(false);
             return PreservedAnalyses::all();
         }
         // check if the 'pure' metadata has only 1 operand, else exit with error
@@ -33,7 +33,7 @@ namespace llvm {
         }
         // attempt down cast to ConstantInt (which shouldn't fail given previous checks)
         bool purity = cast<ConstantAsMetadata>(pureMDValue)->getValue()->isOneValue();
-        colFunction->set_pure(purity);
+        colFunction.set_pure(purity);
         return PreservedAnalyses::all();
     }
 

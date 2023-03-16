@@ -14,11 +14,11 @@ namespace llvm {
 
     class FDCResult {
     private:
-        col::LlvmFunctionContract *associatedColFuncContract;
+        col::LlvmFunctionContract &associatedColFuncContract;
     public:
-        explicit FDCResult(col::LlvmFunctionContract *colFuncContract);
+        explicit FDCResult(col::LlvmFunctionContract &colFuncContract);
 
-        col::LlvmFunctionContract *getAssociatedColFuncContract();
+        col::LlvmFunctionContract &getAssociatedColFuncContract();
     };
 
     class FunctionContractDeclarer : public AnalysisInfoMixin<FunctionContractDeclarer> {

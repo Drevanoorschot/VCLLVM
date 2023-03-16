@@ -22,7 +22,7 @@ namespace llvm {
     public:
         std::unordered_map<llvm::BasicBlock *, col::Block *> getRetBlock2ColBlock();
 
-        void addRetBlock2ColBlockEntry(llvm::BasicBlock *llvmBlock, col::Block *colBlock);
+        void addRetBlock2ColBlockEntry(llvm::BasicBlock &llvmBlock, col::Block &colBlock);
     };
 
     class BlockMapper : public AnalysisInfoMixin<BlockMapper> {
@@ -38,7 +38,7 @@ namespace llvm {
          * @param llvmBlock
          * @param colBlock
          */
-        void handleBlock(llvm::BasicBlock *llvmBlock, col::Block *colBlock);
+        void handleBlock(llvm::BasicBlock &llvmBlock, col::Block &colBlock);
 
         /**
          * Directly links the provided llvm block with the provided col Block
@@ -46,7 +46,7 @@ namespace llvm {
          * @param llvmBlock
          * @param colBlock
          */
-        void handleReturnBlock(llvm::BasicBlock *llvmBlock, col::Block *colBlock);
+        void handleReturnBlock(llvm::BasicBlock &llvmBlock, col::Block &colBlock);
 
     public:
         using Result = BMAResult;

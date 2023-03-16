@@ -16,8 +16,8 @@ namespace llvm {
         return retBlock2colBlock;
     }
 
-    void BMAResult::addRetBlock2ColBlockEntry(llvm::BasicBlock *llvmBlock, col::Block *colBlock) {
-        retBlock2colBlock.insert({llvmBlock, colBlock});
+    void BMAResult::addRetBlock2ColBlockEntry(llvm::BasicBlock &llvmBlock, col::Block &colBlock) {
+        retBlock2colBlock.insert({&llvmBlock, &colBlock});
     }
 
     /*
@@ -31,14 +31,14 @@ namespace llvm {
 
     BMAResult BlockMapper::run(Function &F, FunctionAnalysisManager &FAM) {
         result = BMAResult();
-        llvm::BasicBlock *entryBlock = &F.getEntryBlock();
-        col::Block *funcBody = FAM.getResult<FunctionDeclarer>(F).getAssociatedColFuncBody();
+        llvm::BasicBlock &entryBlock = F.getEntryBlock();
+        col::Block &funcBody = FAM.getResult<FunctionDeclarer>(F).getAssociatedColFuncBody();
         handleBlock(entryBlock, funcBody);
         return result;
     }
 
-    void BlockMapper::handleBlock(BasicBlock *llvmBlock, col::Block *colBlock) {
-        Instruction *termInstruction = llvmBlock->getTerminator();
+    void BlockMapper::handleBlock(BasicBlock &llvmBlock, col::Block &colBlock) {
+        Instruction *termInstruction = llvmBlock.getTerminator();
         switch (Instruction::TermOps(termInstruction->getOpcode())) {
             case Instruction::Ret:
                 handleReturnBlock(llvmBlock, colBlock);
@@ -59,7 +59,7 @@ namespace llvm {
         }
     }
 
-    void BlockMapper::handleReturnBlock(BasicBlock *llvmBlock, col::Block *colBlock) {
+    void BlockMapper::handleReturnBlock(BasicBlock &llvmBlock, col::Block &colBlock) {
         result.addRetBlock2ColBlockEntry(llvmBlock, colBlock);
     }
 

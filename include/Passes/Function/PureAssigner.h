@@ -17,6 +17,6 @@ namespace llvm {
         PreservedAnalyses run(Function &F, FunctionAnalysisManager &FAM);
     };
 
-    void reportError(Function &F, const std::string& explanation);
+    void reportError(Function &F, const std::string &explanation);
 }
 #endif //VCLLVM_PUREASSIGNER_H
