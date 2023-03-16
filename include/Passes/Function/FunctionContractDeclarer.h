@@ -9,7 +9,8 @@
  * of a contract metadata node. Exposes a <code>FCDResult</code> result object for back referencing instruction aliases
  * into the contract.
  */
-namespace llvm {
+namespace vcllvm {
+    using namespace llvm;
     namespace col = vct::col::serialize;
 
     class FDCResult {

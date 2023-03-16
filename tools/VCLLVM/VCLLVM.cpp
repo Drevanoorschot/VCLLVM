@@ -58,18 +58,18 @@ col::Program sampleCol(bool returnBool) {
     return program;
 }
 
-static llvm::cl::opt<std::string> inputFileName{"",
-                                                llvm::cl::desc{"Module to analyze"},
-                                                llvm::cl::value_desc{"IR filename"},
-                                                llvm::cl::Positional};
-static llvm::cl::opt<bool> testCol{"sample-col",
-                                   llvm::cl::desc{"Output a sample col buffer with verdict PASS"}};
+static vcllvm::cl::opt<std::string> inputFileName{"",
+                                                  vcllvm::cl::desc{"Module to analyze"},
+                                                  vcllvm::cl::value_desc{"IR filename"},
+                                                  vcllvm::cl::Positional};
+static vcllvm::cl::opt<bool> testCol{"sample-col",
+                                     vcllvm::cl::desc{"Output a sample col buffer with verdict PASS"}};
 
-static llvm::cl::opt<bool> incorrectTestCol{"sample-col-wrong",
-                                            llvm::cl::desc{"Output a sample col buffer with verdict FAIL"}};
+static vcllvm::cl::opt<bool> incorrectTestCol{"sample-col-wrong",
+                                              vcllvm::cl::desc{"Output a sample col buffer with verdict FAIL"}};
 
 int main(int argc, char **argv) {
-    llvm::cl::ParseCommandLineOptions(argc, argv);
+    vcllvm::cl::ParseCommandLineOptions(argc, argv);
     // sample mode
     if (testCol.getValue() || incorrectTestCol.getValue()) {
         std::cout << sampleCol(testCol.getValue()).SerializeAsString();
@@ -78,31 +78,31 @@ int main(int argc, char **argv) {
     }
     // parse mode
     if (inputFileName.empty()) {
-        llvm::errs() << "no input file given\n";
+        vcllvm::errs() << "no input file given\n";
         return EXIT_FAILURE;
     }
-    llvm::LLVMContext context;
-    llvm::SMDiagnostic smDiag;
+    vcllvm::LLVMContext context;
+    vcllvm::SMDiagnostic smDiag;
     auto pModule = parseIRFile(inputFileName, smDiag, context);
     if (!pModule) {
-        smDiag.print(inputFileName.c_str(), llvm::errs());
+        smDiag.print(inputFileName.c_str(), vcllvm::errs());
         return EXIT_FAILURE;
     }
-    llvm::Module *module = pModule.release();
+    vcllvm::Module *module = pModule.release();
     auto pProgram = std::make_shared<col::Program>();
     // Create the analysis managers.
-    llvm::LoopAnalysisManager LAM;
-    llvm::FunctionAnalysisManager FAM;
-    llvm::CGSCCAnalysisManager CGAM;
-    llvm::ModuleAnalysisManager MAM;
-    FAM.registerPass([&] { return llvm::FunctionDeclarer(pProgram); });
-    FAM.registerPass([&] { return llvm::FunctionContractDeclarer(pProgram); });
-    FAM.registerPass([&] { return llvm::BlockMapper(pProgram); });
+    vcllvm::LoopAnalysisManager LAM;
+    vcllvm::FunctionAnalysisManager FAM;
+    vcllvm::CGSCCAnalysisManager CGAM;
+    vcllvm::ModuleAnalysisManager MAM;
+    FAM.registerPass([&] { return vcllvm::FunctionDeclarer(pProgram); });
+    FAM.registerPass([&] { return vcllvm::FunctionContractDeclarer(pProgram); });
+    FAM.registerPass([&] { return vcllvm::BlockMapper(pProgram); });
     // Create the new pass manager builder.
     // Take a look at the PassBuilder constructor parameters for more
     // customization, e.g. specifying a TargetMachine or various debugging
     // options.
-    llvm::PassBuilder PB;
+    vcllvm::PassBuilder PB;
     // Register all the basic analyses with the managers.
     PB.registerModuleAnalyses(MAM);
     PB.registerCGSCCAnalyses(CGAM);
@@ -110,28 +110,28 @@ int main(int argc, char **argv) {
     PB.registerLoopAnalyses(LAM);
     PB.crossRegisterProxies(LAM, FAM, CGAM, MAM);
 
-    llvm::LoopPassManager LPM;
+    vcllvm::LoopPassManager LPM;
 
-    llvm::FunctionPassManager FPM;
-    FPM.addPass(llvm::FunctionDeclarerPass(pProgram));
-    FPM.addPass(llvm::PureAssignerPass(pProgram));
-    FPM.addPass(llvm::FunctionContractDeclarerPass(pProgram));
-    llvm::ModulePassManager MPM;
+    vcllvm::FunctionPassManager FPM;
+    FPM.addPass(vcllvm::FunctionDeclarerPass(pProgram));
+    FPM.addPass(vcllvm::PureAssignerPass(pProgram));
+    FPM.addPass(vcllvm::FunctionContractDeclarerPass(pProgram));
+    vcllvm::ModulePassManager MPM;
     MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
     MPM.run(*module, MAM);
     // TODO just for exposition should be removed in the future
     for (auto &F : module->getFunctionList()) {
-        llvm::BMAResult result = FAM.getResult<llvm::BlockMapper>(F);
-        llvm::errs() << result.getRetBlock2ColBlock().size() << '\n';
+        vcllvm::BMAResult result = FAM.getResult<vcllvm::BlockMapper>(F);
+        vcllvm::errs() << result.getRetBlock2ColBlock().size() << '\n';
         for(auto &p : result.getRetBlock2ColBlock()) {
-           llvm::errs() << p.first->getParent()->getName().str() << "=>" << p.second << '\n';
+           vcllvm::errs() << p.first->getParent()->getName().str() << "=>" << p.second << '\n';
         }
     }
     // TODO end
     if (vcllvm::ErrorCollector::hasErrors()) {
-        llvm::errs() << "While processing \"" << inputFileName << "\" VCLLVM has encountered "
+        vcllvm::errs() << "While processing \"" << inputFileName << "\" VCLLVM has encountered "
                      << vcllvm::ErrorCollector::getErrorCount() << " error(s).\n"
-                     << "Exiting with failure code...";
+                     << "Exiting with failure code...\n";
         return EXIT_FAILURE;
     }
     std::cout << pProgram->SerializeAsString();

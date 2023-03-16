@@ -3,7 +3,8 @@
 #include "Util/Constants.h"
 #include "Util/Exceptions.h"
 
-namespace llvm {
+namespace vcllvm {
+    using namespace llvm;
 
     PureAssignerPass::PureAssignerPass(std::shared_ptr<col::Program> pProgram) :
             pProgram(std::move(pProgram)) {}

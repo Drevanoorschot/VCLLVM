@@ -5,7 +5,8 @@
 #include <llvm/IR/PassManager.h>
 #include "col.pb.h"
 
-namespace llvm {
+namespace vcllvm {
+    using namespace llvm;
     namespace col = vct::col::serialize;
 
     class PureAssignerPass : public PassInfoMixin<PureAssignerPass> {

@@ -4,8 +4,8 @@
 #include "Util/Exceptions.h"
 
 
-namespace llvm {
-
+namespace vcllvm {
+    using namespace llvm;
     /*
      * Function Contract Declarer Result
      */

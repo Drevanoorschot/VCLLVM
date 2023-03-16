@@ -11,7 +11,8 @@
  * - branch blocks are handled as either conditionals or loops (determined by following branches).
  * It also takes care of scoping of loop and if bodies in the COL AST.
  */
-namespace llvm {
+namespace vcllvm {
+    using namespace llvm;
     namespace col = vct::col::serialize;
 
     class BMAResult {

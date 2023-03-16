@@ -8,7 +8,8 @@
  * Pass that creates a signature for a LLVMFunctionDefinition in COL and exposes an <code>FDResult</code> object that
  * binds the the LLVM IR Function to a LLVMFunctionDefinition COL object.
  */
-namespace llvm {
+namespace vcllvm {
+    using namespace llvm;
     namespace col = vct::col::serialize;
 
     class FDResult {

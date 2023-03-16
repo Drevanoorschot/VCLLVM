@@ -6,8 +6,8 @@
 
 #include <utility>
 
-namespace llvm {
-
+namespace vcllvm {
+    using namespace llvm;
     /*
      * Block Mapper Result
      */
