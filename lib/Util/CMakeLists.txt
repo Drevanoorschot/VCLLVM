@@ -1,6 +1,8 @@
 add_library(Util STATIC
-        Conversion.cpp
-        Exceptions.cpp)
+        Conversion/Conversion.cpp
+        Exceptions.cpp
+        Conversion/Instruction/ArithmeticConversion.cpp
+        )
 target_link_libraries(Util proto-objects)
 target_include_directories(Util PRIVATE
         "${CMAKE_SOURCE_DIR}/include"

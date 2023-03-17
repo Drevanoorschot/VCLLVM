@@ -1,16 +1,18 @@
 #include "Passes/Function/FunctionDeclarer.h"
-#include "Util/Conversion.h"
+#include "Util/Conversion/Conversion.h"
 #include "Util/Exceptions.h"
 
 
 namespace vcllvm {
     using namespace llvm;
+
     /*
      * Function Declarer Result
      */
 
     FDResult::FDResult(col::LlvmFunctionDefinition &colFuncDef, col::Block &colFuncBody) :
-            associatedColFuncDef(colFuncDef), associatedColFuncBody(colFuncBody) {}
+            associatedColFuncDef(colFuncDef),
+            associatedColFuncBody(colFuncBody) {}
 
     col::LlvmFunctionDefinition &FDResult::getAssociatedColFuncDef() {
         return associatedColFuncDef;
@@ -19,6 +21,15 @@ namespace vcllvm {
     col::Block &FDResult::getAssociatedColFuncBody() {
         return associatedColFuncBody;
     }
+
+    void FDResult::addFuncArgMapEntry(Argument &llvmArg, col::Variable &colArg) {
+        funcArgMap.insert({&llvmArg, &colArg});
+    }
+
+    col::Variable &FDResult::getFuncArgMapEntry(Argument &arg) {
+        return *funcArgMap.at(&arg);
+    }
+
 
     /*
      * Function Declarer (Analysis)
@@ -36,7 +47,24 @@ namespace vcllvm {
         col::LlvmFunctionDefinition *llvmFuncDef = llvmFuncDefDecl->mutable_llvm_function_definition();
         // add body block + scope
         col::Block &funcBody = llvm2Col::setAndReturnScopedBlock(*llvmFuncDef->mutable_body());
-        return FDResult(*llvmFuncDef, funcBody);
+        FDResult result = FDResult(*llvmFuncDef, funcBody);
+        // set args (if present)
+        for (llvm::Argument &llvmArg: F.args()) {
+            // set in buffer
+            col::Variable *colArg = llvmFuncDef->add_args();
+            llvm2Col::setColNodeId(colArg);
+            try {
+                llvm2Col::convertAndSetType(*llvmArg.getType(), *colArg->mutable_t());
+            } catch (vcllvm::UnsupportedTypeException &e) {
+                std::stringstream errorStream;
+                errorStream << e.what() << " in argument #" << llvmArg.getArgNo() << " of function \""
+                            << F.getName().str() << "\"";
+                vcllvm::ErrorCollector::addError("Passes::Function::FunctionDeclarer", errorStream.str());
+            }
+            // add args mapping to result
+            result.addFuncArgMapEntry(llvmArg, *colArg);
+        }
+        return result;
     }
 
     /*
@@ -56,19 +84,6 @@ namespace vcllvm {
             std::stringstream errorStream;
             errorStream << e.what() << " in return type of function \"" << F.getName().str() << "\"";
             vcllvm::ErrorCollector::addError("Passes::Function::FunctionDeclarer", errorStream.str());
-        }
-        // set args (if present)
-        for (llvm::Argument &llvmArg: F.args()) {
-            col::Variable *colArg = colFunction.add_args();
-            llvm2Col::setColNodeId(colArg);
-            try {
-                llvm2Col::convertAndSetType(*llvmArg.getType(), *colArg->mutable_t());
-            } catch (vcllvm::UnsupportedTypeException &e) {
-                std::stringstream errorStream;
-                errorStream << e.what() << " in argument #" << llvmArg.getArgNo() << " of function \""
-                            << F.getName().str() << "\"";
-                vcllvm::ErrorCollector::addError("Passes::Function::FunctionDeclarer", errorStream.str());
-            }
         }
         //TODO body (separate pass)
         //TODO contract (separate pass)

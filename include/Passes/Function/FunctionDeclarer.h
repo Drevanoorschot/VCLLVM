@@ -13,15 +13,22 @@ namespace vcllvm {
     namespace col = vct::col::serialize;
 
     class FDResult {
+        friend class FunctionDeclarer;
     private:
         col::LlvmFunctionDefinition &associatedColFuncDef;
         col::Block &associatedColFuncBody;
+        std::unordered_map<llvm::Argument *, col::Variable *> funcArgMap;
+
+        void addFuncArgMapEntry(llvm::Argument &llvmArg, col::Variable &colArg);
+
     public:
         explicit FDResult(col::LlvmFunctionDefinition &colFuncDef, col::Block &associatedColFuncBody);
 
         col::LlvmFunctionDefinition &getAssociatedColFuncDef();
 
         col::Block &getAssociatedColFuncBody();
+
+        col::Variable &getFuncArgMapEntry(llvm::Argument &arg);
     };
 
     class FunctionDeclarer : public AnalysisInfoMixin<FunctionDeclarer> {

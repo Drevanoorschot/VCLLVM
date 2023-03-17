@@ -4,6 +4,8 @@
 #include <llvm/IR/PassManager.h>
 #include <variant>
 #include "col.pb.h"
+
+
 /**
  * Analysis Pass that maps llvm blocks to COL nodes (branches, loops, blocks and expressions)
  * It operates by recursively following the terminator instructions of blocks where
@@ -16,14 +18,16 @@ namespace vcllvm {
     namespace col = vct::col::serialize;
 
     class BMAResult {
+        friend class BlockMapper;
+
     private:
         std::unordered_map<llvm::BasicBlock *, col::Block *> retBlock2colBlock;
+
+        void addRetBlock2ColBlockEntry(llvm::BasicBlock &llvmBlock, col::Block &colBlock);
         // TODO conditional mapping
         // TODO loop mapping
     public:
         std::unordered_map<llvm::BasicBlock *, col::Block *> getRetBlock2ColBlock();
-
-        void addRetBlock2ColBlockEntry(llvm::BasicBlock &llvmBlock, col::Block &colBlock);
     };
 
     class BlockMapper : public AnalysisInfoMixin<BlockMapper> {

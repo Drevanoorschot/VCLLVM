@@ -8,9 +8,10 @@
 #include "Passes/Function/BlockMapper.h"
 #include "Passes/Function/FunctionContractDeclarer.h"
 #include "Passes/Function/FunctionDeclarer.h"
+#include "Passes/Function/FunctionInstructionTransformer.h"
 #include "Passes/Function/PureAssigner.h"
 
-#include "Util/Conversion.h"
+#include "Util/Conversion/Conversion.h"
 #include "Util/Exceptions.h"
 
 #include <iostream>
@@ -116,18 +117,11 @@ int main(int argc, char **argv) {
     FPM.addPass(vcllvm::FunctionDeclarerPass(pProgram));
     FPM.addPass(vcllvm::PureAssignerPass(pProgram));
     FPM.addPass(vcllvm::FunctionContractDeclarerPass(pProgram));
+    FPM.addPass(vcllvm::FunctionInstructionTransformerPass(pProgram));
     vcllvm::ModulePassManager MPM;
     MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
     MPM.run(*module, MAM);
-    // TODO just for exposition should be removed in the future
-    for (auto &F : module->getFunctionList()) {
-        vcllvm::BMAResult result = FAM.getResult<vcllvm::BlockMapper>(F);
-        vcllvm::errs() << result.getRetBlock2ColBlock().size() << '\n';
-        for(auto &p : result.getRetBlock2ColBlock()) {
-           vcllvm::errs() << p.first->getParent()->getName().str() << "=>" << p.second << '\n';
-        }
-    }
-    // TODO end
+
     if (vcllvm::ErrorCollector::hasErrors()) {
         vcllvm::errs() << "While processing \"" << inputFileName << "\" VCLLVM has encountered "
                      << vcllvm::ErrorCollector::getErrorCount() << " error(s).\n"
