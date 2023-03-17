@@ -14,7 +14,7 @@ namespace vcllvm {
         std::string what();
     };
 
-    class ErrorCollector {
+    class ErrorReporter {
     private:
          static u_int32_t errorCount;
     public:

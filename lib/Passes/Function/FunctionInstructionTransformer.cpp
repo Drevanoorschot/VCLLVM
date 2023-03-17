@@ -49,7 +49,7 @@ namespace vcllvm {
                 transformRetBlock(llvmBlock);
                 break;
             case Instruction::Br:
-                vcllvm::ErrorCollector::addError(
+                vcllvm::ErrorReporter::addError(
                         "Passes::Function::BlockMapper",
                         "Branch instructions not yet supported!"
                 );
@@ -58,7 +58,7 @@ namespace vcllvm {
                 std::stringstream errorStream;
                 errorStream << "Terminator instruction \"" << termInstruction->getName().str() << "\" in function \"" <<
                             termInstruction->getFunction()->getName().str() << "\" not supported";
-                vcllvm::ErrorCollector::addError("Passes::Function::FunctionInstructionTransformer", errorStream.str());
+                vcllvm::ErrorReporter::addError("Passes::Function::FunctionInstructionTransformer", errorStream.str());
         }
     }
 

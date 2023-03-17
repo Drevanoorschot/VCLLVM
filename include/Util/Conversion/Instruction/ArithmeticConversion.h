@@ -1,8 +1,0 @@
-#ifndef VCLLVM_ARITHMETICCONVERSION_H
-#define VCLLVM_ARITHMETICCONVERSION_H
-
-#endif //VCLLVM_ARITHMETICCONVERSION_H
-
-namespace llvm2Col {
-    void transformAdd();
-}

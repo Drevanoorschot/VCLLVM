@@ -61,7 +61,7 @@ namespace vcllvm {
                 std::stringstream errorStream;
                 errorStream << "Unable to cast contract string #" << i + 1 << " of function \""
                             << F.getName().str() << "\" to string type";
-                vcllvm::ErrorCollector::addError("Passes::Function::FunctionContractDeclarer", errorStream.str());
+                vcllvm::ErrorReporter::addError("Passes::Function::FunctionContractDeclarer", errorStream.str());
                 break;
             }
             contractStream << contractLine->getString().str() << '\n';

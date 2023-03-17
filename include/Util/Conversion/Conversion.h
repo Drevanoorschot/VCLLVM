@@ -2,6 +2,7 @@
 #define VCLLVM_CONVERSION_H
 
 #include <llvm/IR/Type.h>
+#include "Passes/Function/FunctionInstructionTransformer.h"
 #include "col.pb.h"
 
 namespace llvm2Col {
@@ -16,6 +17,13 @@ namespace llvm2Col {
     }
 
     col::Block &setAndReturnScopedBlock(col::Statement &statement);
+
+    /**
+    * converts non terminating instructions (i.e. everything that guarantees to fit into a COL-block)
+    */
+    void convertNonTermInstruction(llvm::Instruction &llvmInstruction,
+                                   col::Block &colBlock,
+                                   vcllvm::FunctionCursor &funcCursor);
 
 }
 #endif //VCLLVM_CONVERSION_H

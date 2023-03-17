@@ -42,6 +42,6 @@ namespace vcllvm {
         std::stringstream errorStream;
         errorStream << "Malformed Metadata node of type \"" << vcllvm::constants::METADATA_PURE_KEYWORD <<
                     "\" in function \"" << F.getName().str() << "\": " << explanation;
-        vcllvm::ErrorCollector::addError("Passes::Function::PureAssigner", errorStream.str());
+        vcllvm::ErrorReporter::addError("Passes::Function::PureAssigner", errorStream.str());
     }
 }

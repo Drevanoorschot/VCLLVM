@@ -122,10 +122,10 @@ int main(int argc, char **argv) {
     MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
     MPM.run(*module, MAM);
 
-    if (vcllvm::ErrorCollector::hasErrors()) {
+    if (vcllvm::ErrorReporter::hasErrors()) {
         vcllvm::errs() << "While processing \"" << inputFileName << "\" VCLLVM has encountered "
-                     << vcllvm::ErrorCollector::getErrorCount() << " error(s).\n"
-                     << "Exiting with failure code...\n";
+                       << vcllvm::ErrorReporter::getErrorCount() << " error(s).\n"
+                       << "Exiting with failure code...\n";
         return EXIT_FAILURE;
     }
     std::cout << pProgram->SerializeAsString();

@@ -44,7 +44,7 @@ namespace vcllvm {
                 handleReturnBlock(llvmBlock, colBlock);
                 break;
             case Instruction::Br: {
-                vcllvm::ErrorCollector::addError(
+                vcllvm::ErrorReporter::addError(
                         "Passes::Function::BlockMapper",
                         "Branch instructions not yet supported!"
                 );
@@ -55,7 +55,7 @@ namespace vcllvm {
                 std::stringstream errorStream;
                 errorStream << "Terminator instruction \"" << termInstruction->getName().str() << "\" in function \"" <<
                             termInstruction->getFunction()->getName().str() << "\" not supported";
-                vcllvm::ErrorCollector::addError("Passes::Function::BlockMapper", errorStream.str());
+                vcllvm::ErrorReporter::addError("Passes::Function::BlockMapper", errorStream.str());
         }
     }
 

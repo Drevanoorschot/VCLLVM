@@ -59,7 +59,7 @@ namespace vcllvm {
                 std::stringstream errorStream;
                 errorStream << e.what() << " in argument #" << llvmArg.getArgNo() << " of function \""
                             << F.getName().str() << "\"";
-                vcllvm::ErrorCollector::addError("Passes::Function::FunctionDeclarer", errorStream.str());
+                vcllvm::ErrorReporter::addError("Passes::Function::FunctionDeclarer", errorStream.str());
             }
             // add args mapping to result
             result.addFuncArgMapEntry(llvmArg, *colArg);
@@ -83,7 +83,7 @@ namespace vcllvm {
         } catch (vcllvm::UnsupportedTypeException &e) {
             std::stringstream errorStream;
             errorStream << e.what() << " in return type of function \"" << F.getName().str() << "\"";
-            vcllvm::ErrorCollector::addError("Passes::Function::FunctionDeclarer", errorStream.str());
+            vcllvm::ErrorReporter::addError("Passes::Function::FunctionDeclarer", errorStream.str());
         }
         //TODO body (separate pass)
         //TODO contract (separate pass)

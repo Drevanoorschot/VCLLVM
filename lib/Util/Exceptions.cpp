@@ -14,18 +14,18 @@ namespace vcllvm {
         this->message = std::move(message);
     }
 
-    u_int32_t ErrorCollector::errorCount;
+    u_int32_t ErrorReporter::errorCount;
 
-    void ErrorCollector::addError(const std::string &source, const std::string &message) {
+    void ErrorReporter::addError(const std::string &source, const std::string &message) {
         llvm::errs() << "[" << source << "] " << message << '\n';
-        ErrorCollector::errorCount++;
+        ErrorReporter::errorCount++;
     }
 
-    bool ErrorCollector::hasErrors() {
-        return ErrorCollector::errorCount > 0;
+    bool ErrorReporter::hasErrors() {
+        return ErrorReporter::errorCount > 0;
     }
 
-    u_int32_t ErrorCollector::getErrorCount() {
-        return ErrorCollector::errorCount;
+    u_int32_t ErrorReporter::getErrorCount() {
+        return ErrorReporter::errorCount;
     }
 }
