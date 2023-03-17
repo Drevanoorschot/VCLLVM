@@ -2,6 +2,7 @@
 #define VCLLVM_FUNCTIONDECLARER_H
 
 #include <llvm/IR/PassManager.h>
+#include "Util/Conversion/Conversion.h"
 #include "col.pb.h"
 
 /**
@@ -16,17 +17,17 @@ namespace vcllvm {
         friend class FunctionDeclarer;
     private:
         col::LlvmFunctionDefinition &associatedColFuncDef;
-        col::Block &associatedColFuncBody;
+        llvm2Col::ColScopedBlock associatedScopedColFuncBody;
         std::unordered_map<llvm::Argument *, col::Variable *> funcArgMap;
 
         void addFuncArgMapEntry(llvm::Argument &llvmArg, col::Variable &colArg);
 
     public:
-        explicit FDResult(col::LlvmFunctionDefinition &colFuncDef, col::Block &associatedColFuncBody);
+        explicit FDResult(col::LlvmFunctionDefinition &colFuncDef, llvm2Col::ColScopedBlock associatedScopedColFuncBody);
 
         col::LlvmFunctionDefinition &getAssociatedColFuncDef();
 
-        col::Block &getAssociatedColFuncBody();
+        llvm2Col::ColScopedBlock getAssociatedScopedColFuncBody();
 
         col::Variable &getFuncArgMapEntry(llvm::Argument &arg);
     };

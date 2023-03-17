@@ -12,12 +12,12 @@ namespace vcllvm {
      * Block Mapper Result
      */
 
-    std::unordered_map<llvm::BasicBlock *, col::Block *> BMAResult::getRetBlock2ColBlock() {
-        return retBlock2colBlock;
+    std::unordered_map<llvm::BasicBlock *, llvm2Col::ColScopedBlock> BMAResult::getRetBlock2ColScopedBlock() {
+        return retBlock2ColScopedBlock;
     }
 
-    void BMAResult::addRetBlock2ColBlockEntry(llvm::BasicBlock &llvmBlock, col::Block &colBlock) {
-        retBlock2colBlock.insert({&llvmBlock, &colBlock});
+    void BMAResult::addRetBlock2ColScopedBlockEntry(llvm::BasicBlock &llvmBlock, llvm2Col::ColScopedBlock colScopedBlock) {
+        retBlock2ColScopedBlock.insert({&llvmBlock, colScopedBlock});
     }
 
     /*
@@ -32,16 +32,16 @@ namespace vcllvm {
     BMAResult BlockMapper::run(Function &F, FunctionAnalysisManager &FAM) {
         result = BMAResult();
         llvm::BasicBlock &entryBlock = F.getEntryBlock();
-        col::Block &funcBody = FAM.getResult<FunctionDeclarer>(F).getAssociatedColFuncBody();
-        handleBlock(entryBlock, funcBody);
+        llvm2Col::ColScopedBlock funcScopedBody = FAM.getResult<FunctionDeclarer>(F).getAssociatedScopedColFuncBody();
+        handleBlock(entryBlock, funcScopedBody);
         return result;
     }
 
-    void BlockMapper::handleBlock(BasicBlock &llvmBlock, col::Block &colBlock) {
+    void BlockMapper::handleBlock(BasicBlock &llvmBlock, llvm2Col::ColScopedBlock colScopedBlock) {
         Instruction *termInstruction = llvmBlock.getTerminator();
         switch (Instruction::TermOps(termInstruction->getOpcode())) {
             case Instruction::Ret:
-                handleReturnBlock(llvmBlock, colBlock);
+                handleReturnBlock(llvmBlock, colScopedBlock);
                 break;
             case Instruction::Br: {
                 vcllvm::ErrorReporter::addError(
@@ -59,8 +59,8 @@ namespace vcllvm {
         }
     }
 
-    void BlockMapper::handleReturnBlock(BasicBlock &llvmBlock, col::Block &colBlock) {
-        result.addRetBlock2ColBlockEntry(llvmBlock, colBlock);
+    void BlockMapper::handleReturnBlock(BasicBlock &llvmBlock, llvm2Col::ColScopedBlock colScopedBlock) {
+        result.addRetBlock2ColScopedBlockEntry(llvmBlock, colScopedBlock);
     }
 
 }

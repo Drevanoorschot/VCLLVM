@@ -10,16 +10,16 @@ namespace vcllvm {
      * Function Declarer Result
      */
 
-    FDResult::FDResult(col::LlvmFunctionDefinition &colFuncDef, col::Block &colFuncBody) :
+    FDResult::FDResult(col::LlvmFunctionDefinition &colFuncDef, llvm2Col::ColScopedBlock associatedScopedColFuncBody) :
             associatedColFuncDef(colFuncDef),
-            associatedColFuncBody(colFuncBody) {}
+            associatedScopedColFuncBody(associatedScopedColFuncBody) {}
 
     col::LlvmFunctionDefinition &FDResult::getAssociatedColFuncDef() {
         return associatedColFuncDef;
     }
 
-    col::Block &FDResult::getAssociatedColFuncBody() {
-        return associatedColFuncBody;
+    llvm2Col::ColScopedBlock FDResult::getAssociatedScopedColFuncBody() {
+        return associatedScopedColFuncBody;
     }
 
     void FDResult::addFuncArgMapEntry(Argument &llvmArg, col::Variable &colArg) {
@@ -46,8 +46,8 @@ namespace vcllvm {
         llvm2Col::setColNodeId(llvmFuncDefDecl);
         col::LlvmFunctionDefinition *llvmFuncDef = llvmFuncDefDecl->mutable_llvm_function_definition();
         // add body block + scope
-        col::Block &funcBody = llvm2Col::setAndReturnScopedBlock(*llvmFuncDef->mutable_body());
-        FDResult result = FDResult(*llvmFuncDef, funcBody);
+        llvm2Col::ColScopedBlock funcScopedBody = llvm2Col::setAndReturnScopedBlock(*llvmFuncDef->mutable_body());
+        FDResult result = FDResult(*llvmFuncDef, funcScopedBody);
         // set args (if present)
         for (llvm::Argument &llvmArg: F.args()) {
             // set in buffer

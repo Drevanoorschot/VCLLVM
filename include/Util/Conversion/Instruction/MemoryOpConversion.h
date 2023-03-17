@@ -9,7 +9,7 @@ namespace llvm2Col {
     namespace col = vct::col::serialize;
 
     bool convertMemoryOp(llvm::Instruction &llvmInstruction,
-                        col::Block &colBlock,
-                        vcllvm::FunctionCursor &funcCursor);
+                         ColScopedBlock colScopedBlock,
+                         vcllvm::FunctionCursor &funcCursor);
 }
 #endif //VCLLVM_MEMORYOPCONVERSION_H

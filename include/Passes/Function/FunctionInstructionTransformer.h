@@ -60,5 +60,12 @@ namespace vcllvm {
 
         PreservedAnalyses run(Function &F, FunctionAnalysisManager &FAM);
     };
+
+    /**
+    * converts non terminating instructions (i.e. everything that guarantees to fit into a COL-block)
+    */
+    void convertNonTermInstruction(llvm::Instruction &llvmInstruction,
+                                   llvm2Col::ColScopedBlock colScopedBlock,
+                                   vcllvm::FunctionCursor &funcCursor);
 }
 #endif //VCLLVM_FUNCTIONINSTRUCTIONTRANSFORMER_H

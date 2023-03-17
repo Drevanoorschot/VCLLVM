@@ -2,8 +2,11 @@
 #define VCLLVM_BLOCKMAPPER_H
 
 #include <llvm/IR/PassManager.h>
-#include <variant>
+#include "Util/Conversion/Conversion.h"
+
 #include "col.pb.h"
+
+#include <variant>
 
 
 /**
@@ -21,13 +24,13 @@ namespace vcllvm {
         friend class BlockMapper;
 
     private:
-        std::unordered_map<llvm::BasicBlock *, col::Block *> retBlock2colBlock;
+        std::unordered_map<llvm::BasicBlock *, llvm2Col::ColScopedBlock> retBlock2ColScopedBlock;
 
-        void addRetBlock2ColBlockEntry(llvm::BasicBlock &llvmBlock, col::Block &colBlock);
+        void addRetBlock2ColScopedBlockEntry(llvm::BasicBlock &llvmBlock, llvm2Col::ColScopedBlock colScopedBlock);
         // TODO conditional mapping
         // TODO loop mapping
     public:
-        std::unordered_map<llvm::BasicBlock *, col::Block *> getRetBlock2ColBlock();
+        std::unordered_map<llvm::BasicBlock *, llvm2Col::ColScopedBlock> getRetBlock2ColScopedBlock();
     };
 
     class BlockMapper : public AnalysisInfoMixin<BlockMapper> {
@@ -41,17 +44,17 @@ namespace vcllvm {
          * Base function for recursion block recursion tree
          * Calls one of the appropiate block handle functions
          * @param llvmBlock
-         * @param colBlock
+         * @param colScopedBlock
          */
-        void handleBlock(llvm::BasicBlock &llvmBlock, col::Block &colBlock);
+        void handleBlock(llvm::BasicBlock &llvmBlock, llvm2Col::ColScopedBlock colScopedBlock);
 
         /**
          * Directly links the provided llvm block with the provided col Block
          * Leaf function of recursion block mapper tree.
          * @param llvmBlock
-         * @param colBlock
+         * @param colScopedBlock
          */
-        void handleReturnBlock(llvm::BasicBlock &llvmBlock, col::Block &colBlock);
+        void handleReturnBlock(llvm::BasicBlock &llvmBlock, llvm2Col::ColScopedBlock colScopedBlock);
 
     public:
         using Result = BMAResult;

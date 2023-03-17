@@ -2,8 +2,8 @@
 
 namespace llvm2Col {
     bool convertFuncletPadOp(llvm::Instruction &llvmInstruction,
-                                       vct::col::serialize::Block &colBlock,
-                                       vcllvm::FunctionCursor &funcCursor) {
+                             ColScopedBlock colScopedBlock,
+                             vcllvm::FunctionCursor &funcCursor) {
         //TODO stub
         return false;
     }
