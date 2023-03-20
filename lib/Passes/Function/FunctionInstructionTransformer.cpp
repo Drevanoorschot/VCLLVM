@@ -69,16 +69,27 @@ namespace vcllvm {
 
     void FunctionInstructionTransformerPass::transformRetBlock(BasicBlock &llvmBlock) {
         // fetch related COL block.
-        llvm2Col::ColScopedBlock colScopedBlock = functionCursor.getBMAResult().getRetBlock2ColScopedBlock().at(
-                &llvmBlock);
+        llvm2Col::ColScopedBlock colScopedBlock = functionCursor
+                .getBMAResult()
+                .getRetBlock2ColScopedBlock()
+                .at(&llvmBlock);
         //TODO foreach instruction
         for (auto &I: llvmBlock.getInstList()) {
             if (I.isTerminator()) {
-                break;
+                // handle return instruction
+                colScopedBlock.block
+                        ->add_statements()
+                        ->mutable_return_()
+                        ->mutable_result()
+                        ->mutable_local()
+                        ->mutable_ref()
+                        ->set_index(functionCursor.getVariableMapEntry(*I.getOperand(0)).id());
+            } else {
+                convertNonTermInstruction(I, colScopedBlock, functionCursor);
+                //TODO upscope all contract metadata aliases
             }
-            convertNonTermInstruction(I, colScopedBlock, functionCursor);
-            //TODO upscope all contract metadata aliases
         }
+
     }
 
     void convertNonTermInstruction(llvm::Instruction &llvmInstruction,

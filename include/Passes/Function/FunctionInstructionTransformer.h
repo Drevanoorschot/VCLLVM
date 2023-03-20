@@ -11,7 +11,6 @@
  * It starts at the first instruction of the functions entry block and transformers subsequent instructions
  * based on the current state of the function.
  * It has similar structure to the <code>BlockMapper</code>
- * TODO This gonna be a big boy class, think about how this class could potentially be split up more effectively.
  */
 namespace vcllvm {
     using namespace llvm;
