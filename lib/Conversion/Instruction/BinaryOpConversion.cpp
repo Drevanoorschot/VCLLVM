@@ -22,6 +22,19 @@ namespace llvm2Col {
                 convertOperands(plusExpr, llvmInstruction, colScopedBlock, funcCursor);
                 break;
             }
+            case llvm::Instruction::Sub: {
+                col::Minus &minExpr = convertSub(*assignment);
+                convertOperands(minExpr, llvmInstruction, colScopedBlock, funcCursor);
+            }
+            case llvm::Instruction::Mul: {
+                col::Mult &mulExpr = convertMul(*assignment);
+                convertOperands(mulExpr, llvmInstruction, colScopedBlock, funcCursor);
+            }
+            case llvm::Instruction::SDiv:
+            case llvm::Instruction::UDiv: {
+                col::Div &divExpr = convertDiv(*assignment);
+                convertOperands(divExpr, llvmInstruction, colScopedBlock, funcCursor);
+            }
             default:
                 std::stringstream errorStream;
                 errorStream << "Unsupported operator \"" << llvmInstruction.getOpcodeName() << "\" in function \""
@@ -29,10 +42,6 @@ namespace llvm2Col {
                 vcllvm::ErrorReporter::addError("Util::Conversion::Instruction::BinaryOp", errorStream.str());
                 return;
         }
-    }
-
-    col::Plus &convertAdd(col::Assign &assignment) {
-        return *assignment.mutable_value()->mutable_plus();
     }
 
     void convertOperands(auto &binExpr,
@@ -45,6 +54,22 @@ namespace llvm2Col {
         // ...right hand side
         col::Variable rightColVar = funcCursor.getVariableMapEntry(*llvmInstruction.getOperand(1));
         binExpr.mutable_right()->mutable_local()->mutable_ref()->set_index(rightColVar.id());
+    }
+
+    col::Plus &convertAdd(col::Assign &assignment) {
+        return *assignment.mutable_value()->mutable_plus();
+    }
+
+    col::Minus &convertSub(col::Assign &assignment) {
+        return *assignment.mutable_value()->mutable_minus();
+    }
+
+    col::Mult &convertMul(col::Assign &assignment) {
+        return *assignment.mutable_value()->mutable_mult();
+    }
+
+    col::Div &convertDiv(col::Assign &assignment) {
+        return *assignment.mutable_value()->mutable_div();
     }
 
 

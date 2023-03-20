@@ -16,13 +16,19 @@ namespace llvm2Col {
                          vcllvm::FunctionCursor &funcCursor);
 
 
-    col::Plus &convertAdd(col::Assign &assignment);
-
-
     void convertOperands(auto &binExpr,
                          llvm::Instruction &llvmInstruction,
                          ColScopedBlock colScopedBlock,
                          vcllvm::FunctionCursor &funcCursor);
+
+    col::Plus &convertAdd(col::Assign &assignment);
+
+
+    col::Minus &convertSub(col::Assign &assignment);
+
+    col::Mult &convertMul(col::Assign &assignment);
+
+    col::Div &convertDiv(col::Assign &assignment);
 
 //    template<class BinExpr> void convertOperands()
 }

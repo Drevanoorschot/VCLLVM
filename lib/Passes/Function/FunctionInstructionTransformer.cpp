@@ -89,7 +89,6 @@ namespace vcllvm {
                 //TODO upscope all contract metadata aliases
             }
         }
-
     }
 
     void convertNonTermInstruction(llvm::Instruction &llvmInstruction,
