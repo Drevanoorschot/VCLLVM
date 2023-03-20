@@ -21,12 +21,12 @@ namespace vcllvm {
         return bmaResult;
     }
 
-    void FunctionCursor::addVariableMapEntry(LLVMVar llvmVar, COLVar colVar) {
-        variableMap.insert({llvmVar, colVar});
+    void FunctionCursor::addVariableMapEntry(llvm::Value &llvmValue, col::Variable &colVar) {
+        variableMap.insert({&llvmValue, &colVar});
     }
 
-    COLVar FunctionCursor::getVariableMapEntry(LLVMVar llvmVar) {
-        return variableMap.at(llvmVar);
+    col::Variable &FunctionCursor::getVariableMapEntry(llvm::Value &llvmValue) {
+        return *variableMap.at(&llvmValue);
     }
 
     FunctionCursor::FunctionCursor() = default;
@@ -39,7 +39,7 @@ namespace vcllvm {
         functionCursor = FunctionCursor(FAM.getResult<BlockMapper>(F));
         // add function arguments to variable look up table
         for (llvm::Argument &A: F.args()) {
-            functionCursor.addVariableMapEntry(&A, &FAM.getResult<FunctionDeclarer>(F).getFuncArgMapEntry(A));
+            functionCursor.addVariableMapEntry(A, FAM.getResult<FunctionDeclarer>(F).getFuncArgMapEntry(A));
         }
         // fetch entry block
         llvm::BasicBlock &entryBlock = F.getEntryBlock();
@@ -69,31 +69,40 @@ namespace vcllvm {
 
     void FunctionInstructionTransformerPass::transformRetBlock(BasicBlock &llvmBlock) {
         // fetch related COL block.
-        llvm2Col::ColScopedBlock colScopedBlock = functionCursor.getBMAResult().getRetBlock2ColScopedBlock().at(&llvmBlock);
+        llvm2Col::ColScopedBlock colScopedBlock = functionCursor.getBMAResult().getRetBlock2ColScopedBlock().at(
+                &llvmBlock);
         //TODO foreach instruction
         for (auto &I: llvmBlock.getInstList()) {
+            if (I.isTerminator()) {
+                break;
+            }
+            convertNonTermInstruction(I, colScopedBlock, functionCursor);
             //TODO upscope all contract metadata aliases
-            //TODO Add instruction with created COL node to look up table
         }
     }
 
     void convertNonTermInstruction(llvm::Instruction &llvmInstruction,
                                    llvm2Col::ColScopedBlock colScopedBlock,
                                    vcllvm::FunctionCursor &funcCursor) {
-        if (llvmInstruction.isTerminator()) {
-            vcllvm::ErrorReporter::addError("Util::Conversion", "Wrong method call to handle terminator instructions!");
-            return;
+        u_int32_t opCode = llvmInstruction.getOpcode();
+        if (llvm::Instruction::TermOpsBegin <= opCode && opCode <= llvm::Instruction::TermOpsEnd) {
+            vcllvm::ErrorReporter::addError("Passes::Function::FunctionInstructionTransformer",
+                                            "Wrong method call to handle terminator instructions!");
+        } else if (llvm::Instruction::BinaryOpsBegin <= opCode && opCode < llvm::Instruction::BinaryOpsEnd) {
+            llvm2Col::convertBinaryOp(llvmInstruction, colScopedBlock, funcCursor);
+        } else if (llvm::Instruction::UnaryOpsBegin <= opCode && opCode < llvm::Instruction::UnaryOpsEnd) {
+            llvm2Col::convertUnaryOp(llvmInstruction, colScopedBlock, funcCursor);
+        } else if (llvm::Instruction::MemoryOpsBegin <= opCode && opCode < llvm::Instruction::MemoryOpsEnd) {
+            llvm2Col::convertMemoryOp(llvmInstruction, colScopedBlock, funcCursor);
+        } else if (llvm::Instruction::FuncletPadOpsBegin <= opCode && opCode < llvm::Instruction::FuncletPadOpsEnd) {
+            llvm2Col::convertFuncletPadOp(llvmInstruction, colScopedBlock, funcCursor);
+        } else if (llvm::Instruction::OtherOpsBegin <= opCode && opCode < llvm::Instruction::OtherOpsEnd) {
+            llvm2Col::convertOtherOp(llvmInstruction, colScopedBlock, funcCursor);
+        } else {
+            std::stringstream errorStream;
+            errorStream << "Unknown operator \"" << llvmInstruction.getOpcodeName() << "\" in function \""
+                        << llvmInstruction.getFunction()->getName().str() << "\"";
+            vcllvm::ErrorReporter::addError("Passes::Function::FunctionInstructionTransformer", errorStream.str());
         }
-        if (llvm2Col::convertUnaryOp(llvmInstruction, colScopedBlock, funcCursor) ||
-            llvm2Col::convertBinaryOp(llvmInstruction, colScopedBlock, funcCursor) ||
-            llvm2Col::convertMemoryOp(llvmInstruction, colScopedBlock, funcCursor) ||
-            llvm2Col::convertFuncletPadOp(llvmInstruction, colScopedBlock, funcCursor) ||
-            llvm2Col::convertOtherOp(llvmInstruction, colScopedBlock, funcCursor)) {
-            return;
-        }
-        std::stringstream errorStream;
-        errorStream << "Unable to convert operator \"" << llvmInstruction.getOpcodeName() << "\" in function \""
-                    << llvmInstruction.getFunction()->getName().str();
-        vcllvm::ErrorReporter::addError("Util::Conversion", errorStream.str());
     }
 }

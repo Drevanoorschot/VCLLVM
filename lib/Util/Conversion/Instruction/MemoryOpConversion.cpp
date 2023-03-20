@@ -1,9 +1,14 @@
 #include "Util/Conversion/Instruction/MemoryOpConversion.h"
+#include "Util/Exceptions.h"
+
 namespace llvm2Col {
-    bool convertMemoryOp(llvm::Instruction &llvmInstruction,
+    void convertMemoryOp(llvm::Instruction &llvmInstruction,
                          ColScopedBlock colScopedBlock,
                          vcllvm::FunctionCursor &funcCursor) {
         //TODO stub
-        return false;
+        std::stringstream errorStream;
+        errorStream << "Unsupported operator \"" << llvmInstruction.getOpcodeName() << "\" in function \""
+                    << llvmInstruction.getFunction()->getName().str();
+        vcllvm::ErrorReporter::addError("Util::Conversion::Instruction::MemoryOp", errorStream.str());
     }
 }

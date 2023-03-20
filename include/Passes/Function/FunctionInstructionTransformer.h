@@ -21,16 +21,11 @@ namespace vcllvm {
      * Helper class that can keep track of state of instructions and has useful helper objects such as the
      * FunctionAnalysisManager, and a look up table for llvm instructions and their corresponding COL expressions.
      */
-    // TODO this is some weird ass shit, if segfaults and empty pointers start to appear, start looking here :P
-    using LLVMVar = std::variant<llvm::Instruction *, llvm::Argument *>;
-
-    using COLVar = std::variant<col::Variable *>;
-
     class FunctionCursor {
     private:
         BMAResult bmaResult;
 
-        std::unordered_map<LLVMVar, COLVar> variableMap;
+        std::unordered_map<llvm::Value *, col::Variable *> variableMap;
     public:
         FunctionCursor();
 
@@ -39,10 +34,10 @@ namespace vcllvm {
         BMAResult &getBMAResult();
 
 
-        void addVariableMapEntry(LLVMVar llvmVar, COLVar colVar);
+        void addVariableMapEntry(llvm::Value &llvmValue, col::Variable &colVar);
 
 
-        COLVar getVariableMapEntry(LLVMVar llvmVar);
+        col::Variable &getVariableMapEntry(llvm::Value &llvmValue);
     };
 
     class FunctionInstructionTransformerPass : public PassInfoMixin<FunctionInstructionTransformerPass> {

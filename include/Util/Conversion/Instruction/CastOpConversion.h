@@ -8,7 +8,7 @@
 namespace llvm2Col {
     namespace col = vct::col::serialize;
 
-    bool convertCastOp(llvm::Instruction &llvmInstruction,
+    void convertCastOp(llvm::Instruction &llvmInstruction,
                        ColScopedBlock colScopedBlock,
                        vcllvm::FunctionCursor &funcCursor);
 }

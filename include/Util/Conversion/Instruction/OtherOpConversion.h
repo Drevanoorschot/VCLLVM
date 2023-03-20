@@ -10,7 +10,7 @@
 namespace llvm2Col {
     namespace col = vct::col::serialize;
 
-    bool convertOtherOp(llvm::Instruction &llvmInstruction,
+    void convertOtherOp(llvm::Instruction &llvmInstruction,
                         ColScopedBlock colScopedBlock,
                         vcllvm::FunctionCursor &funcCursor);
 }
