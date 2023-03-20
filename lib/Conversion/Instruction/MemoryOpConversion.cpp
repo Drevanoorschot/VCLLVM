@@ -1,4 +1,4 @@
-#include "Util/Conversion/Instruction/MemoryOpConversion.h"
+#include "Conversion/Instruction/MemoryOpConversion.h"
 #include "Util/Exceptions.h"
 
 namespace llvm2Col {

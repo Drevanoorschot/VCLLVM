@@ -1,5 +1,5 @@
 #include "Passes/Function/FunctionDeclarer.h"
-#include "Util/Conversion/Conversion.h"
+#include "Conversion/Conversion.h"
 #include "Util/Exceptions.h"
 
 

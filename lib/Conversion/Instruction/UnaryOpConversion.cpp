@@ -1,4 +1,4 @@
-#include "Util/Conversion/Instruction/UnaryOpConversion.h"
+#include "Conversion/Instruction/UnaryOpConversion.h"
 
 namespace llvm2Col {
     void convertUnaryOp(llvm::Instruction &llvmInstruction,

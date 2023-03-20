@@ -1,4 +1,4 @@
-#include "Util/Conversion/Instruction/OtherOpConversion.h"
+#include "Conversion/Instruction/OtherOpConversion.h"
 #include "Util/Exceptions.h"
 
 namespace llvm2Col {

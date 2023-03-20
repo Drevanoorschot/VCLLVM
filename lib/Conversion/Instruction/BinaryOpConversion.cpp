@@ -1,4 +1,4 @@
-#include "Util/Conversion/Instruction/BinaryOpConversion.h"
+#include "Conversion/Instruction/BinaryOpConversion.h"
 #include "Util/Exceptions.h"
 
 namespace llvm2Col {

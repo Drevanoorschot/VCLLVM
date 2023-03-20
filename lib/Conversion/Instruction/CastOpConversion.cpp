@@ -1,4 +1,4 @@
-#include "Util/Conversion/Instruction/CastOpConversion.h"
+#include "Conversion/Instruction/CastOpConversion.h"
 #include "Util/Exceptions.h"
 
 namespace llvm2Col {

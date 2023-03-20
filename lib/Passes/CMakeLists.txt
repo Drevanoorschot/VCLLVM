@@ -5,7 +5,7 @@ add_library(VCLLVM_PASSES STATIC
         Function/PureAssigner.cpp
         Function/FunctionInstructionTransformer.cpp
         )
-target_link_libraries(VCLLVM_PASSES proto-objects Util)
+target_link_libraries(VCLLVM_PASSES proto-objects Util LLVM2COL)
 target_include_directories(VCLLVM_PASSES PRIVATE
         "${CMAKE_SOURCE_DIR}/include"
         "${PROTO_BINARY_DIR}"
