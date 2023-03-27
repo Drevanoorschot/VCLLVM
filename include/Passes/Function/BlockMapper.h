@@ -2,7 +2,7 @@
 #define VCLLVM_BLOCKMAPPER_H
 
 #include <llvm/IR/PassManager.h>
-#include "Conversion/Conversion.h"
+#include "Transform/Transform.h"
 
 #include "col.pb.h"
 

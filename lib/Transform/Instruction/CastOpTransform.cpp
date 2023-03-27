@@ -1,4 +1,4 @@
-#include "Conversion/Instruction/CastOpConversion.h"
+#include "Transform/Instruction/CastOpTransform.h"
 #include "Util/Exceptions.h"
 
 namespace llvm2Col {
@@ -9,6 +9,6 @@ namespace llvm2Col {
         std::stringstream errorStream;
         errorStream << "Unsupported operator \"" << llvmInstruction.getOpcodeName() << "\" in function \""
                     << llvmInstruction.getFunction()->getName().str();
-        vcllvm::ErrorReporter::addError("Util::Conversion::Instruction::CastOp", errorStream.str());
+        vcllvm::ErrorReporter::addError("Util::Transform::Instruction::CastOp", errorStream.str());
     }
 }

@@ -11,7 +11,7 @@
 #include "Passes/Function/FunctionInstructionTransformer.h"
 #include "Passes/Function/PureAssigner.h"
 
-#include "Conversion/Conversion.h"
+#include "Transform/Transform.h"
 #include "Util/Exceptions.h"
 
 #include <iostream>

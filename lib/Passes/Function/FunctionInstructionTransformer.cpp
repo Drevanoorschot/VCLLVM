@@ -3,11 +3,11 @@
 #include "Passes/Function/BlockMapper.h"
 #include "Passes/Function/FunctionDeclarer.h"
 #include "Passes/Function/FunctionInstructionTransformer.h"
-#include "Conversion/Instruction/UnaryOpConversion.h"
-#include "Conversion/Instruction/BinaryOpConversion.h"
-#include "Conversion/Instruction/MemoryOpConversion.h"
-#include "Conversion/Instruction/FuncletPadOpConversion.h"
-#include "Conversion/Instruction/OtherOpConversion.h"
+#include "Transform/Instruction/UnaryOpTransform.h"
+#include "Transform/Instruction/BinaryOpTransform.h"
+#include "Transform/Instruction/MemoryOpTransform.h"
+#include "Transform/Instruction/FuncletPadOpTransform.h"
+#include "Transform/Instruction/OtherOpTransform.h"
 #include "Util/Exceptions.h"
 
 #include <utility>

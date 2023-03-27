@@ -1,5 +1,5 @@
-#ifndef VCLLVM_OTHEROPCONVERSION_H
-#define VCLLVM_OTHEROPCONVERSION_H
+#ifndef VCLLVM_OTHEROPTRANSFORM_H
+#define VCLLVM_OTHEROPTRANSFORM_H
 
 #include <llvm/IR/Instruction.h>
 
@@ -15,4 +15,4 @@ namespace llvm2Col {
                         vcllvm::FunctionCursor &funcCursor);
 }
 
-#endif //VCLLVM_OTHEROPCONVERSION_H
+#endif //VCLLVM_OTHEROPTRANSFORM_H

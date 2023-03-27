@@ -1,5 +1,5 @@
-#ifndef VCLLVM_CASTOPCONVERSION_H
-#define VCLLVM_CASTOPCONVERSION_H
+#ifndef VCLLVM_CASTOPTRANSFORM_H
+#define VCLLVM_CASTOPTRANSFORM_H
 #include <llvm/IR/Instruction.h>
 
 #include "Passes/Function/FunctionInstructionTransformer.h"
@@ -12,4 +12,4 @@ namespace llvm2Col {
                        col::Block &colBlock,
                        vcllvm::FunctionCursor &funcCursor);
 }
-#endif //VCLLVM_CASTOPCONVERSION_H
+#endif //VCLLVM_CASTOPTRANSFORM_H

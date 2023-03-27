@@ -1,5 +1,5 @@
-#ifndef VCLLVM_UNARYOPCONVERSION_H
-#define VCLLVM_UNARYOPCONVERSION_H
+#ifndef VCLLVM_UNARYOPTRANSFORM_H
+#define VCLLVM_UNARYOPTRANSFORM_H
 
 
 #include <llvm/IR/Instruction.h>
@@ -14,4 +14,4 @@ namespace llvm2Col {
                         col::Block &colBlock,
                         vcllvm::FunctionCursor &funcCursor);
 }
-#endif //VCLLVM_UNARYOPCONVERSION_H
+#endif //VCLLVM_UNARYOPTRANSFORM_H

@@ -1,4 +1,4 @@
-#include "Conversion/Instruction/OtherOpConversion.h"
+#include "Transform/Instruction/OtherOpTransform.h"
 #include "Util/Exceptions.h"
 
 namespace llvm2Col {
@@ -9,6 +9,6 @@ namespace llvm2Col {
         std::stringstream errorStream;
         errorStream << "Unsupported operator \"" << llvmInstruction.getOpcodeName() << "\" in function \""
                     << llvmInstruction.getFunction()->getName().str();
-        vcllvm::ErrorReporter::addError("Util::Conversion::Instruction::OtherOp", errorStream.str());
+        vcllvm::ErrorReporter::addError("Util::Transform::Instruction::OtherOp", errorStream.str());
     }
 }

@@ -2,7 +2,7 @@
 #include <llvm/IR/Instruction.h>
 
 #include "Passes/Function/FunctionInstructionTransformer.h"
-#include "Conversion/Conversion.h"
+#include "Transform/Transform.h"
 #include "Util/Exceptions.h"
 
 namespace col = vct::col::serialize;

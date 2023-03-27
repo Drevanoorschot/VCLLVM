@@ -1,5 +1,5 @@
-#ifndef VCLLVM_MEMORYOPCONVERSION_H
-#define VCLLVM_MEMORYOPCONVERSION_H
+#ifndef VCLLVM_MEMORYOPTRANSFORM_H
+#define VCLLVM_MEMORYOPTRANSFORM_H
 #include <llvm/IR/Instruction.h>
 
 #include "Passes/Function/FunctionInstructionTransformer.h"
@@ -12,4 +12,4 @@ namespace llvm2Col {
                          col::Block &colBlock,
                          vcllvm::FunctionCursor &funcCursor);
 }
-#endif //VCLLVM_MEMORYOPCONVERSION_H
+#endif //VCLLVM_MEMORYOPTRANSFORM_H

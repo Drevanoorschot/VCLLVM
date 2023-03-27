@@ -1,4 +1,4 @@
-#include "Conversion/Instruction/BinaryOpConversion.h"
+#include "Transform/Instruction/BinaryOpTransform.h"
 #include "Util/Exceptions.h"
 
 namespace llvm2Col {
@@ -39,7 +39,7 @@ namespace llvm2Col {
                 std::stringstream errorStream;
                 errorStream << "Unsupported operator \"" << llvmInstruction.getOpcodeName() << "\" in function \""
                             << llvmInstruction.getFunction()->getName().str();
-                vcllvm::ErrorReporter::addError("Util::Conversion::Instruction::BinaryOp", errorStream.str());
+                vcllvm::ErrorReporter::addError("Util::Transform::Instruction::BinaryOp", errorStream.str());
                 return;
         }
     }

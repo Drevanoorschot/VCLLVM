@@ -1,5 +1,5 @@
-#ifndef VCLLVM_BINARYOPCONVERSION_H
-#define VCLLVM_BINARYOPCONVERSION_H
+#ifndef VCLLVM_BINARYOPTRANSFORM_H
+#define VCLLVM_BINARYOPTRANSFORM_H
 
 #include <llvm/IR/Instruction.h>
 
@@ -31,4 +31,4 @@ namespace llvm2Col {
 
 //    template<class BinExpr> void convertOperands()
 }
-#endif //VCLLVM_BINARYOPCONVERSION_H
+#endif //VCLLVM_BINARYOPTRANSFORM_H

@@ -1,5 +1,5 @@
-#ifndef VCLLVM_CONVERSION_H
-#define VCLLVM_CONVERSION_H
+#ifndef VCLLVM_TRANSFORM_H
+#define VCLLVM_TRANSFORM_H
 
 #include <llvm/IR/Type.h>
 #include "col.pb.h"
@@ -16,4 +16,4 @@ namespace llvm2Col {
     }
 
 }
-#endif //VCLLVM_CONVERSION_H
+#endif //VCLLVM_TRANSFORM_H

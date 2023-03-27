@@ -1,5 +1,5 @@
-#ifndef VCLLVM_FUNCLETPADOPCONVERSION_H
-#define VCLLVM_FUNCLETPADOPCONVERSION_H
+#ifndef VCLLVM_FUNCLETPADOPTRANSFORM_H
+#define VCLLVM_FUNCLETPADOPTRANSFORM_H
 
 #include <llvm/IR/Instruction.h>
 
@@ -14,4 +14,4 @@ namespace llvm2Col {
                              col::Block &colBlock,
                              vcllvm::FunctionCursor &funcCursor);
 }
-#endif //VCLLVM_FUNCLETPADOPCONVERSION_H
+#endif //VCLLVM_FUNCLETPADOPTRANSFORM_H
