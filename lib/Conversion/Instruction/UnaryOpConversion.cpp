@@ -2,7 +2,7 @@
 
 namespace llvm2Col {
     void convertUnaryOp(llvm::Instruction &llvmInstruction,
-                        ColScopedBlock colScopedBlock,
+                        col::Block &colBlock,
                         vcllvm::FunctionCursor &funcCursor) {
         //TODO stub
     }

@@ -13,21 +13,26 @@ namespace vcllvm {
     using namespace llvm;
     namespace col = vct::col::serialize;
 
+    struct ColScopedFuncBody {
+        col::Scope *scope;
+        col::Block *block;
+    };
+
     class FDResult {
         friend class FunctionDeclarer;
     private:
         col::LlvmFunctionDefinition &associatedColFuncDef;
-        llvm2Col::ColScopedBlock associatedScopedColFuncBody;
+        ColScopedFuncBody associatedScopedColFuncBody;
         std::unordered_map<llvm::Argument *, col::Variable *> funcArgMap;
 
         void addFuncArgMapEntry(llvm::Argument &llvmArg, col::Variable &colArg);
 
     public:
-        explicit FDResult(col::LlvmFunctionDefinition &colFuncDef, llvm2Col::ColScopedBlock associatedScopedColFuncBody);
+        explicit FDResult(col::LlvmFunctionDefinition &colFuncDef, ColScopedFuncBody associatedScopedColFuncBody);
 
         col::LlvmFunctionDefinition &getAssociatedColFuncDef();
 
-        llvm2Col::ColScopedBlock getAssociatedScopedColFuncBody();
+        ColScopedFuncBody getAssociatedScopedColFuncBody();
 
         col::Variable &getFuncArgMapEntry(llvm::Argument &arg);
     };

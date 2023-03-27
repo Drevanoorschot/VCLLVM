@@ -9,18 +9,11 @@ namespace llvm2Col {
 
     void convertAndSetType(llvm::Type &llvmType, col::Type &colType);
 
-    struct ColScopedBlock {
-        col::Scope *scope;
-        col::Block *block;
-    };
-
     template<class IDNode>
 
     void setColNodeId(IDNode &idNode) {
         idNode->set_id(reinterpret_cast<int64_t>(idNode));
     }
-
-    ColScopedBlock setAndReturnScopedBlock(col::Statement &statement);
 
 }
 #endif //VCLLVM_CONVERSION_H

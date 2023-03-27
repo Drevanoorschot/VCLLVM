@@ -25,11 +25,4 @@ namespace llvm2Col {
                 throw vcllvm::UnsupportedTypeException("Type not supported");
         }
     }
-
-    ColScopedBlock setAndReturnScopedBlock(col::Statement &statement) {
-        ColScopedBlock colScopedBlock{};
-        colScopedBlock.scope = statement.mutable_scope();
-        colScopedBlock.block = colScopedBlock.scope->mutable_body()->mutable_block();
-        return colScopedBlock;
-    }
 }

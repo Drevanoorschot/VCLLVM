@@ -3,7 +3,7 @@
 
 namespace llvm2Col {
     void convertMemoryOp(llvm::Instruction &llvmInstruction,
-                         ColScopedBlock colScopedBlock,
+                         col::Block &colBlock,
                          vcllvm::FunctionCursor &funcCursor) {
         //TODO stub
         std::stringstream errorStream;

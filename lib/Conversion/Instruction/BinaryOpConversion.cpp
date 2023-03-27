@@ -4,36 +4,36 @@
 namespace llvm2Col {
 
     void convertBinaryOp(llvm::Instruction &llvmInstruction,
-                         ColScopedBlock colScopedBlock,
+                         col::Block &colBlock,
                          vcllvm::FunctionCursor &funcCursor) {
         // add var decl to the scope
-        col::Variable *varDecl = colScopedBlock.scope->add_locals();
+        col::Variable *varDecl = funcCursor.getFunctionScope().add_locals();
         convertAndSetType(*llvmInstruction.getType(), *varDecl->mutable_t());
         setColNodeId(varDecl);
         // add var decl to function cursor var look up table
         funcCursor.addVariableMapEntry(llvmInstruction, *varDecl);
         // add variable assignment to the COL block
-        col::Assign *assignment = colScopedBlock.block->add_statements()->mutable_assign();
+        col::Assign *assignment = colBlock.add_statements()->mutable_assign();
         // set target to refer to var decl
         assignment->mutable_target()->mutable_local()->mutable_ref()->set_index(varDecl->id());
         switch (llvm::Instruction::BinaryOps(llvmInstruction.getOpcode())) {
             case llvm::Instruction::Add: {
                 col::Plus &plusExpr = convertAdd(*assignment);
-                convertOperands(plusExpr, llvmInstruction, colScopedBlock, funcCursor);
+                convertOperands(plusExpr, llvmInstruction, funcCursor);
                 break;
             }
             case llvm::Instruction::Sub: {
                 col::Minus &minExpr = convertSub(*assignment);
-                convertOperands(minExpr, llvmInstruction, colScopedBlock, funcCursor);
+                convertOperands(minExpr, llvmInstruction, funcCursor);
             }
             case llvm::Instruction::Mul: {
                 col::Mult &mulExpr = convertMul(*assignment);
-                convertOperands(mulExpr, llvmInstruction, colScopedBlock, funcCursor);
+                convertOperands(mulExpr, llvmInstruction, funcCursor);
             }
             case llvm::Instruction::SDiv:
             case llvm::Instruction::UDiv: {
                 col::Div &divExpr = convertDiv(*assignment);
-                convertOperands(divExpr, llvmInstruction, colScopedBlock, funcCursor);
+                convertOperands(divExpr, llvmInstruction, funcCursor);
             }
             default:
                 std::stringstream errorStream;
@@ -46,7 +46,6 @@ namespace llvm2Col {
 
     void convertOperands(auto &binExpr,
                          llvm::Instruction &llvmInstruction,
-                         ColScopedBlock colScopedBlock,
                          vcllvm::FunctionCursor &funcCursor) {
         // left hand side...
         col::Variable leftColVar = funcCursor.getVariableMapEntry(*llvmInstruction.getOperand(0));

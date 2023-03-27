@@ -12,13 +12,12 @@ namespace llvm2Col {
 
 
     void convertBinaryOp(llvm::Instruction &llvmInstruction,
-                         ColScopedBlock colScopedBlock,
+                         col::Block &colBlock,
                          vcllvm::FunctionCursor &funcCursor);
 
 
     void convertOperands(auto &binExpr,
                          llvm::Instruction &llvmInstruction,
-                         ColScopedBlock colScopedBlock,
                          vcllvm::FunctionCursor &funcCursor);
 
     col::Plus &convertAdd(col::Assign &assignment);

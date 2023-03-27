@@ -24,13 +24,17 @@ namespace vcllvm {
     private:
         BMAResult bmaResult;
 
+        col::Scope *functionScope{};
+
         std::unordered_map<llvm::Value *, col::Variable *> variableMap;
     public:
         FunctionCursor();
 
-        explicit FunctionCursor(BMAResult bmaResult);
+        explicit FunctionCursor(BMAResult bmaResult, col::Scope &functionScope);
 
-        BMAResult &getBMAResult();
+        BMAResult &getBmaResult();
+
+        col::Scope &getFunctionScope();
 
 
         void addVariableMapEntry(llvm::Value &llvmValue, col::Variable &colVar);
@@ -59,7 +63,7 @@ namespace vcllvm {
     * converts non terminating instructions (i.e. everything that guarantees to fit into a COL-block)
     */
     void convertNonTermInstruction(llvm::Instruction &llvmInstruction,
-                                   llvm2Col::ColScopedBlock colScopedBlock,
+                                   col::Block &colBlock,
                                    vcllvm::FunctionCursor &funcCursor);
 }
 #endif //VCLLVM_FUNCTIONINSTRUCTIONTRANSFORMER_H

@@ -121,7 +121,6 @@ int main(int argc, char **argv) {
     vcllvm::ModulePassManager MPM;
     MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
     MPM.run(*module, MAM);
-
     if (vcllvm::ErrorReporter::hasErrors()) {
         vcllvm::errs() << "While processing \"" << inputFileName << "\" VCLLVM has encountered "
                        << vcllvm::ErrorReporter::getErrorCount() << " error(s).\n"

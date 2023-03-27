@@ -11,7 +11,7 @@ namespace llvm2Col {
     namespace col = vct::col::serialize;
 
     void convertFuncletPadOp(llvm::Instruction &llvmInstruction,
-                             ColScopedBlock colScopedBlock,
+                             col::Block &colBlock,
                              vcllvm::FunctionCursor &funcCursor);
 }
 #endif //VCLLVM_FUNCLETPADOPCONVERSION_H
