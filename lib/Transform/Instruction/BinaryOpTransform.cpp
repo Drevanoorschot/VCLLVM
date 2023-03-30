@@ -1,4 +1,5 @@
 #include "Transform/Instruction/BinaryOpTransform.h"
+#include "Transform/Transform.h"
 #include "Util/Exceptions.h"
 
 namespace llvm2Col {
@@ -8,7 +9,7 @@ namespace llvm2Col {
                          vcllvm::FunctionCursor &funcCursor) {
         // add var decl to the scope
         col::Variable *varDecl = funcCursor.getFunctionScope().add_locals();
-        convertAndSetType(*llvmInstruction.getType(), *varDecl->mutable_t());
+        transformAndSetType(*llvmInstruction.getType(), *varDecl->mutable_t());
         setColNodeId(varDecl);
         // add var decl to function cursor var look up table
         funcCursor.addVariableMapEntry(llvmInstruction, *varDecl);
@@ -47,12 +48,14 @@ namespace llvm2Col {
     void convertOperands(auto &binExpr,
                          llvm::Instruction &llvmInstruction,
                          vcllvm::FunctionCursor &funcCursor) {
-        // left hand side...
-        col::Variable leftColVar = funcCursor.getVariableMapEntry(*llvmInstruction.getOperand(0));
-        binExpr.mutable_left()->mutable_local()->mutable_ref()->set_index(leftColVar.id());
-        // ...right hand side
-        col::Variable rightColVar = funcCursor.getVariableMapEntry(*llvmInstruction.getOperand(1));
-        binExpr.mutable_right()->mutable_local()->mutable_ref()->set_index(rightColVar.id());
+        // transform left operand
+        llvm2Col::transformAndSetExpr(*llvmInstruction.getOperand(0),
+                                      *binExpr.mutable_left(),
+                                      funcCursor);
+        // transform right operand
+        llvm2Col::transformAndSetExpr(*llvmInstruction.getOperand(1),
+                                      *binExpr.mutable_right(),
+                                      funcCursor);
     }
 
     col::Plus &convertAdd(col::Assign &assignment) {

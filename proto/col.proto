@@ -25,24 +25,25 @@ message GlobalDeclaration {
     SimplificationRule simplification_rule = 2;
     AxiomaticDataType axiomatic_data_type = 3;
     VctClass vct_class = 4;
-    Model model = 5;
-    Function function = 6;
-    Procedure procedure = 7;
-    Predicate predicate = 8;
-    Enum enum = 9;
-    CTranslationUnit c_translation_unit = 10;
-    CGlobalDeclaration c_global_declaration = 11;
-    CFunctionDefinition c_function_definition = 12;
-    JavaNamespace java_namespace = 13;
-    JavaClass java_class = 14;
-    JavaInterface java_interface = 15;
-    JavaAnnotationInterface java_annotation_interface = 16;
-    JavaBipGlueContainer java_bip_glue_container = 17;
-    BipGlue bip_glue = 18;
-    BipPortSynchronization bip_port_synchronization = 19;
-    BipTransitionSynchronization bip_transition_synchronization = 20;
-    LlvmFunctionDefinition llvm_function_definition = 21;
-    SilverField silver_field = 22;
+    VeyMontSeqProg vey_mont_seq_prog = 5;
+    Model model = 6;
+    Function function = 7;
+    Procedure procedure = 8;
+    Predicate predicate = 9;
+    Enum enum = 10;
+    CTranslationUnit c_translation_unit = 11;
+    CGlobalDeclaration c_global_declaration = 12;
+    CFunctionDefinition c_function_definition = 13;
+    JavaNamespace java_namespace = 14;
+    JavaClass java_class = 15;
+    JavaInterface java_interface = 16;
+    JavaAnnotationInterface java_annotation_interface = 17;
+    JavaBipGlueContainer java_bip_glue_container = 18;
+    BipGlue bip_glue = 19;
+    BipPortSynchronization bip_port_synchronization = 20;
+    BipTransitionSynchronization bip_transition_synchronization = 21;
+    LlvmFunctionDefinition llvm_function_definition = 22;
+    SilverField silver_field = 23;
   }
 }
 
@@ -126,18 +127,20 @@ message Type {
     TZFraction t_z_fraction = 30;
     TModel t_model = 31;
     TClass t_class = 32;
-    TAnyClass t_any_class = 33;
-    TAxiomatic t_axiomatic = 34;
-    TEnum t_enum = 35;
-    CPrimitiveType c_primitive_type = 36;
-    CTPointer c_t_pointer = 37;
-    CTArray c_t_array = 38;
-    CTCudaVec c_t_cuda_vec = 39;
-    JavaNamedType java_named_type = 40;
-    JavaTClass java_t_class = 41;
-    JavaWildcard java_wildcard = 42;
-    PVLNamedType p_v_l_named_type = 43;
-    SilverPartialTAxiomatic silver_partial_t_axiomatic = 44;
+    TSeqProg t_seq_prog = 33;
+    TVeyMontThread t_vey_mont_thread = 34;
+    TAnyClass t_any_class = 35;
+    TAxiomatic t_axiomatic = 36;
+    TEnum t_enum = 37;
+    CPrimitiveType c_primitive_type = 38;
+    CTPointer c_t_pointer = 39;
+    CTArray c_t_array = 40;
+    CTCudaVec c_t_cuda_vec = 41;
+    JavaNamedType java_named_type = 42;
+    JavaTClass java_t_class = 43;
+    JavaWildcard java_wildcard = 44;
+    PVLNamedType p_v_l_named_type = 45;
+    SilverPartialTAxiomatic silver_partial_t_axiomatic = 46;
   }
 }
 
@@ -208,14 +211,17 @@ message Statement {
     VecBlock vec_block = 48;
     WandPackage wand_package = 49;
     ModelDo model_do = 50;
-    CDeclarationStatement c_declaration_statement = 51;
-    CGoto c_goto = 52;
-    GpgpuBarrier gpgpu_barrier = 53;
-    GpgpuAtomic gpgpu_atomic = 54;
-    JavaLocalDeclarationStatement java_local_declaration_statement = 55;
-    SilverNewRef silver_new_ref = 56;
-    SilverFieldAssign silver_field_assign = 57;
-    SilverLocalAssign silver_local_assign = 58;
+    VeyMontCommExpression vey_mont_comm_expression = 51;
+    VeyMontAssignExpression vey_mont_assign_expression = 52;
+    CDeclarationStatement c_declaration_statement = 53;
+    CGoto c_goto = 54;
+    GpgpuBarrier gpgpu_barrier = 55;
+    GpgpuAtomic gpgpu_atomic = 56;
+    JavaLocalDeclarationStatement java_local_declaration_statement = 57;
+    LlvmLoop llvm_loop = 58;
+    SilverNewRef silver_new_ref = 59;
+    SilverFieldAssign silver_field_assign = 60;
+    SilverLocalAssign silver_local_assign = 61;
   }
 }
 
@@ -324,224 +330,227 @@ message Expr {
     AmbiguousThis ambiguous_this = 26;
     ThisObject this_object = 27;
     ThisModel this_model = 28;
-    AmbiguousResult ambiguous_result = 29;
-    Result result = 30;
-    CurrentThreadId current_thread_id = 31;
-    LocalThreadId local_thread_id = 32;
-    GlobalThreadId global_thread_id = 33;
-    Any any = 34;
-    ReadPerm read_perm = 35;
-    Values values = 36;
-    MapEq map_eq = 37;
-    MapDisjoint map_disjoint = 38;
-    MapKeySet map_key_set = 39;
-    MapValueSet map_value_set = 40;
-    MapItemSet map_item_set = 41;
-    MapRemove map_remove = 42;
-    Forall forall = 43;
-    Starall starall = 44;
-    Exists exists = 45;
-    Sum sum = 46;
-    Product product = 47;
-    ForPerm for_perm = 48;
-    ForPermWithValue for_perm_with_value = 49;
-    Let let = 50;
-    InlinePattern inline_pattern = 51;
-    ScopedExpr scoped_expr = 52;
-    Local local = 53;
-    EnumUse enum_use = 54;
-    Deref deref = 55;
-    ModelDeref model_deref = 56;
-    DerefPointer deref_pointer = 57;
-    PointerAdd pointer_add = 58;
-    AddrOf addr_of = 59;
-    FunctionOf function_of = 60;
-    ApplyCoercion apply_coercion = 61;
-    ADTFunctionInvocation a_d_t_function_invocation = 62;
-    PredicateApply predicate_apply = 63;
-    InstancePredicateApply instance_predicate_apply = 64;
-    CoalesceInstancePredicateApply coalesce_instance_predicate_apply = 65;
-    ProcedureInvocation procedure_invocation = 66;
-    MethodInvocation method_invocation = 67;
-    FunctionInvocation function_invocation = 68;
-    InstanceFunctionInvocation instance_function_invocation = 69;
-    UMinus u_minus = 70;
-    BitNot bit_not = 71;
-    Not not = 72;
-    AmbiguousMult ambiguous_mult = 73;
-    AmbiguousPlus ambiguous_plus = 74;
-    AmbiguousMinus ambiguous_minus = 75;
-    AmbiguousOr ambiguous_or = 76;
-    AmbiguousComputationalOr ambiguous_computational_or = 77;
-    AmbiguousComputationalXor ambiguous_computational_xor = 78;
-    AmbiguousComputationalAnd ambiguous_computational_and = 79;
-    ComputationalOr computational_or = 80;
-    ComputationalXor computational_xor = 81;
-    ComputationalAnd computational_and = 82;
-    Exp exp = 83;
-    Plus plus = 84;
-    Minus minus = 85;
-    Mult mult = 86;
-    Div div = 87;
-    FloorDiv floor_div = 88;
-    Mod mod = 89;
-    StringConcat string_concat = 90;
-    BitAnd bit_and = 91;
-    BitOr bit_or = 92;
-    BitXor bit_xor = 93;
-    BitShl bit_shl = 94;
-    BitShr bit_shr = 95;
-    BitUShr bit_u_shr = 96;
-    And and = 97;
-    Or or = 98;
-    Implies implies = 99;
-    Star star = 100;
-    Wand wand = 101;
-    Scale scale = 102;
-    ScaleByParBlock scale_by_par_block = 103;
-    PolarityDependent polarity_dependent = 104;
-    Unfolding unfolding = 105;
-    Perm perm = 106;
-    PointsTo points_to = 107;
-    CurPerm cur_perm = 108;
-    Value value = 109;
-    ValidArray valid_array = 110;
-    ValidMatrix valid_matrix = 111;
-    PermPointer perm_pointer = 112;
-    PermPointerIndex perm_pointer_index = 113;
-    Eq eq = 114;
-    Neq neq = 115;
-    AmbiguousGreater ambiguous_greater = 116;
-    AmbiguousLess ambiguous_less = 117;
-    AmbiguousGreaterEq ambiguous_greater_eq = 118;
-    AmbiguousLessEq ambiguous_less_eq = 119;
-    Greater greater = 120;
-    Less less = 121;
-    GreaterEq greater_eq = 122;
-    LessEq less_eq = 123;
-    SubSet sub_set = 124;
-    SubSetEq sub_set_eq = 125;
-    SubBag sub_bag = 126;
-    SubBagEq sub_bag_eq = 127;
-    Select select = 128;
-    NewObject new_object = 129;
-    NewArray new_array = 130;
-    Old old = 131;
-    AmbiguousSubscript ambiguous_subscript = 132;
-    SeqSubscript seq_subscript = 133;
-    ArraySubscript array_subscript = 134;
-    PointerSubscript pointer_subscript = 135;
-    Length length = 136;
-    Size size = 137;
-    PointerBlockLength pointer_block_length = 138;
-    PointerBlockOffset pointer_block_offset = 139;
-    PointerLength pointer_length = 140;
-    SharedMemSize shared_mem_size = 141;
-    NdIndex nd_index = 142;
-    NdPartialIndex nd_partial_index = 143;
-    NdLength nd_length = 144;
-    Cons cons = 145;
-    Head head = 146;
-    Tail tail = 147;
-    Drop drop = 148;
-    Take take = 149;
-    Slice slice = 150;
-    SeqUpdate seq_update = 151;
-    Concat concat = 152;
-    RemoveAt remove_at = 153;
-    VctEmpty vct_empty = 154;
-    SetIntersection set_intersection = 155;
-    BagLargestCommon bag_largest_common = 156;
-    SetMinus set_minus = 157;
-    BagMinus bag_minus = 158;
-    SetUnion set_union = 159;
-    BagAdd bag_add = 160;
-    AmbiguousMember ambiguous_member = 161;
-    SetMember set_member = 162;
-    SeqMember seq_member = 163;
-    MapMember map_member = 164;
-    BagMemberCount bag_member_count = 165;
-    Permutation permutation = 166;
-    OptEmpty opt_empty = 167;
-    OptGet opt_get = 168;
-    OptGetOrElse opt_get_or_else = 169;
-    MapGet map_get = 170;
-    TupGet tup_get = 171;
-    GetLeft get_left = 172;
-    GetRight get_right = 173;
-    IsLeft is_left = 174;
-    IsRight is_right = 175;
-    VectorSum vector_sum = 176;
-    VectorCompare vector_compare = 177;
-    VectorRepeat vector_repeat = 178;
-    MatrixSum matrix_sum = 179;
-    MatrixCompare matrix_compare = 180;
-    MatrixRepeat matrix_repeat = 181;
-    CastFloat cast_float = 182;
-    TypeValue type_value = 183;
-    TypeOf type_of = 184;
-    VctInstanceOf vct_instance_of = 185;
-    Cast cast = 186;
-    SubType sub_type = 187;
-    SuperType super_type = 188;
-    IndeterminateInteger indeterminate_integer = 189;
-    PreAssignExpression pre_assign_expression = 190;
-    PostAssignExpression post_assign_expression = 191;
-    With with = 192;
-    Then then = 193;
-    Held held = 194;
-    Committed committed = 195;
-    IdleToken idle_token = 196;
-    JoinToken join_token = 197;
-    EmptyProcess empty_process = 198;
-    ActionApply action_apply = 199;
-    ProcessApply process_apply = 200;
-    ProcessSeq process_seq = 201;
-    ProcessChoice process_choice = 202;
-    ProcessPar process_par = 203;
-    ProcessSelect process_select = 204;
-    ModelNew model_new = 205;
-    ModelState model_state = 206;
-    ModelAbstractState model_abstract_state = 207;
-    ModelCreate model_create = 208;
-    ModelDestroy model_destroy = 209;
-    ModelSplit model_split = 210;
-    ModelMerge model_merge = 211;
-    ModelChoose model_choose = 212;
-    ModelPerm model_perm = 213;
-    ActionPerm action_perm = 214;
-    CLocal c_local = 215;
-    CInvocation c_invocation = 216;
-    CStructAccess c_struct_access = 217;
-    CStructDeref c_struct_deref = 218;
-    GpgpuCudaKernelInvocation gpgpu_cuda_kernel_invocation = 219;
-    CCast c_cast = 220;
-    JavaLocal java_local = 221;
-    JavaDeref java_deref = 222;
-    JavaLiteralArray java_literal_array = 223;
-    JavaInvocation java_invocation = 224;
-    JavaNewClass java_new_class = 225;
-    JavaNewLiteralArray java_new_literal_array = 226;
-    JavaNewDefaultArray java_new_default_array = 227;
-    JavaStringValue java_string_value = 228;
-    JavaBipGlue java_bip_glue = 229;
-    BipLocalIncomingData bip_local_incoming_data = 230;
-    BipGuardInvocation bip_guard_invocation = 231;
-    PVLLocal p_v_l_local = 232;
-    PVLDeref p_v_l_deref = 233;
-    PVLInvocation p_v_l_invocation = 234;
-    PVLNew p_v_l_new = 235;
-    SilverDeref silver_deref = 236;
-    SilverIntToRat silver_int_to_rat = 237;
-    SilverNull silver_null = 238;
-    SilverSeqSize silver_seq_size = 239;
-    SilverSetSize silver_set_size = 240;
-    SilverBagSize silver_bag_size = 241;
-    SilverMapSize silver_map_size = 242;
-    SilverCurFieldPerm silver_cur_field_perm = 243;
-    SilverCurPredPerm silver_cur_pred_perm = 244;
-    SilverPartialADTFunctionInvocation silver_partial_a_d_t_function_invocation = 245;
-    SilverUntypedNonemptyLiteralMap silver_untyped_nonempty_literal_map = 246;
+    ThisSeqProg this_seq_prog = 29;
+    AmbiguousResult ambiguous_result = 30;
+    Result result = 31;
+    CurrentThreadId current_thread_id = 32;
+    LocalThreadId local_thread_id = 33;
+    GlobalThreadId global_thread_id = 34;
+    Any any = 35;
+    ReadPerm read_perm = 36;
+    Values values = 37;
+    MapEq map_eq = 38;
+    MapDisjoint map_disjoint = 39;
+    MapKeySet map_key_set = 40;
+    MapValueSet map_value_set = 41;
+    MapItemSet map_item_set = 42;
+    MapRemove map_remove = 43;
+    Forall forall = 44;
+    Starall starall = 45;
+    Exists exists = 46;
+    Sum sum = 47;
+    Product product = 48;
+    ForPerm for_perm = 49;
+    ForPermWithValue for_perm_with_value = 50;
+    Let let = 51;
+    InlinePattern inline_pattern = 52;
+    ScopedExpr scoped_expr = 53;
+    Local local = 54;
+    EnumUse enum_use = 55;
+    Deref deref = 56;
+    ModelDeref model_deref = 57;
+    DerefPointer deref_pointer = 58;
+    DerefVeyMontThread deref_vey_mont_thread = 59;
+    PointerAdd pointer_add = 60;
+    AddrOf addr_of = 61;
+    FunctionOf function_of = 62;
+    ApplyCoercion apply_coercion = 63;
+    ADTFunctionInvocation a_d_t_function_invocation = 64;
+    PredicateApply predicate_apply = 65;
+    InstancePredicateApply instance_predicate_apply = 66;
+    CoalesceInstancePredicateApply coalesce_instance_predicate_apply = 67;
+    ProcedureInvocation procedure_invocation = 68;
+    MethodInvocation method_invocation = 69;
+    FunctionInvocation function_invocation = 70;
+    InstanceFunctionInvocation instance_function_invocation = 71;
+    UMinus u_minus = 72;
+    BitNot bit_not = 73;
+    Not not = 74;
+    AmbiguousMult ambiguous_mult = 75;
+    AmbiguousPlus ambiguous_plus = 76;
+    AmbiguousMinus ambiguous_minus = 77;
+    AmbiguousOr ambiguous_or = 78;
+    AmbiguousComputationalOr ambiguous_computational_or = 79;
+    AmbiguousComputationalXor ambiguous_computational_xor = 80;
+    AmbiguousComputationalAnd ambiguous_computational_and = 81;
+    ComputationalOr computational_or = 82;
+    ComputationalXor computational_xor = 83;
+    ComputationalAnd computational_and = 84;
+    Exp exp = 85;
+    Plus plus = 86;
+    Minus minus = 87;
+    Mult mult = 88;
+    Div div = 89;
+    FloorDiv floor_div = 90;
+    Mod mod = 91;
+    StringConcat string_concat = 92;
+    BitAnd bit_and = 93;
+    BitOr bit_or = 94;
+    BitXor bit_xor = 95;
+    BitShl bit_shl = 96;
+    BitShr bit_shr = 97;
+    BitUShr bit_u_shr = 98;
+    And and = 99;
+    Or or = 100;
+    Implies implies = 101;
+    Star star = 102;
+    Wand wand = 103;
+    Scale scale = 104;
+    ScaleByParBlock scale_by_par_block = 105;
+    VeyMontCondition vey_mont_condition = 106;
+    PolarityDependent polarity_dependent = 107;
+    Unfolding unfolding = 108;
+    Perm perm = 109;
+    PointsTo points_to = 110;
+    CurPerm cur_perm = 111;
+    Value value = 112;
+    ValidArray valid_array = 113;
+    ValidMatrix valid_matrix = 114;
+    PermPointer perm_pointer = 115;
+    PermPointerIndex perm_pointer_index = 116;
+    Eq eq = 117;
+    Neq neq = 118;
+    AmbiguousGreater ambiguous_greater = 119;
+    AmbiguousLess ambiguous_less = 120;
+    AmbiguousGreaterEq ambiguous_greater_eq = 121;
+    AmbiguousLessEq ambiguous_less_eq = 122;
+    Greater greater = 123;
+    Less less = 124;
+    GreaterEq greater_eq = 125;
+    LessEq less_eq = 126;
+    SubSet sub_set = 127;
+    SubSetEq sub_set_eq = 128;
+    SubBag sub_bag = 129;
+    SubBagEq sub_bag_eq = 130;
+    Select select = 131;
+    NewObject new_object = 132;
+    NewArray new_array = 133;
+    Old old = 134;
+    AmbiguousSubscript ambiguous_subscript = 135;
+    SeqSubscript seq_subscript = 136;
+    ArraySubscript array_subscript = 137;
+    PointerSubscript pointer_subscript = 138;
+    Length length = 139;
+    Size size = 140;
+    PointerBlockLength pointer_block_length = 141;
+    PointerBlockOffset pointer_block_offset = 142;
+    PointerLength pointer_length = 143;
+    SharedMemSize shared_mem_size = 144;
+    NdIndex nd_index = 145;
+    NdPartialIndex nd_partial_index = 146;
+    NdLength nd_length = 147;
+    Cons cons = 148;
+    Head head = 149;
+    Tail tail = 150;
+    Drop drop = 151;
+    Take take = 152;
+    Slice slice = 153;
+    SeqUpdate seq_update = 154;
+    Concat concat = 155;
+    RemoveAt remove_at = 156;
+    VctEmpty vct_empty = 157;
+    SetIntersection set_intersection = 158;
+    BagLargestCommon bag_largest_common = 159;
+    SetMinus set_minus = 160;
+    BagMinus bag_minus = 161;
+    SetUnion set_union = 162;
+    BagAdd bag_add = 163;
+    AmbiguousMember ambiguous_member = 164;
+    SetMember set_member = 165;
+    SeqMember seq_member = 166;
+    MapMember map_member = 167;
+    BagMemberCount bag_member_count = 168;
+    Permutation permutation = 169;
+    OptEmpty opt_empty = 170;
+    OptGet opt_get = 171;
+    OptGetOrElse opt_get_or_else = 172;
+    MapGet map_get = 173;
+    TupGet tup_get = 174;
+    GetLeft get_left = 175;
+    GetRight get_right = 176;
+    IsLeft is_left = 177;
+    IsRight is_right = 178;
+    VectorSum vector_sum = 179;
+    VectorCompare vector_compare = 180;
+    VectorRepeat vector_repeat = 181;
+    MatrixSum matrix_sum = 182;
+    MatrixCompare matrix_compare = 183;
+    MatrixRepeat matrix_repeat = 184;
+    CastFloat cast_float = 185;
+    TypeValue type_value = 186;
+    TypeOf type_of = 187;
+    VctInstanceOf vct_instance_of = 188;
+    Cast cast = 189;
+    SubType sub_type = 190;
+    SuperType super_type = 191;
+    IndeterminateInteger indeterminate_integer = 192;
+    PreAssignExpression pre_assign_expression = 193;
+    PostAssignExpression post_assign_expression = 194;
+    With with = 195;
+    Then then = 196;
+    Held held = 197;
+    Committed committed = 198;
+    IdleToken idle_token = 199;
+    JoinToken join_token = 200;
+    EmptyProcess empty_process = 201;
+    ActionApply action_apply = 202;
+    ProcessApply process_apply = 203;
+    ProcessSeq process_seq = 204;
+    ProcessChoice process_choice = 205;
+    ProcessPar process_par = 206;
+    ProcessSelect process_select = 207;
+    ModelNew model_new = 208;
+    ModelState model_state = 209;
+    ModelAbstractState model_abstract_state = 210;
+    ModelCreate model_create = 211;
+    ModelDestroy model_destroy = 212;
+    ModelSplit model_split = 213;
+    ModelMerge model_merge = 214;
+    ModelChoose model_choose = 215;
+    ModelPerm model_perm = 216;
+    ActionPerm action_perm = 217;
+    CLocal c_local = 218;
+    CInvocation c_invocation = 219;
+    CStructAccess c_struct_access = 220;
+    CStructDeref c_struct_deref = 221;
+    GpgpuCudaKernelInvocation gpgpu_cuda_kernel_invocation = 222;
+    CCast c_cast = 223;
+    JavaLocal java_local = 224;
+    JavaDeref java_deref = 225;
+    JavaLiteralArray java_literal_array = 226;
+    JavaInvocation java_invocation = 227;
+    JavaNewClass java_new_class = 228;
+    JavaNewLiteralArray java_new_literal_array = 229;
+    JavaNewDefaultArray java_new_default_array = 230;
+    JavaStringValue java_string_value = 231;
+    JavaBipGlue java_bip_glue = 232;
+    BipLocalIncomingData bip_local_incoming_data = 233;
+    BipGuardInvocation bip_guard_invocation = 234;
+    PVLLocal p_v_l_local = 235;
+    PVLDeref p_v_l_deref = 236;
+    PVLInvocation p_v_l_invocation = 237;
+    PVLNew p_v_l_new = 238;
+    SilverDeref silver_deref = 239;
+    SilverIntToRat silver_int_to_rat = 240;
+    SilverNull silver_null = 241;
+    SilverSeqSize silver_seq_size = 242;
+    SilverSetSize silver_set_size = 243;
+    SilverBagSize silver_bag_size = 244;
+    SilverMapSize silver_map_size = 245;
+    SilverCurFieldPerm silver_cur_field_perm = 246;
+    SilverCurPredPerm silver_cur_pred_perm = 247;
+    SilverPartialADTFunctionInvocation silver_partial_a_d_t_function_invocation = 248;
+    SilverUntypedNonemptyLiteralMap silver_untyped_nonempty_literal_map = 249;
   }
 }
 
@@ -647,6 +656,12 @@ message BipPortType {
   }
 }
 
+message LlvmLoopContract {
+  oneof v {
+    LlvmLoopInvariant llvm_loop_invariant = 1;
+  }
+}
+
 message SimplificationRule {
   required Expr axiom = 1;
 }
@@ -660,6 +675,20 @@ message VctClass {
   repeated ClassDeclaration declarations = 1;
   repeated Ref supports = 2;
   required Expr intrinsic_lock_invariant = 3;
+}
+
+message VeyMontSeqProg {
+  required ApplicableContract contract = 1;
+  repeated Variable prog_args = 2;
+  repeated VeyMontThread threads = 3;
+  required ClassDeclaration run_method = 4;
+  repeated ClassDeclaration methods = 5;
+}
+
+message VeyMontThread {
+  required int64 id = 1;
+  required Type thread_type = 2;
+  repeated Expr args = 3;
 }
 
 message Model {
@@ -1144,6 +1173,14 @@ message TModel {
 }
 
 message TClass {
+  required Ref cls = 1;
+}
+
+message TSeqProg {
+  required Ref cls = 1;
+}
+
+message TVeyMontThread {
   required Ref cls = 1;
 }
 
@@ -1809,6 +1846,10 @@ message ThisModel {
   required Ref cls = 1;
 }
 
+message ThisSeqProg {
+  required Ref cls = 1;
+}
+
 message AmbiguousResult {
 
 }
@@ -1949,6 +1990,10 @@ message ModelDeref {
 
 message DerefPointer {
   required Expr pointer = 1;
+}
+
+message DerefVeyMontThread {
+  required Ref ref = 1;
 }
 
 message PointerAdd {
@@ -2197,6 +2242,10 @@ message Scale {
 message ScaleByParBlock {
   required Ref block = 1;
   required Expr res = 2;
+}
+
+message VeyMontCondition {
+  repeated RefExpr condition = 1;
 }
 
 message PolarityDependent {
@@ -2652,6 +2701,17 @@ message SuperType {
 message IndeterminateInteger {
   required Expr min = 1;
   required Expr max = 2;
+}
+
+message VeyMontCommExpression {
+  required Ref receiver = 1;
+  required Ref sender = 2;
+  required Statement assign = 3;
+}
+
+message VeyMontAssignExpression {
+  required Ref thread = 1;
+  required Statement assign = 2;
 }
 
 message PreAssignExpression {
@@ -3218,6 +3278,17 @@ message BipInternal {
 }
 
 message LlvmFunctionContract {
+  required string value = 1;
+  repeated StringRef references = 2;
+}
+
+message LlvmLoop {
+  required Expr cond = 1;
+  required LlvmLoopContract contract = 2;
+  required Statement body = 3;
+}
+
+message LlvmLoopInvariant {
   required string value = 1;
   repeated StringRef references = 2;
 }

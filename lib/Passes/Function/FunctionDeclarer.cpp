@@ -56,7 +56,7 @@ namespace vcllvm {
             col::Variable *colArg = llvmFuncDef->add_args();
             llvm2Col::setColNodeId(colArg);
             try {
-                llvm2Col::convertAndSetType(*llvmArg.getType(), *colArg->mutable_t());
+                llvm2Col::transformAndSetType(*llvmArg.getType(), *colArg->mutable_t());
             } catch (vcllvm::UnsupportedTypeException &e) {
                 std::stringstream errorStream;
                 errorStream << e.what() << " in argument #" << llvmArg.getArgNo() << " of function \""
@@ -81,14 +81,12 @@ namespace vcllvm {
         // complete the procedure declaration in proto buffer
         // set return type in protobuf of function
         try {
-            llvm2Col::convertAndSetType(*F.getReturnType(), *colFunction.mutable_return_type());
+            llvm2Col::transformAndSetType(*F.getReturnType(), *colFunction.mutable_return_type());
         } catch (vcllvm::UnsupportedTypeException &e) {
             std::stringstream errorStream;
             errorStream << e.what() << " in return type of function \"" << F.getName().str() << "\"";
             vcllvm::ErrorReporter::addError("Passes::Function::FunctionDeclarer", errorStream.str());
         }
-        //TODO body (separate pass)
-        //TODO contract (separate pass)
         return PreservedAnalyses::all();
     }
 }

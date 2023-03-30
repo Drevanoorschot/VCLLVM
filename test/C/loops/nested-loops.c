@@ -47,3 +47,17 @@ int while_for_loop_mult(int x, int y) {
     }
     return res;
 }
+
+int nested_while_pre_update(int x, int y) {
+    int res = 0;
+    int i = 0;
+    while (i < x) {
+        int j = 0;
+        i++;
+        while (j < y) {
+            j++;
+            res++;
+        }
+    }
+    return res;
+}

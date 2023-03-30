@@ -3,16 +3,17 @@
 #include <llvm/Passes/PassBuilder.h>
 #include <llvm/Support/CommandLine.h>
 
+#include <google/protobuf/text_format.h>
+
 #include "col.pb.h"
 
-#include "Passes/Function/BlockMapper.h"
 #include "Passes/Function/FunctionContractDeclarer.h"
 #include "Passes/Function/FunctionDeclarer.h"
-#include "Passes/Function/FunctionInstructionTransformer.h"
 #include "Passes/Function/PureAssigner.h"
 
 #include "Transform/Transform.h"
 #include "Util/Exceptions.h"
+#include "Passes/Function/FunctionBodyTransformer.h"
 
 #include <iostream>
 #include <memory>
@@ -69,6 +70,9 @@ static vcllvm::cl::opt<bool> testCol{"sample-col",
 static vcllvm::cl::opt<bool> incorrectTestCol{"sample-col-wrong",
                                               vcllvm::cl::desc{"Output a sample col buffer with verdict FAIL"}};
 
+static vcllvm::cl::opt<bool> humanReadableOutput{"human-readable",
+                                              vcllvm::cl::desc{"Output COL buffer in human readable format"}};
+
 int main(int argc, char **argv) {
     vcllvm::cl::ParseCommandLineOptions(argc, argv);
     // sample mode
@@ -98,7 +102,6 @@ int main(int argc, char **argv) {
     vcllvm::ModuleAnalysisManager MAM;
     FAM.registerPass([&] { return vcllvm::FunctionDeclarer(pProgram); });
     FAM.registerPass([&] { return vcllvm::FunctionContractDeclarer(pProgram); });
-    FAM.registerPass([&] { return vcllvm::BlockMapper(pProgram); });
     // Create the new pass manager builder.
     // Take a look at the PassBuilder constructor parameters for more
     // customization, e.g. specifying a TargetMachine or various debugging
@@ -117,7 +120,7 @@ int main(int argc, char **argv) {
     FPM.addPass(vcllvm::FunctionDeclarerPass(pProgram));
     FPM.addPass(vcllvm::PureAssignerPass(pProgram));
     FPM.addPass(vcllvm::FunctionContractDeclarerPass(pProgram));
-    FPM.addPass(vcllvm::FunctionInstructionTransformerPass(pProgram));
+    FPM.addPass(vcllvm::FunctionBodyTransformerPass(pProgram));
     vcllvm::ModulePassManager MPM;
     MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
     MPM.run(*module, MAM);
@@ -127,6 +130,10 @@ int main(int argc, char **argv) {
                        << "Exiting with failure code...\n";
         return EXIT_FAILURE;
     }
-    std::cout << pProgram->SerializeAsString();
+    if (humanReadableOutput.getValue()) {
+        llvm::errs() << pProgram->DebugString();
+    } else {
+        std::cout << pProgram->SerializeAsString();
+    }
     return EXIT_SUCCESS;
 }
