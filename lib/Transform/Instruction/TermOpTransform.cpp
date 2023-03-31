@@ -50,7 +50,7 @@ namespace llvm2Col {
                             *llvmBrInstruction.getCondition(),
                             *colTrueBranch->mutable_v1());
         // get or pre-generate target labeled block
-        auto *llvmTrueBlock = cast<llvm::BasicBlock>(llvmBrInstruction.getOperand(0));
+        auto *llvmTrueBlock = cast<llvm::BasicBlock>(llvmBrInstruction.getOperand(1));
         vcllvm::LabeledColBlock labeledTrueColBlock = funcCursor.getOrSetLlvmBlock2LabeledColBlockEntry(*llvmTrueBlock);
         // goto statement to True block
         colTrueBranch->mutable_v2()->mutable_goto_()
@@ -64,7 +64,7 @@ namespace llvm2Col {
         // set conditional (which is a true constant as else == else if(true)))
         colFalseBranch->mutable_v1()->mutable_boolean_value()->set_value(true);
         // get llvm block targeted by the llvm branch
-        auto *llvmFalseBlock = cast<llvm::BasicBlock>(llvmBrInstruction.getOperand(1));
+        auto *llvmFalseBlock = cast<llvm::BasicBlock>(llvmBrInstruction.getOperand(2));
         // get or pre-generate target labeled block
         vcllvm::LabeledColBlock labeledFalseColBlock = funcCursor.getOrSetLlvmBlock2LabeledColBlockEntry(
                 *llvmFalseBlock);

@@ -21,7 +21,7 @@ namespace llvm2Col {
         switch (llvmType.getTypeID()) {
             case llvm::Type::IntegerTyID:
                 if (llvmType.getIntegerBitWidth() == 1) {
-                    throw vcllvm::UnsupportedTypeException("Boolean types not supported");
+                    colType.mutable_t_bool();
                 }
                 colType.mutable_t_int();
                 break;
