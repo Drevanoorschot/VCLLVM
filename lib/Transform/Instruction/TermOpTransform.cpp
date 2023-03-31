@@ -59,7 +59,7 @@ namespace llvm2Col {
         // transform llvm trueBlock
         transformLlvmBlock(*llvmTrueBlock, funcCursor);
 
-        // true branch
+        // false branch
         col::ExprStatement *colFalseBranch = colBranch->add_branches();
         // set conditional (which is a true constant as else == else if(true)))
         colFalseBranch->mutable_v1()->mutable_boolean_value()->set_value(true);
@@ -69,7 +69,7 @@ namespace llvm2Col {
         vcllvm::LabeledColBlock labeledFalseColBlock = funcCursor.getOrSetLlvmBlock2LabeledColBlockEntry(
                 *llvmFalseBlock);
         // goto statement to False block
-        colTrueBranch->mutable_v2()->mutable_goto_()
+        colFalseBranch->mutable_v2()->mutable_goto_()
                 ->mutable_lbl()
                 ->set_index(labeledFalseColBlock.label.decl().id());
         // transform llvm falseBlock
