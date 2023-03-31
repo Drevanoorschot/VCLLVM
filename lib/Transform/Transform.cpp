@@ -15,7 +15,8 @@ namespace col = vct::col::serialize;
  * @param type
  */
 namespace llvm2Col {
-    void transformAndSetType(llvm::Type &llvmType, col::Type &colType) {
+    void transformAndSetType(llvm::Type &llvmType,
+                             col::Type &colType) {
         // TODO refactor out exceptions
         switch (llvmType.getTypeID()) {
             case llvm::Type::IntegerTyID:
@@ -30,17 +31,21 @@ namespace llvm2Col {
     }
 
 
-    void transformAndSetExpr(llvm::Value &llvmValue, col::Expr &colExpr, vcllvm::FunctionCursor &functionCursor) {
+    void transformAndSetExpr(vcllvm::FunctionCursor &functionCursor,
+                             llvm::Value &llvmValue,
+                             col::Expr &colExpr) {
         auto llvmConst = llvm::dyn_cast<llvm::Constant>(&llvmValue);
         if (llvmConst != nullptr) {
             transformAndSetConstExpr(*llvmConst, colExpr);
         } else {
-            transformAndSetVarExpr(llvmValue, colExpr, functionCursor);
+            transformAndSetVarExpr(functionCursor, llvmValue, colExpr);
         }
 
     }
 
-    void transformAndSetVarExpr(llvm::Value &llvmValue, col::Expr &colExpr, vcllvm::FunctionCursor &functionCursor) {
+    void transformAndSetVarExpr(vcllvm::FunctionCursor &functionCursor,
+                                llvm::Value &llvmValue,
+                                col::Expr &colExpr) {
         col::Variable colVar = functionCursor.getVariableMapEntry(llvmValue);
         colExpr.mutable_local()->mutable_ref()->set_index(colVar.id());
     }
@@ -53,7 +58,7 @@ namespace llvm2Col {
                     colExpr.mutable_boolean_value()->set_value(llvmConstant.isOneValue());
                 } else {
                     llvm::APInt apInt = llvmConstant.getUniqueInteger();
-                    transformAndSetIntegerValue(*colExpr.mutable_integer_value(), apInt);
+                    transformAndSetIntegerValue(apInt, *colExpr.mutable_integer_value());
                 }
                 break;
             default:
@@ -65,7 +70,7 @@ namespace llvm2Col {
         }
     }
 
-    void transformAndSetIntegerValue(col::IntegerValue &colIntegerValue, llvm::APInt &apInt) {
+    void transformAndSetIntegerValue(llvm::APInt &apInt, col::IntegerValue &colIntegerValue) {
         // TODO works for "small" signed and unsigned numbers, may break for values > 2^64
         std::vector<u_int64_t> byteVector;
         for (int i = 0; i < apInt.getNumWords(); i++) {

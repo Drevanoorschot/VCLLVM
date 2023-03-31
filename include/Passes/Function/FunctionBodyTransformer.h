@@ -1,22 +1,33 @@
 #ifndef VCLLVM_FUNCTIONBODYTRANSFORMER_H
 #define VCLLVM_FUNCTIONBODYTRANSFORMER_H
 
+#include <llvm/Analysis/LoopInfo.h>
 #include <llvm/IR/PassManager.h>
+
 #include "col.pb.h"
 
 namespace vcllvm {
     using namespace llvm;
     namespace col = vct::col::serialize;
 
+    struct LabeledColBlock {
+        col::Label &label;
+        col::Block &block;
+    };
+
     class FunctionCursor {
     private:
         col::Scope &functionScope;
 
+        col::Block &functionBody;
+
+        llvm::LoopInfo &loopInfo;
+
         std::unordered_map<llvm::Value *, col::Variable *> variableMap;
 
-        std::unordered_map<llvm::BasicBlock *, col::Block *> llvmBlock2ColBlock;
+        std::unordered_map<llvm::BasicBlock *, LabeledColBlock> llvmBlock2LabeledColBlock;
     public:
-        explicit FunctionCursor(col::Scope &functionScope);
+        explicit FunctionCursor(col::Scope &functionScope, col::Block &functionBody, llvm::LoopInfo &loopInfo);
 
         col::Scope &getFunctionScope();
 
@@ -24,11 +35,11 @@ namespace vcllvm {
 
         col::Variable &getVariableMapEntry(llvm::Value &llvmValue);
 
-        col::Block &setAndMapLlvmBlock2ColBlock(llvm::BasicBlock &llvmBlock, col::Block &parentColBlock);
-
-        col::Block &getLlvmBlock2ColBlockEntry(llvm::BasicBlock &llvmBlock);
+        LabeledColBlock &getOrSetLlvmBlock2LabeledColBlockEntry(BasicBlock &llvmBlock);
 
         bool isVisited(llvm::BasicBlock &llvmBlock);
+
+        LoopInfo &getLoopInfo();
 
     };
 

@@ -11,24 +11,22 @@ namespace llvm2Col {
     namespace col = vct::col::serialize;
 
 
-    void convertBinaryOp(llvm::Instruction &llvmInstruction,
-                         col::Block &colBlock,
-                         vcllvm::FunctionCursor &funcCursor);
+    void transformBinaryOp(llvm::Instruction &llvmInstruction,
+                           col::Block &colBlock,
+                           vcllvm::FunctionCursor &funcCursor);
 
 
-    void convertOperands(auto &binExpr,
-                         llvm::Instruction &llvmInstruction,
-                         vcllvm::FunctionCursor &funcCursor);
+    void transformOperands(auto &colBinExpr,
+                           llvm::Instruction &llvmInstruction,
+                           vcllvm::FunctionCursor &funcCursor);
 
-    col::Plus &convertAdd(col::Assign &assignment);
+    col::Plus &transformAdd(col::Assign &assignment);
 
 
-    col::Minus &convertSub(col::Assign &assignment);
+    col::Minus &transformSub(col::Assign &assignment);
 
-    col::Mult &convertMul(col::Assign &assignment);
+    col::Mult &transformMul(col::Assign &assignment);
 
-    col::Div &convertDiv(col::Assign &assignment);
-
-//    template<class BinExpr> void convertOperands()
+    col::Div &transformDiv(col::Assign &assignment);
 }
 #endif //VCLLVM_BINARYOPTRANSFORM_H

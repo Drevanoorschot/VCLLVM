@@ -4,9 +4,9 @@
 
 namespace llvm2Col {
 
-    void convertBinaryOp(llvm::Instruction &llvmInstruction,
-                         col::Block &colBlock,
-                         vcllvm::FunctionCursor &funcCursor) {
+    void transformBinaryOp(llvm::Instruction &llvmInstruction,
+                           col::Block &colBlock,
+                           vcllvm::FunctionCursor &funcCursor) {
         // add var decl to the scope
         col::Variable *varDecl = funcCursor.getFunctionScope().add_locals();
         transformAndSetType(*llvmInstruction.getType(), *varDecl->mutable_t());
@@ -19,22 +19,22 @@ namespace llvm2Col {
         assignment->mutable_target()->mutable_local()->mutable_ref()->set_index(varDecl->id());
         switch (llvm::Instruction::BinaryOps(llvmInstruction.getOpcode())) {
             case llvm::Instruction::Add: {
-                col::Plus &plusExpr = convertAdd(*assignment);
-                convertOperands(plusExpr, llvmInstruction, funcCursor);
+                col::Plus &plusExpr = transformAdd(*assignment);
+                transformOperands(plusExpr, llvmInstruction, funcCursor);
                 break;
             }
             case llvm::Instruction::Sub: {
-                col::Minus &minExpr = convertSub(*assignment);
-                convertOperands(minExpr, llvmInstruction, funcCursor);
+                col::Minus &minExpr = transformSub(*assignment);
+                transformOperands(minExpr, llvmInstruction, funcCursor);
             }
             case llvm::Instruction::Mul: {
-                col::Mult &mulExpr = convertMul(*assignment);
-                convertOperands(mulExpr, llvmInstruction, funcCursor);
+                col::Mult &mulExpr = transformMul(*assignment);
+                transformOperands(mulExpr, llvmInstruction, funcCursor);
             }
             case llvm::Instruction::SDiv:
             case llvm::Instruction::UDiv: {
-                col::Div &divExpr = convertDiv(*assignment);
-                convertOperands(divExpr, llvmInstruction, funcCursor);
+                col::Div &divExpr = transformDiv(*assignment);
+                transformOperands(divExpr, llvmInstruction, funcCursor);
             }
             default:
                 std::stringstream errorStream;
@@ -45,32 +45,32 @@ namespace llvm2Col {
         }
     }
 
-    void convertOperands(auto &binExpr,
-                         llvm::Instruction &llvmInstruction,
-                         vcllvm::FunctionCursor &funcCursor) {
+    void transformOperands(auto &colBinExpr,
+                           llvm::Instruction &llvmInstruction,
+                           vcllvm::FunctionCursor &funcCursor) {
         // transform left operand
-        llvm2Col::transformAndSetExpr(*llvmInstruction.getOperand(0),
-                                      *binExpr.mutable_left(),
-                                      funcCursor);
+        llvm2Col::transformAndSetExpr(
+                funcCursor, *llvmInstruction.getOperand(0),
+                *colBinExpr.mutable_left());
         // transform right operand
-        llvm2Col::transformAndSetExpr(*llvmInstruction.getOperand(1),
-                                      *binExpr.mutable_right(),
-                                      funcCursor);
+        llvm2Col::transformAndSetExpr(
+                funcCursor, *llvmInstruction.getOperand(1),
+                *colBinExpr.mutable_right());
     }
 
-    col::Plus &convertAdd(col::Assign &assignment) {
+    col::Plus &transformAdd(col::Assign &assignment) {
         return *assignment.mutable_value()->mutable_plus();
     }
 
-    col::Minus &convertSub(col::Assign &assignment) {
+    col::Minus &transformSub(col::Assign &assignment) {
         return *assignment.mutable_value()->mutable_minus();
     }
 
-    col::Mult &convertMul(col::Assign &assignment) {
+    col::Mult &transformMul(col::Assign &assignment) {
         return *assignment.mutable_value()->mutable_mult();
     }
 
-    col::Div &convertDiv(col::Assign &assignment) {
+    col::Div &transformDiv(col::Assign &assignment) {
         return *assignment.mutable_value()->mutable_div();
     }
 

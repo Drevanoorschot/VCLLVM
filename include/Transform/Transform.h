@@ -14,14 +14,14 @@ namespace llvm2Col {
     // type transformers
     void transformAndSetType(llvm::Type &llvmType, col::Type &colType);
 
-    void transformAndSetIntegerValue(col::IntegerValue &colIntegerValue, llvm::APInt &apInt);
+    void transformAndSetIntegerValue(llvm::APInt &apInt, col::IntegerValue &colIntegerValue);
 
     // expression transformers
-    void transformAndSetExpr(llvm::Value &llvmValue, col::Expr &colExpr, vcllvm::FunctionCursor &functionCursor);
+    void transformAndSetExpr(vcllvm::FunctionCursor &functionCursor, llvm::Value &llvmValue, col::Expr &colExpr);
 
     void transformAndSetConstExpr(llvm::Constant &llvmConstant, col::Expr &colExpr);
 
-    void transformAndSetVarExpr(llvm::Value &llvmValue, col::Expr &colExpr, vcllvm::FunctionCursor &functionCursor);
+    void transformAndSetVarExpr(vcllvm::FunctionCursor &functionCursor, llvm::Value &llvmValue, col::Expr &colExpr);
 
     template<class IDNode>
     void setColNodeId(IDNode &idNode) {

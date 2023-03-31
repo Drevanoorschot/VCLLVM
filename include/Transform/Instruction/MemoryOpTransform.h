@@ -8,8 +8,8 @@
 namespace llvm2Col {
     namespace col = vct::col::serialize;
 
-    void convertMemoryOp(llvm::Instruction &llvmInstruction,
-                         col::Block &colBlock,
-                         vcllvm::FunctionCursor &funcCursor);
+    void transformMemoryOp(llvm::Instruction &llvmInstruction,
+                           col::Block &colBlock,
+                           vcllvm::FunctionCursor &funcCursor);
 }
 #endif //VCLLVM_MEMORYOPTRANSFORM_H

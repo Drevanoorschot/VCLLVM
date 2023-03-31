@@ -10,8 +10,8 @@
 namespace llvm2Col {
     namespace col = vct::col::serialize;
 
-    void convertUnaryOp(llvm::Instruction &llvmInstruction,
-                        col::Block &colBlock,
-                        vcllvm::FunctionCursor &funcCursor);
+    void transformUnaryOp(llvm::Instruction &llvmInstruction,
+                          col::Block &colBlock,
+                          vcllvm::FunctionCursor &funcCursor);
 }
 #endif //VCLLVM_UNARYOPTRANSFORM_H

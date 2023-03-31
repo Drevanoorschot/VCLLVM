@@ -6,6 +6,7 @@ add_library(LLVM2COL STATIC
         Instruction/CastOpTransform.cpp
         Instruction/FuncletPadOpTransform.cpp
         Instruction/OtherOpTransform.cpp
+        Instruction/TermOpTransform.cpp
         BlockTransform.cpp)
 target_link_libraries(LLVM2COL proto-objects Util)
 target_include_directories(LLVM2COL PRIVATE
