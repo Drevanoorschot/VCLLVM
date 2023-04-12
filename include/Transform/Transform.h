@@ -1,13 +1,12 @@
 #ifndef VCLLVM_TRANSFORM_H
 #define VCLLVM_TRANSFORM_H
 
-#include <llvm/IR/Type.h>
-#include "col.pb.h"
 #include "Passes/Function/FunctionBodyTransformer.h"
 
 /**
  * General helper functions for transformations
  */
+
 namespace llvm2Col {
     namespace col = vct::col::serialize;
 

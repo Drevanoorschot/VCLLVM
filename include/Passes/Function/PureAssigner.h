@@ -1,7 +1,6 @@
 #ifndef VCLLVM_PUREASSIGNER_H
 #define VCLLVM_PUREASSIGNER_H
 
-#include <llvm/IR/Type.h>
 #include <llvm/IR/PassManager.h>
 #include "col.pb.h"
 

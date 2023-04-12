@@ -1,7 +1,7 @@
 #include "Transform/Instruction/TermOpTransform.h"
+
 #include "Transform/Transform.h"
 #include "Transform/BlockTransform.h"
-
 #include "Util/Exceptions.h"
 
 namespace llvm2Col {

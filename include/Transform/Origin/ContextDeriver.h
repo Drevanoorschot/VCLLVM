@@ -1,5 +1,8 @@
 #ifndef VCLLVM_CONTEXTDERIVER_H
 #define VCLLVM_CONTEXTDERIVER_H
+
+#include <llvm/IR/Value.h>
+
 namespace llvm2Col {
     // function derivers
     std::string deriveFunctionContext(llvm::Function &llvmFunction);

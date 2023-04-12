@@ -1,11 +1,8 @@
 #ifndef VCLLVM_FUNCTIONBODYTRANSFORMER_H
 #define VCLLVM_FUNCTIONBODYTRANSFORMER_H
-
 #include <llvm/Analysis/LoopInfo.h>
-#include <llvm/IR/PassManager.h>
 
 #include "col.pb.h"
-
 namespace vcllvm {
     using namespace llvm;
     namespace col = vct::col::serialize;

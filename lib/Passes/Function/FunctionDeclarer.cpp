@@ -1,4 +1,5 @@
 #include "Passes/Function/FunctionDeclarer.h"
+
 #include "Transform/Transform.h"
 #include "Transform/Origin/OriginProvider.h"
 #include "Util/Exceptions.h"

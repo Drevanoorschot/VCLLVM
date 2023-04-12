@@ -1,5 +1,8 @@
 #ifndef VCLLVM_SHORTPOSITIONDERIVER_H
 #define VCLLVM_SHORTPOSITIONDERIVER_H
+
+#include <llvm/IR/Module.h>
+
 namespace llvm2Col {
     std::string deriveModuleShortPosition(llvm::Module &llvmModule);
 

@@ -1,4 +1,5 @@
 #include "Passes/Function/PureAssigner.h"
+
 #include "Passes/Function/FunctionDeclarer.h"
 #include "Util/Constants.h"
 #include "Util/Exceptions.h"

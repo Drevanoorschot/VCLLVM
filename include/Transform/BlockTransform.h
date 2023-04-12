@@ -1,13 +1,6 @@
 #ifndef VCLLVM_BLOCKTRANSFORM_H
 #define VCLLVM_BLOCKTRANSFORM_H
-
-
-#include <llvm/IR/BasicBlock.h>
-#include <llvm/IR/Instructions.h>
-
 #include "Passes/Function/FunctionBodyTransformer.h"
-
-#include "col.pb.h"
 
 namespace llvm2Col {
     namespace col = vct::col::serialize;

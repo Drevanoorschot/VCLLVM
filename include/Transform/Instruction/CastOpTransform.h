@@ -1,10 +1,7 @@
 #ifndef VCLLVM_CASTOPTRANSFORM_H
 #define VCLLVM_CASTOPTRANSFORM_H
-#include <llvm/IR/Instruction.h>
-
 #include "Passes/Function/FunctionBodyTransformer.h"
 
-#include "col.pb.h"
 namespace llvm2Col {
     namespace col = vct::col::serialize;
 

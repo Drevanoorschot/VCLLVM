@@ -1,6 +1,6 @@
 #ifndef VCLLVM_CONSTANTS_H
 #define VCLLVM_CONSTANTS_H
-#include "string"
+#include <string>
 
 namespace vcllvm::constants {
     const std::string VC_PREFIX = "VC.";

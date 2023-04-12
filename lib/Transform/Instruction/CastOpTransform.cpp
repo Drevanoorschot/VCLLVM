@@ -1,4 +1,6 @@
 #include "Transform/Instruction/CastOpTransform.h"
+
+#include "Passes/Function/FunctionBodyTransformer.h"
 #include "Util/Exceptions.h"
 
 namespace llvm2Col {
