@@ -2,7 +2,7 @@
 
 ## Requirements
 - CMake (>=3.4.3)
-- LLVM (15.0.6)
+- LLVM (15.0.7)
 - Protobuf (3.21.9)
 
 ## Building

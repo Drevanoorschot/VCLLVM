@@ -93,6 +93,7 @@ int main(int argc, char **argv) {
         smDiag.print(inputFileName.c_str(), vcllvm::errs());
         return EXIT_FAILURE;
     }
+    pModule->setSourceFileName(inputFileName);
     vcllvm::Module *module = pModule.release();
     auto pProgram = std::make_shared<col::Program>();
     // Create the analysis managers.

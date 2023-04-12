@@ -1,7 +1,8 @@
 #include "Transform/Instruction/TermOpTransform.h"
-#include "Util/Exceptions.h"
 #include "Transform/Transform.h"
 #include "Transform/BlockTransform.h"
+
+#include "Util/Exceptions.h"
 
 namespace llvm2Col {
     void transformTermOp(llvm::Instruction &llvmInstruction,

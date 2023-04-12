@@ -1,5 +1,6 @@
 #include "Passes/Function/FunctionDeclarer.h"
 #include "Transform/Transform.h"
+#include "Transform/Origin/OriginProvider.h"
 #include "Util/Exceptions.h"
 
 
@@ -47,7 +48,7 @@ namespace vcllvm {
         col::LlvmFunctionDefinition *llvmFuncDef = llvmFuncDefDecl->mutable_llvm_function_definition();
         // add body block + scope
         ColScopedFuncBody funcScopedBody{};
-        funcScopedBody.scope = llvmFuncDef->mutable_body()->mutable_scope();
+        funcScopedBody.scope = llvmFuncDef->mutable_function_body()->mutable_scope();
         funcScopedBody.block = funcScopedBody.scope->mutable_body()->mutable_block();
         FDResult result = FDResult(*llvmFuncDef, funcScopedBody);
         // set args (if present)
@@ -78,7 +79,7 @@ namespace vcllvm {
     PreservedAnalyses FunctionDeclarerPass::run(Function &F, FunctionAnalysisManager &FAM) {
         FDResult result = FAM.getResult<FunctionDeclarer>(F);
         col::LlvmFunctionDefinition &colFunction = result.getAssociatedColFuncDef();
-        // complete the procedure declaration in proto buffer
+        // complete the function declaration in proto buffer
         // set return type in protobuf of function
         try {
             llvm2Col::transformAndSetType(*F.getReturnType(), *colFunction.mutable_return_type());
@@ -87,6 +88,8 @@ namespace vcllvm {
             errorStream << e.what() << " in return type of function \"" << F.getName().str() << "\"";
             vcllvm::ErrorReporter::addError("Passes::Function::FunctionDeclarer", errorStream.str());
         }
+        // set origin
+        colFunction.set_origin(llvm2Col::generateFuncDefOrigin(F));
         return PreservedAnalyses::all();
     }
 }

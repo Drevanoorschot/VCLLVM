@@ -22,8 +22,9 @@ namespace llvm2Col {
             case llvm::Type::IntegerTyID:
                 if (llvmType.getIntegerBitWidth() == 1) {
                     colType.mutable_t_bool();
+                } else {
+                    colType.mutable_t_int();
                 }
-                colType.mutable_t_int();
                 break;
             default:
                 throw vcllvm::UnsupportedTypeException("Type not supported");
@@ -34,9 +35,8 @@ namespace llvm2Col {
     void transformAndSetExpr(vcllvm::FunctionCursor &functionCursor,
                              llvm::Value &llvmValue,
                              col::Expr &colExpr) {
-        auto llvmConst = llvm::dyn_cast<llvm::Constant>(&llvmValue);
-        if (llvmConst != nullptr) {
-            transformAndSetConstExpr(*llvmConst, colExpr);
+        if (llvm::isa<llvm::Constant>(llvmValue)) {
+            transformAndSetConstExpr(llvm::cast<llvm::Constant>(llvmValue), colExpr);
         } else {
             transformAndSetVarExpr(functionCursor, llvmValue, colExpr);
         }

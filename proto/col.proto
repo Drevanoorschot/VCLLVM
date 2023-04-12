@@ -3,19 +3,23 @@ package vct.col.serialize;
 
 message BigInt {
   required bytes data = 1;
+  optional string origin = 2;
 }
 
 message BigDecimal {
   required int32 scale = 1;
   required BigInt unscaled_value = 2;
+  optional string origin = 3;
 }
 
 message Ref {
   required int64 index = 1;
+  optional string origin = 2;
 }
 
 message ExpectedErrors {
 
+  optional string origin = 1;
 }
 
 message GlobalDeclaration {
@@ -45,6 +49,7 @@ message GlobalDeclaration {
     LlvmFunctionDefinition llvm_function_definition = 22;
     SilverField silver_field = 23;
   }
+  optional string origin = 24;
 }
 
 message ClassDeclaration {
@@ -72,6 +77,7 @@ message ClassDeclaration {
     BipPort bip_port = 20;
     PVLConstructor p_v_l_constructor = 21;
   }
+  optional string origin = 22;
 }
 
 message ADTDeclaration {
@@ -81,6 +87,7 @@ message ADTDeclaration {
     ADTAxiom a_d_t_axiom = 2;
     ADTFunction a_d_t_function = 3;
   }
+  optional string origin = 4;
 }
 
 message ModelDeclaration {
@@ -91,6 +98,7 @@ message ModelDeclaration {
     ModelProcess model_process = 3;
     ModelAction model_action = 4;
   }
+  optional string origin = 5;
 }
 
 message Type {
@@ -142,6 +150,7 @@ message Type {
     PVLNamedType p_v_l_named_type = 45;
     SilverPartialTAxiomatic silver_partial_t_axiomatic = 46;
   }
+  optional string origin = 47;
 }
 
 message ParRegion {
@@ -150,6 +159,7 @@ message ParRegion {
     ParSequential par_sequential = 2;
     ParBlock par_block = 3;
   }
+  optional string origin = 4;
 }
 
 message LoopContract {
@@ -157,6 +167,7 @@ message LoopContract {
     LoopInvariant loop_invariant = 1;
     IterationContract iteration_contract = 2;
   }
+  optional string origin = 3;
 }
 
 message Statement {
@@ -223,6 +234,7 @@ message Statement {
     SilverFieldAssign silver_field_assign = 60;
     SilverLocalAssign silver_local_assign = 61;
   }
+  optional string origin = 62;
 }
 
 message Operator {
@@ -230,6 +242,7 @@ message Operator {
     OperatorLeftPlus operator_left_plus = 1;
     OperatorRightPlus operator_right_plus = 2;
   }
+  optional string origin = 3;
 }
 
 message DecreasesClause {
@@ -238,6 +251,7 @@ message DecreasesClause {
     DecreasesClauseNoRecursion decreases_clause_no_recursion = 2;
     DecreasesClauseTuple decreases_clause_tuple = 3;
   }
+  optional string origin = 4;
 }
 
 message AccountedPredicate {
@@ -245,12 +259,14 @@ message AccountedPredicate {
     UnitAccountedPredicate unit_accounted_predicate = 1;
     SplitAccountedPredicate split_accounted_predicate = 2;
   }
+  optional string origin = 3;
 }
 
 message FieldFlag {
   oneof v {
     Final final = 1;
   }
+  optional string origin = 2;
 }
 
 message Coercion {
@@ -298,6 +314,7 @@ message Coercion {
     CoerceRatZFrac coerce_rat_z_frac = 41;
     CoerceZFracFrac coerce_z_frac_frac = 42;
   }
+  optional string origin = 43;
 }
 
 message Expr {
@@ -552,6 +569,7 @@ message Expr {
     SilverPartialADTFunctionInvocation silver_partial_a_d_t_function_invocation = 248;
     SilverUntypedNonemptyLiteralMap silver_untyped_nonempty_literal_map = 249;
   }
+  optional string origin = 250;
 }
 
 message Location {
@@ -565,6 +583,7 @@ message Location {
     InstancePredicateLocation instance_predicate_location = 7;
     AmbiguousLocation ambiguous_location = 8;
   }
+  optional string origin = 9;
 }
 
 message CDeclarationSpecifier {
@@ -590,6 +609,7 @@ message CDeclarationSpecifier {
     CUDAKernel c_u_d_a_kernel = 19;
     OpenCLKernel open_c_l_kernel = 20;
   }
+  optional string origin = 21;
 }
 
 message CTypeQualifier {
@@ -599,6 +619,7 @@ message CTypeQualifier {
     CVolatile c_volatile = 3;
     CAtomic c_atomic = 4;
   }
+  optional string origin = 5;
 }
 
 message CDeclarator {
@@ -609,6 +630,7 @@ message CDeclarator {
     CAnonymousFunctionDeclarator c_anonymous_function_declarator = 4;
     CName c_name = 5;
   }
+  optional string origin = 6;
 }
 
 message GpuMemoryFence {
@@ -617,6 +639,7 @@ message GpuMemoryFence {
     GpuGlobalMemoryFence gpu_global_memory_fence = 2;
     GpuZeroMemoryFence gpu_zero_memory_fence = 3;
   }
+  optional string origin = 4;
 }
 
 message JavaModifier {
@@ -637,6 +660,7 @@ message JavaModifier {
     JavaInline java_inline = 14;
     JavaBipAnnotation java_bip_annotation = 15;
   }
+  optional string origin = 16;
 }
 
 message JavaBipGlueElement {
@@ -646,6 +670,7 @@ message JavaBipGlueElement {
     JavaBipGlueSynchron java_bip_glue_synchron = 3;
     JavaBipGlueDataWire java_bip_glue_data_wire = 4;
   }
+  optional string origin = 5;
 }
 
 message BipPortType {
@@ -654,27 +679,32 @@ message BipPortType {
     BipSpontaneous bip_spontaneous = 2;
     BipInternal bip_internal = 3;
   }
+  optional string origin = 4;
 }
 
 message LlvmLoopContract {
   oneof v {
     LlvmLoopInvariant llvm_loop_invariant = 1;
   }
+  optional string origin = 2;
 }
 
 message SimplificationRule {
   required Expr axiom = 1;
+  optional string origin = 2;
 }
 
 message AxiomaticDataType {
   repeated ADTDeclaration decls = 1;
   repeated Variable type_args = 2;
+  optional string origin = 3;
 }
 
 message VctClass {
   repeated ClassDeclaration declarations = 1;
   repeated Ref supports = 2;
   required Expr intrinsic_lock_invariant = 3;
+  optional string origin = 4;
 }
 
 message VeyMontSeqProg {
@@ -683,16 +713,19 @@ message VeyMontSeqProg {
   repeated VeyMontThread threads = 3;
   required ClassDeclaration run_method = 4;
   repeated ClassDeclaration methods = 5;
+  optional string origin = 6;
 }
 
 message VeyMontThread {
   required int64 id = 1;
   required Type thread_type = 2;
   repeated Expr args = 3;
+  optional string origin = 4;
 }
 
 message Model {
   repeated ModelDeclaration declarations = 1;
+  optional string origin = 2;
 }
 
 message Function {
@@ -703,6 +736,7 @@ message Function {
   required ApplicableContract contract = 5;
   required bool inline = 6;
   required bool thread_local = 7;
+  optional string origin = 8;
 }
 
 message Procedure {
@@ -714,6 +748,7 @@ message Procedure {
   required ApplicableContract contract = 6;
   required bool inline = 7;
   required bool pure = 8;
+  optional string origin = 9;
 }
 
 message Predicate {
@@ -721,14 +756,17 @@ message Predicate {
   optional Expr body = 2;
   required bool thread_local = 3;
   required bool inline = 4;
+  optional string origin = 5;
 }
 
 message Enum {
   repeated EnumConstant constants = 1;
+  optional string origin = 2;
 }
 
 message EnumConstant {
   required int64 id = 1;
+  optional string origin = 2;
 }
 
 message InstanceFunction {
@@ -739,6 +777,7 @@ message InstanceFunction {
   required ApplicableContract contract = 5;
   required bool inline = 6;
   required bool thread_local = 7;
+  optional string origin = 8;
 }
 
 message InstanceMethod {
@@ -750,6 +789,7 @@ message InstanceMethod {
   required ApplicableContract contract = 6;
   required bool inline = 7;
   required bool pure = 8;
+  optional string origin = 9;
 }
 
 message InstancePredicate {
@@ -757,16 +797,19 @@ message InstancePredicate {
   optional Expr body = 2;
   required bool thread_local = 3;
   required bool inline = 4;
+  optional string origin = 5;
 }
 
 message InstanceField {
   required Type t = 1;
   repeated FieldFlag flags = 2;
+  optional string origin = 3;
 }
 
 message RunMethod {
   optional Statement body = 1;
   required ApplicableContract contract = 2;
+  optional string origin = 3;
 }
 
 message InstanceOperatorFunction {
@@ -777,6 +820,7 @@ message InstanceOperatorFunction {
   required ApplicableContract contract = 5;
   required bool inline = 6;
   required bool thread_local = 7;
+  optional string origin = 8;
 }
 
 message InstanceOperatorMethod {
@@ -787,10 +831,12 @@ message InstanceOperatorMethod {
   required ApplicableContract contract = 5;
   required bool inline = 6;
   required bool pure = 7;
+  optional string origin = 8;
 }
 
 message ModelField {
   required Type t = 1;
+  optional string origin = 2;
 }
 
 message ModelProcess {
@@ -800,6 +846,7 @@ message ModelProcess {
   required Expr ensures = 4;
   repeated Ref modifies = 5;
   repeated Ref accessible = 6;
+  optional string origin = 7;
 }
 
 message ModelAction {
@@ -808,55 +855,67 @@ message ModelAction {
   required Expr ensures = 3;
   repeated Ref modifies = 4;
   repeated Ref accessible = 5;
+  optional string origin = 6;
 }
 
 message ADTAxiom {
   required Expr axiom = 1;
+  optional string origin = 2;
 }
 
 message ADTFunction {
   repeated Variable args = 1;
   required Type return_type = 2;
+  optional string origin = 3;
 }
 
 message Variable {
   required int64 id = 1;
   required Type t = 2;
+  optional string origin = 3;
 }
 
 message LabelDecl {
   required int64 id = 1;
+  optional string origin = 2;
 }
 
 message SendDecl {
   required int64 id = 1;
+  optional string origin = 2;
 }
 
 message ParBlockDecl {
   required int64 id = 1;
+  optional string origin = 2;
 }
 
 message ParInvariantDecl {
   required int64 id = 1;
+  optional string origin = 2;
 }
 
 message CParam {
   required int64 id = 1;
   repeated CDeclarationSpecifier specifiers = 2;
   required CDeclarator declarator = 3;
+  optional string origin = 4;
 }
 
 message CTranslationUnit {
   repeated GlobalDeclaration declarations = 1;
+  optional string origin = 2;
 }
 
 message CGlobalDeclaration {
   required CDeclaration decl = 1;
+  optional string origin = 2;
 }
 
 message CLocalDeclaration {
   required int64 id = 1;
   required CDeclaration decl = 2;
+  optional string origin = 3;
 }
 
 message CFunctionDefinition {
@@ -864,12 +923,14 @@ message CFunctionDefinition {
   repeated CDeclarationSpecifier specs = 2;
   required CDeclarator declarator = 3;
   required Statement body = 4;
+  optional string origin = 5;
 }
 
 message JavaNamespace {
   optional JavaName pkg = 1;
   repeated JavaImport imports = 2;
   repeated GlobalDeclaration declarations = 3;
+  optional string origin = 4;
 }
 
 message JavaClass {
@@ -880,6 +941,7 @@ message JavaClass {
   required Type ext = 5;
   repeated Type imp = 6;
   repeated ClassDeclaration decls = 7;
+  optional string origin = 8;
 }
 
 message JavaInterface {
@@ -888,6 +950,7 @@ message JavaInterface {
   repeated Variable type_params = 3;
   repeated Type ext = 4;
   repeated ClassDeclaration decls = 5;
+  optional string origin = 6;
 }
 
 message JavaAnnotationInterface {
@@ -895,17 +958,20 @@ message JavaAnnotationInterface {
   repeated JavaModifier modifiers = 2;
   required Type ext = 3;
   repeated ClassDeclaration decls = 4;
+  optional string origin = 5;
 }
 
 message JavaSharedInitialization {
   required bool is_static = 1;
   required Statement initialization = 2;
+  optional string origin = 3;
 }
 
 message JavaFields {
   repeated JavaModifier modifiers = 1;
   required Type t = 2;
   repeated JavaVariableDeclaration decls = 3;
+  optional string origin = 4;
 }
 
 message JavaConstructor {
@@ -916,6 +982,7 @@ message JavaConstructor {
   repeated Type signals = 5;
   required Statement body = 6;
   required ApplicableContract contract = 7;
+  optional string origin = 8;
 }
 
 message JavaParam {
@@ -923,6 +990,7 @@ message JavaParam {
   repeated JavaModifier modifiers = 2;
   required string name = 3;
   required Type t = 4;
+  optional string origin = 5;
 }
 
 message JavaMethod {
@@ -935,12 +1003,14 @@ message JavaMethod {
   repeated Type signals = 7;
   optional Statement body = 8;
   required ApplicableContract contract = 9;
+  optional string origin = 10;
 }
 
 message JavaAnnotationMethod {
   required Type return_type = 1;
   required string name = 2;
   optional Expr default = 3;
+  optional string origin = 4;
 }
 
 message JavaLocalDeclaration {
@@ -948,30 +1018,36 @@ message JavaLocalDeclaration {
   repeated JavaModifier modifiers = 2;
   required Type t = 3;
   repeated JavaVariableDeclaration decls = 4;
+  optional string origin = 5;
 }
 
 message JavaBipGlueContainer {
   required Expr job = 1;
+  optional string origin = 2;
 }
 
 message BipGlue {
   repeated BipGlueRequires requires = 1;
   repeated BipGlueAccepts accepts = 2;
   repeated BipGlueDataWire data_wires = 3;
+  optional string origin = 4;
 }
 
 message BipIncomingData {
   required Type t = 1;
+  optional string origin = 2;
 }
 
 message BipOutgoingData {
   required Type t = 1;
   required Statement body = 2;
   required bool pure = 3;
+  optional string origin = 4;
 }
 
 message BipStatePredicate {
   required Expr expr = 1;
+  optional string origin = 2;
 }
 
 message BipTransition {
@@ -984,12 +1060,14 @@ message BipTransition {
   required Expr requires = 7;
   required Expr ensures = 8;
   required Statement body = 9;
+  optional string origin = 10;
 }
 
 message BipGuard {
   repeated Ref data = 1;
   required Statement body = 2;
   required bool pure = 3;
+  optional string origin = 4;
 }
 
 message BipComponent {
@@ -997,212 +1075,261 @@ message BipComponent {
   repeated Ref constructors = 2;
   required Expr invariant = 3;
   required Ref initial = 4;
+  optional string origin = 5;
 }
 
 message BipPort {
   required BipPortType t = 1;
+  optional string origin = 2;
 }
 
 message BipPortSynchronization {
   repeated Ref ports = 1;
   repeated BipGlueDataWire wires = 2;
+  optional string origin = 3;
 }
 
 message BipTransitionSynchronization {
   repeated Ref transitions = 1;
   repeated BipGlueDataWire wires = 2;
+  optional string origin = 3;
 }
 
 message LlvmFunctionDefinition {
   required Type return_type = 1;
   repeated Variable args = 2;
-  required Statement body = 3;
+  required Statement function_body = 3;
   required LlvmFunctionContract contract = 4;
   required bool pure = 5;
+  optional string origin = 6;
 }
 
 message PVLConstructor {
   required ApplicableContract contract = 1;
   repeated Variable args = 2;
   optional Statement body = 3;
+  optional string origin = 4;
 }
 
 message SilverField {
   required Type t = 1;
+  optional string origin = 2;
 }
 
 message Verification {
   repeated VerificationContext tasks = 1;
   required ExpectedErrors expected_errors = 2;
+  optional string origin = 3;
 }
 
 message VerificationContext {
   required Program program = 1;
+  optional string origin = 2;
 }
 
 message Program {
   repeated GlobalDeclaration declarations = 1;
+  optional string origin = 2;
 }
 
 message TNotAValue {
 
+  optional string origin = 1;
 }
 
 message TUnion {
   repeated Type types = 1;
+  optional string origin = 2;
 }
 
 message TArray {
   required Type element = 1;
+  optional string origin = 2;
 }
 
 message TPointer {
   required Type element = 1;
+  optional string origin = 2;
 }
 
 message TType {
   required Type t = 1;
+  optional string origin = 2;
 }
 
 message TVar {
   required Ref ref = 1;
+  optional string origin = 2;
 }
 
 message TSeq {
   required Type element = 1;
+  optional string origin = 2;
 }
 
 message TSet {
   required Type element = 1;
+  optional string origin = 2;
 }
 
 message TBag {
   required Type element = 1;
+  optional string origin = 2;
 }
 
 message TMap {
   required Type key = 1;
   required Type value = 2;
+  optional string origin = 3;
 }
 
 message TOption {
   required Type element = 1;
+  optional string origin = 2;
 }
 
 message TTuple {
   repeated Type elements = 1;
+  optional string origin = 2;
 }
 
 message TEither {
   required Type left = 1;
   required Type right = 2;
+  optional string origin = 3;
 }
 
 message TMatrix {
   required Type element = 1;
+  optional string origin = 2;
 }
 
 message TAny {
 
+  optional string origin = 1;
 }
 
 message TNothing {
 
+  optional string origin = 1;
 }
 
 message TVoid {
 
+  optional string origin = 1;
 }
 
 message TNull {
 
+  optional string origin = 1;
 }
 
 message TBool {
 
+  optional string origin = 1;
 }
 
 message TResource {
 
+  optional string origin = 1;
 }
 
 message TChar {
 
+  optional string origin = 1;
 }
 
 message TString {
 
+  optional string origin = 1;
 }
 
 message TRef {
 
+  optional string origin = 1;
 }
 
 message TProcess {
 
+  optional string origin = 1;
 }
 
 message TInt {
 
+  optional string origin = 1;
 }
 
 message TBoundedInt {
   required BigInt gte = 1;
   required BigInt lt = 2;
+  optional string origin = 3;
 }
 
 message TFloat {
   required int32 exponent = 1;
   required int32 mantissa = 2;
+  optional string origin = 3;
 }
 
 message TRational {
 
+  optional string origin = 1;
 }
 
 message TFraction {
 
+  optional string origin = 1;
 }
 
 message TZFraction {
 
+  optional string origin = 1;
 }
 
 message TModel {
   required Ref model = 1;
+  optional string origin = 2;
 }
 
 message TClass {
   required Ref cls = 1;
+  optional string origin = 2;
 }
 
 message TSeqProg {
   required Ref cls = 1;
+  optional string origin = 2;
 }
 
 message TVeyMontThread {
   required Ref cls = 1;
+  optional string origin = 2;
 }
 
 message TAnyClass {
 
+  optional string origin = 1;
 }
 
 message TAxiomatic {
   required Ref adt = 1;
   repeated Type args = 2;
+  optional string origin = 3;
 }
 
 message TEnum {
   required Ref enum = 1;
+  optional string origin = 2;
 }
 
 message ParParallel {
   repeated ParRegion regions = 1;
+  optional string origin = 2;
 }
 
 message ParSequential {
   repeated ParRegion regions = 1;
+  optional string origin = 2;
 }
 
 message ParBlock {
@@ -1212,150 +1339,184 @@ message ParBlock {
   required Expr requires = 4;
   required Expr ensures = 5;
   required Statement content = 6;
+  optional string origin = 7;
 }
 
 message LoopInvariant {
   required Expr invariant = 1;
   optional DecreasesClause decreases = 2;
+  optional string origin = 3;
 }
 
 message IterationContract {
   required Expr requires = 1;
   required Expr ensures = 2;
   required Expr context_everywhere = 3;
+  optional string origin = 4;
 }
 
 message CatchClause {
   required Variable decl = 1;
   required Statement body = 2;
+  optional string origin = 3;
 }
 
 message IterVariable {
   required Variable variable = 1;
   required Expr from = 2;
   required Expr to = 3;
+  optional string origin = 4;
 }
 
 message LocalDecl {
   required Variable local = 1;
+  optional string origin = 2;
 }
 
 message SpecIgnoreStart {
 
+  optional string origin = 1;
 }
 
 message SpecIgnoreEnd {
 
+  optional string origin = 1;
 }
 
 message Assign {
   required Expr target = 1;
   required Expr value = 2;
+  optional string origin = 3;
 }
 
 message Send {
   required SendDecl decl = 1;
   required BigInt delta = 2;
   required Expr res = 3;
+  optional string origin = 4;
 }
 
 message Recv {
   required Ref ref = 1;
+  optional string origin = 2;
 }
 
 message DefaultCase {
 
+  optional string origin = 1;
 }
 
 message Case {
   required Expr pattern = 1;
+  optional string origin = 2;
 }
 
 message Label {
   required LabelDecl decl = 1;
   required Statement stat = 2;
+  optional string origin = 3;
 }
 
 message Goto {
   required Ref lbl = 1;
+  optional string origin = 2;
 }
 
 message Exhale {
   required Expr res = 1;
+  optional string origin = 2;
 }
 
 message VctAssert {
   required Expr res = 1;
+  optional string origin = 2;
 }
 
 message Refute {
   required Expr assn = 1;
+  optional string origin = 2;
 }
 
 message Inhale {
   required Expr res = 1;
+  optional string origin = 2;
 }
 
 message Assume {
   required Expr assn = 1;
+  optional string origin = 2;
 }
 
 message Wait {
   required Expr obj = 1;
+  optional string origin = 2;
 }
 
 message Notify {
   required Expr obj = 1;
+  optional string origin = 2;
 }
 
 message Fork {
   required Expr obj = 1;
+  optional string origin = 2;
 }
 
 message Join {
   required Expr obj = 1;
+  optional string origin = 2;
 }
 
 message Lock {
   required Expr obj = 1;
+  optional string origin = 2;
 }
 
 message Unlock {
   required Expr obj = 1;
+  optional string origin = 2;
 }
 
 message Commit {
   required Expr obj = 1;
+  optional string origin = 2;
 }
 
 message Fold {
   required Expr res = 1;
+  optional string origin = 2;
 }
 
 message Unfold {
   required Expr res = 1;
+  optional string origin = 2;
 }
 
 message WandApply {
   required Expr res = 1;
+  optional string origin = 2;
 }
 
 message Havoc {
   required Expr loc = 1;
+  optional string origin = 2;
 }
 
 message FramedProof {
   required Expr pre = 1;
   required Statement body = 2;
   required Expr post = 3;
+  optional string origin = 4;
 }
 
 message Extract {
   required Statement contracted_statement = 1;
+  optional string origin = 2;
 }
 
 message Eval {
   required Expr expr = 1;
+  optional string origin = 2;
 }
 
 message InvokeProcedure {
@@ -1365,6 +1526,7 @@ message InvokeProcedure {
   repeated Type type_args = 4;
   repeated RefExpr given_map = 5;
   repeated ExprRef yields = 6;
+  optional string origin = 7;
 }
 
 message InvokeMethod {
@@ -1375,44 +1537,54 @@ message InvokeMethod {
   repeated Type type_args = 5;
   repeated RefExpr given_map = 6;
   repeated ExprRef yields = 7;
+  optional string origin = 8;
 }
 
 message Return {
   required Expr result = 1;
+  optional string origin = 2;
 }
 
 message Throw {
   required Expr obj = 1;
+  optional string origin = 2;
 }
 
 message Break {
   optional Ref label = 1;
+  optional string origin = 2;
 }
 
 message Continue {
   optional Ref label = 1;
+  optional string origin = 2;
 }
 
 message Block {
   repeated Statement statements = 1;
+  optional string origin = 2;
 }
 
 message Scope {
   repeated Variable locals = 1;
   required Statement body = 2;
+  optional string origin = 3;
 }
 
 message Branch {
   repeated ExprStatement branches = 1;
+  optional string origin = 2;
 }
 
 message IndetBranch {
   repeated Statement branches = 1;
+  optional string origin = 2;
 }
 
 message Switch {
   required Expr expr = 1;
   required Statement body = 2;
+  optional string origin = 3;
 }
 
 message Loop {
@@ -1421,28 +1593,33 @@ message Loop {
   required Statement update = 3;
   required LoopContract contract = 4;
   required Statement body = 5;
+  optional string origin = 6;
 }
 
 message TryCatchFinally {
   required Statement body = 1;
   required Statement after = 2;
   repeated CatchClause catches = 3;
+  optional string origin = 4;
 }
 
 message Synchronized {
   required Expr obj = 1;
   required Statement body = 2;
+  optional string origin = 3;
 }
 
 message ParInvariant {
   required ParInvariantDecl decl = 1;
   required Expr inv = 2;
   required Statement content = 3;
+  optional string origin = 4;
 }
 
 message ParAtomic {
   repeated Ref inv = 1;
   required Statement content = 2;
+  optional string origin = 3;
 }
 
 message ParBarrier {
@@ -1451,10 +1628,12 @@ message ParBarrier {
   required Expr requires = 3;
   required Expr ensures = 4;
   required Statement content = 5;
+  optional string origin = 6;
 }
 
 message ParStatement {
   required ParRegion impl = 1;
+  optional string origin = 2;
 }
 
 message VecBlock {
@@ -1462,11 +1641,13 @@ message VecBlock {
   required Expr requires = 2;
   required Expr ensures = 3;
   required Statement content = 4;
+  optional string origin = 5;
 }
 
 message WandPackage {
   required Expr res = 1;
   required Statement proof = 2;
+  optional string origin = 3;
 }
 
 message ModelDo {
@@ -1475,31 +1656,38 @@ message ModelDo {
   required Expr after = 3;
   required Expr action = 4;
   required Statement impl = 5;
+  optional string origin = 6;
 }
 
 message OperatorLeftPlus {
 
+  optional string origin = 1;
 }
 
 message OperatorRightPlus {
 
+  optional string origin = 1;
 }
 
 message SignalsClause {
   required Variable binding = 1;
   required Expr assn = 2;
+  optional string origin = 3;
 }
 
 message DecreasesClauseAssume {
 
+  optional string origin = 1;
 }
 
 message DecreasesClauseNoRecursion {
 
+  optional string origin = 1;
 }
 
 message DecreasesClauseTuple {
   repeated Expr exprs = 1;
+  optional string origin = 2;
 }
 
 message ApplicableContract {
@@ -1510,41 +1698,50 @@ message ApplicableContract {
   repeated Variable given_args = 5;
   repeated Variable yields_args = 6;
   optional DecreasesClause decreases = 7;
+  optional string origin = 8;
 }
 
 message UnitAccountedPredicate {
   required Expr pred = 1;
+  optional string origin = 2;
 }
 
 message SplitAccountedPredicate {
   required AccountedPredicate left = 1;
   required AccountedPredicate right = 2;
+  optional string origin = 3;
 }
 
 message Final {
 
+  optional string origin = 1;
 }
 
 message CoerceIdentity {
   required Type source = 1;
+  optional string origin = 2;
 }
 
 message CoercionSequence {
   repeated Coercion coercions = 1;
+  optional string origin = 2;
 }
 
 message CoerceNothingSomething {
   required Type target = 1;
+  optional string origin = 2;
 }
 
 message CoerceSomethingAny {
   required Type source = 1;
+  optional string origin = 2;
 }
 
 message CoerceJoinUnion {
   repeated Coercion inner = 1;
   repeated Type source = 2;
   required Type target = 3;
+  optional string origin = 4;
 }
 
 message CoerceSelectUnion {
@@ -1552,479 +1749,581 @@ message CoerceSelectUnion {
   required Type source = 2;
   repeated Type target_alts = 3;
   required int32 index = 4;
+  optional string origin = 5;
 }
 
 message CoerceBoolResource {
 
+  optional string origin = 1;
 }
 
 message CoerceNullRef {
 
+  optional string origin = 1;
 }
 
 message CoerceNullArray {
   required Type array_element_type = 1;
+  optional string origin = 2;
 }
 
 message CoerceNullClass {
   required Ref target_class = 1;
+  optional string origin = 2;
 }
 
 message CoerceNullJavaClass {
   required Ref target_class = 1;
+  optional string origin = 2;
 }
 
 message CoerceNullAnyClass {
 
+  optional string origin = 1;
 }
 
 message CoerceNullPointer {
   required Type pointer_element_type = 1;
+  optional string origin = 2;
 }
 
 message CoerceNullEnum {
   required Ref target_enum = 1;
+  optional string origin = 2;
 }
 
 message CoerceCArrayPointer {
   required Type element_type = 1;
+  optional string origin = 2;
 }
 
 message CoerceFracZFrac {
 
+  optional string origin = 1;
 }
 
 message CoerceZFracRat {
 
+  optional string origin = 1;
 }
 
 message CoerceFloatRat {
   required Type source = 1;
+  optional string origin = 2;
 }
 
 message CoerceIntRat {
 
+  optional string origin = 1;
 }
 
 message CoerceIncreasePrecision {
   required Type source = 1;
   required Type target = 2;
+  optional string origin = 3;
 }
 
 message CoerceWidenBound {
   required Type source = 1;
   required Type target = 2;
+  optional string origin = 3;
 }
 
 message CoerceUnboundInt {
   required Type source = 1;
+  optional string origin = 2;
 }
 
 message CoerceBoundIntFrac {
 
+  optional string origin = 1;
 }
 
 message CoerceBoundIntZFrac {
   required Type source = 1;
+  optional string origin = 2;
 }
 
 message CoerceBoundIntFloat {
   required Type source = 1;
   required Type target = 2;
+  optional string origin = 3;
 }
 
 message CoerceSupports {
   required Ref source_class = 1;
   required Ref target_class = 2;
+  optional string origin = 3;
 }
 
 message CoerceJavaSupports {
   required Ref source_class = 1;
   required Ref target_class = 2;
+  optional string origin = 3;
 }
 
 message CoerceClassAnyClass {
   required Ref source_class = 1;
+  optional string origin = 2;
 }
 
 message CoerceJavaClassAnyClass {
   required Ref source_class = 1;
+  optional string origin = 2;
 }
 
 message CoerceCPrimitiveToCol {
   required Type source = 1;
   required Type target = 2;
+  optional string origin = 3;
 }
 
 message CoerceColToCPrimitive {
   required Type source = 1;
   required Type target = 2;
+  optional string origin = 3;
 }
 
 message CoerceMapOption {
   required Coercion inner = 1;
   required Type source_option_element = 2;
   required Type target_option_element = 3;
+  optional string origin = 4;
 }
 
 message CoerceMapTuple {
   repeated Coercion inner = 1;
   repeated Type source_types = 2;
   repeated Type target_types = 3;
+  optional string origin = 4;
 }
 
 message CoerceMapEither {
   required CoercionCoercion inner = 1;
   required TypeType source_types = 2;
   required TypeType target_types = 3;
+  optional string origin = 4;
 }
 
 message CoerceMapSeq {
   required Coercion inner = 1;
   required Type source_seq_element = 2;
   required Type target_seq_element = 3;
+  optional string origin = 4;
 }
 
 message CoerceMapSet {
   required Coercion inner = 1;
   required Type source_set_element = 2;
   required Type target_set_element = 3;
+  optional string origin = 4;
 }
 
 message CoerceMapBag {
   required Coercion inner = 1;
   required Type source_bag_element = 2;
   required Type target_bag_element = 3;
+  optional string origin = 4;
 }
 
 message CoerceMapMatrix {
   required Coercion inner = 1;
   required Type source_matrix_element = 2;
   required Type target_matrix_element = 3;
+  optional string origin = 4;
 }
 
 message CoerceMapMap {
   required Coercion inner = 1;
   required TypeType source_types = 2;
   required TypeType target_types = 3;
+  optional string origin = 4;
 }
 
 message CoerceMapType {
   required Coercion inner = 1;
   required Type source_bound = 2;
   required Type target_bound = 3;
+  optional string origin = 4;
 }
 
 message CoerceRatZFrac {
 
+  optional string origin = 1;
 }
 
 message CoerceZFracFrac {
 
+  optional string origin = 1;
 }
 
 message IntegerValue {
   required BigInt value = 1;
+  optional string origin = 2;
 }
 
 message BooleanValue {
   required bool value = 1;
+  optional string origin = 2;
 }
 
 message FloatValue {
   required BigDecimal value = 1;
   required Type t = 2;
+  optional string origin = 3;
 }
 
 message StringValue {
   required string value = 1;
+  optional string origin = 2;
 }
 
 message CharValue {
   required int32 value = 1;
+  optional string origin = 2;
 }
 
 message LiteralSeq {
   required Type element = 1;
   repeated Expr values = 2;
+  optional string origin = 3;
 }
 
 message LiteralSet {
   required Type element = 1;
   repeated Expr values = 2;
+  optional string origin = 3;
 }
 
 message LiteralBag {
   required Type element = 1;
   repeated Expr values = 2;
+  optional string origin = 3;
 }
 
 message LiteralTuple {
   repeated Type ts = 1;
   repeated Expr values = 2;
+  optional string origin = 3;
 }
 
 message LiteralMap {
   required Type k = 1;
   required Type v = 2;
   repeated ExprExpr values = 3;
+  optional string origin = 4;
 }
 
 message UntypedLiteralSeq {
   repeated Expr values = 1;
+  optional string origin = 2;
 }
 
 message UntypedLiteralSet {
   repeated Expr values = 1;
+  optional string origin = 2;
 }
 
 message UntypedLiteralBag {
   repeated Expr values = 1;
+  optional string origin = 2;
 }
 
 message Void {
 
+  optional string origin = 1;
 }
 
 message Null {
 
+  optional string origin = 1;
 }
 
 message NoPerm {
 
+  optional string origin = 1;
 }
 
 message WritePerm {
 
+  optional string origin = 1;
 }
 
 message OptSome {
   required Expr e = 1;
+  optional string origin = 2;
 }
 
 message OptSomeTyped {
   required Type element = 1;
   required Expr e = 2;
+  optional string origin = 3;
 }
 
 message OptNone {
 
+  optional string origin = 1;
 }
 
 message OptNoneTyped {
   required Type element = 1;
+  optional string origin = 2;
 }
 
 message Range {
   required Expr from = 1;
   required Expr to = 2;
+  optional string origin = 3;
 }
 
 message EitherLeft {
   required Expr e = 1;
+  optional string origin = 2;
 }
 
 message EitherRight {
   required Expr e = 1;
+  optional string origin = 2;
 }
 
 message MapCons {
   required Expr map = 1;
   required Expr k = 2;
   required Expr v = 3;
+  optional string origin = 4;
 }
 
 message AmbiguousThis {
 
+  optional string origin = 1;
 }
 
 message ThisObject {
   required Ref cls = 1;
+  optional string origin = 2;
 }
 
 message ThisModel {
   required Ref cls = 1;
+  optional string origin = 2;
 }
 
 message ThisSeqProg {
   required Ref cls = 1;
+  optional string origin = 2;
 }
 
 message AmbiguousResult {
 
+  optional string origin = 1;
 }
 
 message Result {
   required Ref applicable = 1;
+  optional string origin = 2;
 }
 
 message CurrentThreadId {
 
+  optional string origin = 1;
 }
 
 message LocalThreadId {
 
+  optional string origin = 1;
 }
 
 message GlobalThreadId {
 
+  optional string origin = 1;
 }
 
 message Any {
 
+  optional string origin = 1;
 }
 
 message ReadPerm {
 
+  optional string origin = 1;
 }
 
 message Values {
   required Expr arr = 1;
   required Expr from = 2;
   required Expr to = 3;
+  optional string origin = 4;
 }
 
 message MapEq {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message MapDisjoint {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message MapKeySet {
   required Expr map = 1;
+  optional string origin = 2;
 }
 
 message MapValueSet {
   required Expr map = 1;
+  optional string origin = 2;
 }
 
 message MapItemSet {
   required Expr map = 1;
+  optional string origin = 2;
 }
 
 message MapRemove {
   required Expr map = 1;
   required Expr k = 2;
+  optional string origin = 3;
 }
 
 message Forall {
   repeated Variable bindings = 1;
   repeated SeqExpr triggers = 2;
   required Expr body = 3;
+  optional string origin = 4;
 }
 
 message Starall {
   repeated Variable bindings = 1;
   repeated SeqExpr triggers = 2;
   required Expr body = 3;
+  optional string origin = 4;
 }
 
 message Exists {
   repeated Variable bindings = 1;
   repeated SeqExpr triggers = 2;
   required Expr body = 3;
+  optional string origin = 4;
 }
 
 message Sum {
   repeated Variable bindings = 1;
   required Expr condition = 2;
   required Expr main = 3;
+  optional string origin = 4;
 }
 
 message Product {
   repeated Variable bindings = 1;
   required Expr condition = 2;
   required Expr main = 3;
+  optional string origin = 4;
 }
 
 message ForPerm {
   repeated Variable bindings = 1;
   required Location loc = 2;
   required Expr body = 3;
+  optional string origin = 4;
 }
 
 message ForPermWithValue {
   required Variable binding = 1;
   required Expr body = 2;
+  optional string origin = 3;
 }
 
 message Let {
   required Variable binding = 1;
   required Expr value = 2;
   required Expr main = 3;
+  optional string origin = 4;
 }
 
 message InlinePattern {
   required Expr inner = 1;
   required int32 parent = 2;
   required int32 group = 3;
+  optional string origin = 4;
 }
 
 message ScopedExpr {
   repeated Variable declarations = 1;
   required Expr body = 2;
+  optional string origin = 3;
 }
 
 message Local {
   required Ref ref = 1;
+  optional string origin = 2;
 }
 
 message EnumUse {
   required Ref enum = 1;
   required Ref const = 2;
+  optional string origin = 3;
 }
 
 message Deref {
   required Expr obj = 1;
   required Ref ref = 2;
+  optional string origin = 3;
 }
 
 message ModelDeref {
   required Expr obj = 1;
   required Ref ref = 2;
+  optional string origin = 3;
 }
 
 message DerefPointer {
   required Expr pointer = 1;
+  optional string origin = 2;
 }
 
 message DerefVeyMontThread {
   required Ref ref = 1;
+  optional string origin = 2;
 }
 
 message PointerAdd {
   required Expr pointer = 1;
   required Expr offset = 2;
+  optional string origin = 3;
 }
 
 message AddrOf {
   required Expr e = 1;
+  optional string origin = 2;
 }
 
 message FunctionOf {
   required Ref binding = 1;
   repeated Ref vars = 2;
+  optional string origin = 3;
 }
 
 message ApplyCoercion {
   required Expr e = 1;
   required Coercion coercion = 2;
+  optional string origin = 3;
 }
 
 message ADTFunctionInvocation {
   optional RefSeqType type_args = 1;
   required Ref ref = 2;
   repeated Expr args = 3;
+  optional string origin = 4;
 }
 
 message PredicateApply {
   required Ref ref = 1;
   repeated Expr args = 2;
   required Expr perm = 3;
+  optional string origin = 4;
 }
 
 message InstancePredicateApply {
@@ -2032,6 +2331,7 @@ message InstancePredicateApply {
   required Ref ref = 2;
   repeated Expr args = 3;
   required Expr perm = 4;
+  optional string origin = 5;
 }
 
 message CoalesceInstancePredicateApply {
@@ -2039,6 +2339,7 @@ message CoalesceInstancePredicateApply {
   required Ref ref = 2;
   repeated Expr args = 3;
   required Expr perm = 4;
+  optional string origin = 5;
 }
 
 message ProcedureInvocation {
@@ -2048,6 +2349,7 @@ message ProcedureInvocation {
   repeated Type type_args = 4;
   repeated RefExpr given_map = 5;
   repeated ExprRef yields = 6;
+  optional string origin = 7;
 }
 
 message MethodInvocation {
@@ -2058,6 +2360,7 @@ message MethodInvocation {
   repeated Type type_args = 5;
   repeated RefExpr given_map = 6;
   repeated ExprRef yields = 7;
+  optional string origin = 8;
 }
 
 message FunctionInvocation {
@@ -2066,6 +2369,7 @@ message FunctionInvocation {
   repeated Type type_args = 3;
   repeated RefExpr given_map = 4;
   repeated ExprRef yields = 5;
+  optional string origin = 6;
 }
 
 message InstanceFunctionInvocation {
@@ -2075,738 +2379,890 @@ message InstanceFunctionInvocation {
   repeated Type type_args = 4;
   repeated RefExpr given_map = 5;
   repeated ExprRef yields = 6;
+  optional string origin = 7;
 }
 
 message UMinus {
   required Expr arg = 1;
+  optional string origin = 2;
 }
 
 message BitNot {
   required Expr arg = 1;
+  optional string origin = 2;
 }
 
 message Not {
   required Expr arg = 1;
+  optional string origin = 2;
 }
 
 message AmbiguousMult {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message AmbiguousPlus {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message AmbiguousMinus {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message AmbiguousOr {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message AmbiguousComputationalOr {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message AmbiguousComputationalXor {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message AmbiguousComputationalAnd {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message ComputationalOr {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message ComputationalXor {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message ComputationalAnd {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Exp {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Plus {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Minus {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Mult {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Div {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message FloorDiv {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Mod {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message StringConcat {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message BitAnd {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message BitOr {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message BitXor {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message BitShl {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message BitShr {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message BitUShr {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message And {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Or {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Implies {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Star {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Wand {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Scale {
   required Expr scale = 1;
   required Expr res = 2;
+  optional string origin = 3;
 }
 
 message ScaleByParBlock {
   required Ref block = 1;
   required Expr res = 2;
+  optional string origin = 3;
 }
 
 message VeyMontCondition {
   repeated RefExpr condition = 1;
+  optional string origin = 2;
 }
 
 message PolarityDependent {
   required Expr on_inhale = 1;
   required Expr on_exhale = 2;
+  optional string origin = 3;
 }
 
 message Unfolding {
   required Expr res = 1;
   required Expr body = 2;
+  optional string origin = 3;
 }
 
 message FieldLocation {
   required Expr obj = 1;
   required Ref field = 2;
+  optional string origin = 3;
 }
 
 message ModelLocation {
   required Expr obj = 1;
   required Ref field = 2;
+  optional string origin = 3;
 }
 
 message SilverFieldLocation {
   required Expr obj = 1;
   required Ref field = 2;
+  optional string origin = 3;
 }
 
 message ArrayLocation {
   required Expr array = 1;
   required Expr subscript = 2;
+  optional string origin = 3;
 }
 
 message PointerLocation {
   required Expr pointer = 1;
+  optional string origin = 2;
 }
 
 message PredicateLocation {
   required Ref predicate = 1;
   repeated Expr args = 2;
+  optional string origin = 3;
 }
 
 message InstancePredicateLocation {
   required Ref predicate = 1;
   required Expr obj = 2;
   repeated Expr args = 3;
+  optional string origin = 4;
 }
 
 message AmbiguousLocation {
   required Expr expr = 1;
+  optional string origin = 2;
 }
 
 message Perm {
   required Location loc = 1;
   required Expr perm = 2;
+  optional string origin = 3;
 }
 
 message PointsTo {
   required Location loc = 1;
   required Expr perm = 2;
   required Expr value = 3;
+  optional string origin = 4;
 }
 
 message CurPerm {
   required Location loc = 1;
+  optional string origin = 2;
 }
 
 message Value {
   required Location loc = 1;
+  optional string origin = 2;
 }
 
 message ValidArray {
   required Expr arr = 1;
   required Expr len = 2;
+  optional string origin = 3;
 }
 
 message ValidMatrix {
   required Expr mat = 1;
   required Expr w = 2;
   required Expr h = 3;
+  optional string origin = 4;
 }
 
 message PermPointer {
   required Expr p = 1;
   required Expr len = 2;
   required Expr perm = 3;
+  optional string origin = 4;
 }
 
 message PermPointerIndex {
   required Expr p = 1;
   required Expr idx = 2;
   required Expr perm = 3;
+  optional string origin = 4;
 }
 
 message Eq {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Neq {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message AmbiguousGreater {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message AmbiguousLess {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message AmbiguousGreaterEq {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message AmbiguousLessEq {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Greater {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Less {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message GreaterEq {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message LessEq {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message SubSet {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message SubSetEq {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message SubBag {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message SubBagEq {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message Select {
   required Expr condition = 1;
   required Expr when_true = 2;
   required Expr when_false = 3;
+  optional string origin = 4;
 }
 
 message NewObject {
   required Ref cls = 1;
+  optional string origin = 2;
 }
 
 message NewArray {
   required Type element = 1;
   repeated Expr dims = 2;
   required int32 more_dims = 3;
+  optional string origin = 4;
 }
 
 message Old {
   required Expr expr = 1;
   optional Ref at = 2;
+  optional string origin = 3;
 }
 
 message AmbiguousSubscript {
   required Expr collection = 1;
   required Expr index = 2;
+  optional string origin = 3;
 }
 
 message SeqSubscript {
   required Expr seq = 1;
   required Expr index = 2;
+  optional string origin = 3;
 }
 
 message ArraySubscript {
   required Expr arr = 1;
   required Expr index = 2;
+  optional string origin = 3;
 }
 
 message PointerSubscript {
   required Expr pointer = 1;
   required Expr index = 2;
+  optional string origin = 3;
 }
 
 message Length {
   required Expr arr = 1;
+  optional string origin = 2;
 }
 
 message Size {
   required Expr obj = 1;
+  optional string origin = 2;
 }
 
 message PointerBlockLength {
   required Expr pointer = 1;
+  optional string origin = 2;
 }
 
 message PointerBlockOffset {
   required Expr pointer = 1;
+  optional string origin = 2;
 }
 
 message PointerLength {
   required Expr pointer = 1;
+  optional string origin = 2;
 }
 
 message SharedMemSize {
   required Expr pointer = 1;
+  optional string origin = 2;
 }
 
 message NdIndex {
   repeated Expr indices = 1;
   repeated Expr dimensions = 2;
+  optional string origin = 3;
 }
 
 message NdPartialIndex {
   repeated Expr indices = 1;
   required Expr linear_index = 2;
   repeated Expr dimensions = 3;
+  optional string origin = 4;
 }
 
 message NdLength {
   repeated Expr dimensions = 1;
+  optional string origin = 2;
 }
 
 message Cons {
   required Expr x = 1;
   required Expr xs = 2;
+  optional string origin = 3;
 }
 
 message Head {
   required Expr xs = 1;
+  optional string origin = 2;
 }
 
 message Tail {
   required Expr xs = 1;
+  optional string origin = 2;
 }
 
 message Drop {
   required Expr xs = 1;
   required Expr count = 2;
+  optional string origin = 3;
 }
 
 message Take {
   required Expr xs = 1;
   required Expr count = 2;
+  optional string origin = 3;
 }
 
 message Slice {
   required Expr xs = 1;
   required Expr from = 2;
   required Expr to = 3;
+  optional string origin = 4;
 }
 
 message SeqUpdate {
   required Expr xs = 1;
   required Expr i = 2;
   required Expr x = 3;
+  optional string origin = 4;
 }
 
 message Concat {
   required Expr xs = 1;
   required Expr ys = 2;
+  optional string origin = 3;
 }
 
 message RemoveAt {
   required Expr xs = 1;
   required Expr i = 2;
+  optional string origin = 3;
 }
 
 message VctEmpty {
   required Expr obj = 1;
+  optional string origin = 2;
 }
 
 message SetIntersection {
   required Expr xs = 1;
   required Expr ys = 2;
+  optional string origin = 3;
 }
 
 message BagLargestCommon {
   required Expr xs = 1;
   required Expr ys = 2;
+  optional string origin = 3;
 }
 
 message SetMinus {
   required Expr xs = 1;
   required Expr ys = 2;
+  optional string origin = 3;
 }
 
 message BagMinus {
   required Expr xs = 1;
   required Expr ys = 2;
+  optional string origin = 3;
 }
 
 message SetUnion {
   required Expr xs = 1;
   required Expr ys = 2;
+  optional string origin = 3;
 }
 
 message BagAdd {
   required Expr xs = 1;
   required Expr ys = 2;
+  optional string origin = 3;
 }
 
 message AmbiguousMember {
   required Expr x = 1;
   required Expr xs = 2;
+  optional string origin = 3;
 }
 
 message SetMember {
   required Expr x = 1;
   required Expr xs = 2;
+  optional string origin = 3;
 }
 
 message SeqMember {
   required Expr x = 1;
   required Expr xs = 2;
+  optional string origin = 3;
 }
 
 message MapMember {
   required Expr x = 1;
   required Expr xs = 2;
+  optional string origin = 3;
 }
 
 message BagMemberCount {
   required Expr x = 1;
   required Expr xs = 2;
+  optional string origin = 3;
 }
 
 message Permutation {
   required Expr xs = 1;
   required Expr ys = 2;
+  optional string origin = 3;
 }
 
 message OptEmpty {
   required Expr opt = 1;
+  optional string origin = 2;
 }
 
 message OptGet {
   required Expr opt = 1;
+  optional string origin = 2;
 }
 
 message OptGetOrElse {
   required Expr opt = 1;
   required Expr alt = 2;
+  optional string origin = 3;
 }
 
 message MapGet {
   required Expr map = 1;
   required Expr k = 2;
+  optional string origin = 3;
 }
 
 message TupGet {
   required Expr tup = 1;
   required int32 index = 2;
+  optional string origin = 3;
 }
 
 message GetLeft {
   required Expr either = 1;
+  optional string origin = 2;
 }
 
 message GetRight {
   required Expr either = 1;
+  optional string origin = 2;
 }
 
 message IsLeft {
   required Expr either = 1;
+  optional string origin = 2;
 }
 
 message IsRight {
   required Expr either = 1;
+  optional string origin = 2;
 }
 
 message VectorSum {
   required Expr indices = 1;
   required Expr vec = 2;
+  optional string origin = 3;
 }
 
 message VectorCompare {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message VectorRepeat {
   required Expr e = 1;
+  optional string origin = 2;
 }
 
 message MatrixSum {
   required Expr indices = 1;
   required Expr mat = 2;
+  optional string origin = 3;
 }
 
 message MatrixCompare {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message MatrixRepeat {
   required Expr e = 1;
+  optional string origin = 2;
 }
 
 message CastFloat {
   required Expr e = 1;
   required Type t = 2;
+  optional string origin = 3;
 }
 
 message TypeValue {
   required Type value = 1;
+  optional string origin = 2;
 }
 
 message TypeOf {
   required Expr expr = 1;
+  optional string origin = 2;
 }
 
 message VctInstanceOf {
   required Expr value = 1;
   required Expr type_value = 2;
+  optional string origin = 3;
 }
 
 message Cast {
   required Expr value = 1;
   required Expr type_value = 2;
+  optional string origin = 3;
 }
 
 message SubType {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message SuperType {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message IndeterminateInteger {
   required Expr min = 1;
   required Expr max = 2;
+  optional string origin = 3;
 }
 
 message VeyMontCommExpression {
   required Ref receiver = 1;
   required Ref sender = 2;
   required Statement assign = 3;
+  optional string origin = 4;
 }
 
 message VeyMontAssignExpression {
   required Ref thread = 1;
   required Statement assign = 2;
+  optional string origin = 3;
 }
 
 message PreAssignExpression {
   required Expr target = 1;
   required Expr value = 2;
+  optional string origin = 3;
 }
 
 message PostAssignExpression {
   required Expr target = 1;
   required Expr value = 2;
+  optional string origin = 3;
 }
 
 message With {
   required Statement pre = 1;
   required Expr value = 2;
+  optional string origin = 3;
 }
 
 message Then {
   required Expr value = 1;
   required Statement post = 2;
+  optional string origin = 3;
 }
 
 message Held {
   required Expr obj = 1;
+  optional string origin = 2;
 }
 
 message Committed {
   required Expr obj = 1;
+  optional string origin = 2;
 }
 
 message IdleToken {
   required Expr thread = 1;
+  optional string origin = 2;
 }
 
 message JoinToken {
   required Expr thread = 1;
+  optional string origin = 2;
 }
 
 message EmptyProcess {
 
+  optional string origin = 1;
 }
 
 message ActionApply {
   required Ref action = 1;
   repeated Expr args = 2;
+  optional string origin = 3;
 }
 
 message ProcessApply {
   required Ref process = 1;
   repeated Expr args = 2;
+  optional string origin = 3;
 }
 
 message ProcessSeq {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message ProcessChoice {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message ProcessPar {
   required Expr left = 1;
   required Expr right = 2;
+  optional string origin = 3;
 }
 
 message ProcessSelect {
   required Expr cond = 1;
   required Expr when_true = 2;
   required Expr when_false = 3;
+  optional string origin = 4;
 }
 
 message ModelNew {
   required Ref ref = 1;
+  optional string origin = 2;
 }
 
 message ModelState {
   required Expr model = 1;
   required Expr perm = 2;
   required Expr state = 3;
+  optional string origin = 4;
 }
 
 message ModelAbstractState {
   required Expr model = 1;
   required Expr state = 2;
+  optional string origin = 3;
 }
 
 message ModelCreate {
   required Expr model = 1;
   required Expr init = 2;
+  optional string origin = 3;
 }
 
 message ModelDestroy {
   required Expr model = 1;
+  optional string origin = 2;
 }
 
 message ModelSplit {
@@ -2815,6 +3271,7 @@ message ModelSplit {
   required Expr left_process = 3;
   required Expr right_perm = 4;
   required Expr right_process = 5;
+  optional string origin = 6;
 }
 
 message ModelMerge {
@@ -2823,6 +3280,7 @@ message ModelMerge {
   required Expr left_process = 3;
   required Expr right_perm = 4;
   required Expr right_process = 5;
+  optional string origin = 6;
 }
 
 message ModelChoose {
@@ -2830,147 +3288,181 @@ message ModelChoose {
   required Expr perm = 2;
   required Expr total_process = 3;
   required Expr choice = 4;
+  optional string origin = 5;
 }
 
 message ModelPerm {
   required Expr loc = 1;
   required Expr perm = 2;
+  optional string origin = 3;
 }
 
 message ActionPerm {
   required Expr loc = 1;
   required Expr perm = 2;
+  optional string origin = 3;
 }
 
 message CPure {
 
+  optional string origin = 1;
 }
 
 message CInline {
 
+  optional string origin = 1;
 }
 
 message CTypedef {
 
+  optional string origin = 1;
 }
 
 message CExtern {
 
+  optional string origin = 1;
 }
 
 message CStatic {
 
+  optional string origin = 1;
 }
 
 message GPULocal {
 
+  optional string origin = 1;
 }
 
 message GPUGlobal {
 
+  optional string origin = 1;
 }
 
 message CVoid {
 
+  optional string origin = 1;
 }
 
 message CChar {
 
+  optional string origin = 1;
 }
 
 message CShort {
 
+  optional string origin = 1;
 }
 
 message CInt {
 
+  optional string origin = 1;
 }
 
 message CLong {
 
+  optional string origin = 1;
 }
 
 message CSigned {
 
+  optional string origin = 1;
 }
 
 message CUnsigned {
 
+  optional string origin = 1;
 }
 
 message CBool {
 
+  optional string origin = 1;
 }
 
 message CTypedefName {
   required string name = 1;
+  optional string origin = 2;
 }
 
 message CSpecificationType {
   required Type t = 1;
+  optional string origin = 2;
 }
 
 message CTypeQualifierDeclarationSpecifier {
   required CTypeQualifier type_qual = 1;
+  optional string origin = 2;
 }
 
 message CConst {
 
+  optional string origin = 1;
 }
 
 message CRestrict {
 
+  optional string origin = 1;
 }
 
 message CVolatile {
 
+  optional string origin = 1;
 }
 
 message CAtomic {
 
+  optional string origin = 1;
 }
 
 message CUDAKernel {
 
+  optional string origin = 1;
 }
 
 message OpenCLKernel {
 
+  optional string origin = 1;
 }
 
 message CPointer {
   repeated CTypeQualifier qualifiers = 1;
+  optional string origin = 2;
 }
 
 message CPointerDeclarator {
   repeated CPointer pointers = 1;
   required CDeclarator inner = 2;
+  optional string origin = 3;
 }
 
 message CArrayDeclarator {
   repeated CTypeQualifier qualifiers = 1;
   optional Expr size = 2;
   required CDeclarator inner = 3;
+  optional string origin = 4;
 }
 
 message CTypedFunctionDeclarator {
   repeated CParam params = 1;
   required bool varargs = 2;
   required CDeclarator inner = 3;
+  optional string origin = 4;
 }
 
 message CAnonymousFunctionDeclarator {
   repeated string params = 1;
   required CDeclarator inner = 2;
+  optional string origin = 3;
 }
 
 message CName {
   required string name = 1;
+  optional string origin = 2;
 }
 
 message CInit {
   required CDeclarator decl = 1;
   optional Expr init = 2;
+  optional string origin = 3;
 }
 
 message CDeclaration {
@@ -2978,42 +3470,51 @@ message CDeclaration {
   required Expr kernel_invariant = 2;
   repeated CDeclarationSpecifier specs = 3;
   repeated CInit inits = 4;
+  optional string origin = 5;
 }
 
 message CDeclarationStatement {
   required CLocalDeclaration decl = 1;
+  optional string origin = 2;
 }
 
 message CGoto {
   required string label = 1;
+  optional string origin = 2;
 }
 
 message GpuLocalMemoryFence {
 
+  optional string origin = 1;
 }
 
 message GpuGlobalMemoryFence {
 
+  optional string origin = 1;
 }
 
 message GpuZeroMemoryFence {
   required BigInt value = 1;
+  optional string origin = 2;
 }
 
 message GpgpuBarrier {
   required Expr requires = 1;
   required Expr ensures = 2;
   repeated GpuMemoryFence specifiers = 3;
+  optional string origin = 4;
 }
 
 message GpgpuAtomic {
   required Statement impl = 1;
   required Statement before = 2;
   required Statement after = 3;
+  optional string origin = 4;
 }
 
 message CLocal {
   required string name = 1;
+  optional string origin = 2;
 }
 
 message CInvocation {
@@ -3021,16 +3522,19 @@ message CInvocation {
   repeated Expr args = 2;
   repeated RefExpr given_args = 3;
   repeated ExprRef yields = 4;
+  optional string origin = 5;
 }
 
 message CStructAccess {
   required Expr struct = 1;
   required string field = 2;
+  optional string origin = 3;
 }
 
 message CStructDeref {
   required Expr struct = 1;
   required string field = 2;
+  optional string origin = 3;
 }
 
 message GpgpuCudaKernelInvocation {
@@ -3040,135 +3544,166 @@ message GpgpuCudaKernelInvocation {
   repeated Expr args = 4;
   repeated RefExpr given_args = 5;
   repeated ExprRef yields = 6;
+  optional string origin = 7;
 }
 
 message CCast {
   required Expr expr = 1;
   required Type t = 2;
+  optional string origin = 3;
 }
 
 message CPrimitiveType {
   repeated CDeclarationSpecifier specifiers = 1;
+  optional string origin = 2;
 }
 
 message CTPointer {
   required Type inner_type = 1;
+  optional string origin = 2;
 }
 
 message CTArray {
   optional Expr size = 1;
   required Type inner_type = 2;
+  optional string origin = 3;
 }
 
 message CTCudaVec {
 
+  optional string origin = 1;
 }
 
 message JavaName {
   repeated string names = 1;
+  optional string origin = 2;
 }
 
 message JavaImport {
   required bool is_static = 1;
   required JavaName name = 2;
   required bool star = 3;
+  optional string origin = 4;
 }
 
 message JavaPublic {
 
+  optional string origin = 1;
 }
 
 message JavaProtected {
 
+  optional string origin = 1;
 }
 
 message JavaPrivate {
 
+  optional string origin = 1;
 }
 
 message JavaStatic {
 
+  optional string origin = 1;
 }
 
 message JavaAbstract {
 
+  optional string origin = 1;
 }
 
 message JavaFinal {
 
+  optional string origin = 1;
 }
 
 message JavaStrictFP {
 
+  optional string origin = 1;
 }
 
 message JavaNative {
 
+  optional string origin = 1;
 }
 
 message JavaSynchronized {
 
+  optional string origin = 1;
 }
 
 message JavaTransient {
 
+  optional string origin = 1;
 }
 
 message JavaVolatile {
 
+  optional string origin = 1;
 }
 
 message JavaAnnotation {
   required Type name = 1;
   repeated StringExpr args = 2;
+  optional string origin = 3;
 }
 
 message JavaPure {
 
+  optional string origin = 1;
 }
 
 message JavaInline {
 
+  optional string origin = 1;
 }
 
 message JavaBipAnnotation {
 
+  optional string origin = 1;
 }
 
 message JavaVariableDeclaration {
   required string name = 1;
   required int32 more_dims = 2;
   optional Expr init = 3;
+  optional string origin = 4;
 }
 
 message JavaLocalDeclarationStatement {
   required JavaLocalDeclaration decl = 1;
+  optional string origin = 2;
 }
 
 message JavaNamedType {
   repeated StringOptSeqType names = 1;
+  optional string origin = 2;
 }
 
 message JavaTClass {
   required Ref ref = 1;
   repeated Type type_args = 2;
+  optional string origin = 3;
 }
 
 message JavaWildcard {
 
+  optional string origin = 1;
 }
 
 message JavaLocal {
   required string name = 1;
+  optional string origin = 2;
 }
 
 message JavaDeref {
   required Expr obj = 1;
   required string field = 2;
+  optional string origin = 3;
 }
 
 message JavaLiteralArray {
   repeated Expr exprs = 1;
+  optional string origin = 2;
 }
 
 message JavaInvocation {
@@ -3178,6 +3713,7 @@ message JavaInvocation {
   repeated Expr arguments = 4;
   repeated RefExpr given_args = 5;
   repeated ExprRef yields = 6;
+  optional string origin = 7;
 }
 
 message JavaNewClass {
@@ -3186,71 +3722,85 @@ message JavaNewClass {
   required Type name = 3;
   repeated RefExpr given_args = 4;
   repeated ExprRef yields = 5;
+  optional string origin = 6;
 }
 
 message JavaNewLiteralArray {
   required Type base_type = 1;
   required int32 dims = 2;
   required Expr initializer = 3;
+  optional string origin = 4;
 }
 
 message JavaNewDefaultArray {
   required Type base_type = 1;
   repeated Expr specified_dims = 2;
   required int32 more_dims = 3;
+  optional string origin = 4;
 }
 
 message JavaStringValue {
   required string data = 1;
   required Type t = 2;
+  optional string origin = 3;
 }
 
 message JavaBipGlue {
   repeated JavaBipGlueElement elems = 1;
+  optional string origin = 2;
 }
 
 message JavaBipGlueName {
   required Type t = 1;
   required Expr e = 2;
+  optional string origin = 3;
 }
 
 message JavaBipGlueRequires {
   required JavaBipGlueName port = 1;
   repeated JavaBipGlueName others = 2;
+  optional string origin = 3;
 }
 
 message JavaBipGlueAccepts {
   required JavaBipGlueName port = 1;
   repeated JavaBipGlueName others = 2;
+  optional string origin = 3;
 }
 
 message JavaBipGlueSynchron {
   required JavaBipGlueName port0 = 1;
   required JavaBipGlueName port1 = 2;
+  optional string origin = 3;
 }
 
 message JavaBipGlueDataWire {
   required JavaBipGlueName data_out = 1;
   required JavaBipGlueName data_in = 2;
+  optional string origin = 3;
 }
 
 message BipGlueRequires {
   required Ref port = 1;
   repeated Ref others = 2;
+  optional string origin = 3;
 }
 
 message BipGlueAccepts {
   required Ref port = 1;
   repeated Ref others = 2;
+  optional string origin = 3;
 }
 
 message BipGlueDataWire {
   required Ref data_out = 1;
   required Ref data_in = 2;
+  optional string origin = 3;
 }
 
 message BipLocalIncomingData {
   required Ref ref = 1;
+  optional string origin = 2;
 }
 
 message BipTransitionSignature {
@@ -3258,53 +3808,64 @@ message BipTransitionSignature {
   required string source_state_name = 2;
   required string target_state_name = 3;
   optional string textual_guard = 4;
+  optional string origin = 5;
 }
 
 message BipGuardInvocation {
   required Expr obj = 1;
   required Ref guard = 2;
+  optional string origin = 3;
 }
 
 message BipEnforceable {
 
+  optional string origin = 1;
 }
 
 message BipSpontaneous {
 
+  optional string origin = 1;
 }
 
 message BipInternal {
 
+  optional string origin = 1;
 }
 
 message LlvmFunctionContract {
   required string value = 1;
   repeated StringRef references = 2;
+  optional string origin = 3;
 }
 
 message LlvmLoop {
   required Expr cond = 1;
   required LlvmLoopContract contract = 2;
   required Statement body = 3;
+  optional string origin = 4;
 }
 
 message LlvmLoopInvariant {
   required string value = 1;
   repeated StringRef references = 2;
+  optional string origin = 3;
 }
 
 message PVLNamedType {
   required string name = 1;
   repeated Type type_args = 2;
+  optional string origin = 3;
 }
 
 message PVLLocal {
   required string name = 1;
+  optional string origin = 2;
 }
 
 message PVLDeref {
   required Expr obj = 1;
   required string field = 2;
+  optional string origin = 3;
 }
 
 message PVLInvocation {
@@ -3314,6 +3875,7 @@ message PVLInvocation {
   repeated Type type_args = 4;
   repeated RefExpr given_map = 5;
   repeated ExprRef yields = 6;
+  optional string origin = 7;
 }
 
 message PVLNew {
@@ -3321,137 +3883,166 @@ message PVLNew {
   repeated Expr args = 2;
   repeated RefExpr given_map = 3;
   repeated ExprRef yields = 4;
+  optional string origin = 5;
 }
 
 message SilverDeref {
   required Expr obj = 1;
   required Ref field = 2;
+  optional string origin = 3;
 }
 
 message SilverIntToRat {
   required Expr perm = 1;
+  optional string origin = 2;
 }
 
 message SilverNull {
 
+  optional string origin = 1;
 }
 
 message SilverSeqSize {
   required Expr seq = 1;
+  optional string origin = 2;
 }
 
 message SilverSetSize {
   required Expr set = 1;
+  optional string origin = 2;
 }
 
 message SilverBagSize {
   required Expr bag = 1;
+  optional string origin = 2;
 }
 
 message SilverMapSize {
   required Expr map = 1;
+  optional string origin = 2;
 }
 
 message SilverCurFieldPerm {
   required Expr obj = 1;
   required Ref field = 2;
+  optional string origin = 3;
 }
 
 message SilverCurPredPerm {
   required Ref ref = 1;
   repeated Expr args = 2;
+  optional string origin = 3;
 }
 
 message SilverPartialADTFunctionInvocation {
   required string name = 1;
   repeated Expr args = 2;
   repeated RefType partial_type_args = 3;
+  optional string origin = 4;
 }
 
 message SilverUntypedNonemptyLiteralMap {
   repeated ExprExpr values = 1;
+  optional string origin = 2;
 }
 
 message SilverNewRef {
   required Ref v = 1;
   repeated Ref fields = 2;
+  optional string origin = 3;
 }
 
 message SilverFieldAssign {
   required Expr obj = 1;
   required Ref field = 2;
   required Expr value = 3;
+  optional string origin = 4;
 }
 
 message SilverLocalAssign {
   required Ref v = 1;
   required Expr value = 2;
+  optional string origin = 3;
 }
 
 message SilverPartialTAxiomatic {
   required Ref ref = 1;
   repeated RefType partial_type_args = 2;
+  optional string origin = 3;
 }
 
-message StringOptSeqType {
-  required string v1 = 1;
-  optional SeqType v2 = 2;
+message SeqExpr {
+  repeated Expr v = 1;
+  optional string origin = 2;
 }
 
 message RefExpr {
   required Ref v1 = 1;
   required Expr v2 = 2;
-}
-
-message RefType {
-  required Ref v1 = 1;
-  required Type v2 = 2;
-}
-
-message ExprExpr {
-  required Expr v1 = 1;
-  required Expr v2 = 2;
+  optional string origin = 3;
 }
 
 message TypeType {
   required Type v1 = 1;
   required Type v2 = 2;
-}
-
-message ExprRef {
-  required Expr v1 = 1;
-  required Ref v2 = 2;
-}
-
-message SeqExpr {
-  repeated Expr v = 1;
-}
-
-message StringRef {
-  required string v1 = 1;
-  required Ref v2 = 2;
-}
-
-message RefSeqType {
-  required Ref v1 = 1;
-  repeated Type v2 = 2;
-}
-
-message ExprStatement {
-  required Expr v1 = 1;
-  required Statement v2 = 2;
+  optional string origin = 3;
 }
 
 message StringExpr {
   required string v1 = 1;
   required Expr v2 = 2;
+  optional string origin = 3;
+}
+
+message ExprStatement {
+  required Expr v1 = 1;
+  required Statement v2 = 2;
+  optional string origin = 3;
+}
+
+message RefSeqType {
+  required Ref v1 = 1;
+  repeated Type v2 = 2;
+  optional string origin = 3;
 }
 
 message SeqType {
   repeated Type v = 1;
+  optional string origin = 2;
+}
+
+message ExprExpr {
+  required Expr v1 = 1;
+  required Expr v2 = 2;
+  optional string origin = 3;
+}
+
+message ExprRef {
+  required Expr v1 = 1;
+  required Ref v2 = 2;
+  optional string origin = 3;
+}
+
+message StringRef {
+  required string v1 = 1;
+  required Ref v2 = 2;
+  optional string origin = 3;
 }
 
 message CoercionCoercion {
   required Coercion v1 = 1;
   required Coercion v2 = 2;
+  optional string origin = 3;
+}
+
+message StringOptSeqType {
+  required string v1 = 1;
+  optional SeqType v2 = 2;
+  optional string origin = 3;
+}
+
+message RefType {
+  required Ref v1 = 1;
+  required Type v2 = 2;
+  optional string origin = 3;
 }
