@@ -1,3 +1,4 @@
-add_subdirectory(Passes)
 add_subdirectory(Util)
 add_subdirectory(Transform)
+add_subdirectory(Passes)
+add_subdirectory(AST)

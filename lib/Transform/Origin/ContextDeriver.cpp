@@ -4,6 +4,12 @@
 #include <llvm/Support/raw_ostream.h>
 
 namespace llvm2Col {
+    // module derivers
+    std::string deriveModuleContext(llvm::Module &llvmModule) {
+        std::string context;
+        llvm::raw_string_ostream(context) << llvmModule;
+        return context;
+    }
 
     // function derivers
     std::string deriveFunctionContext(llvm::Function &llvmFunction) {

@@ -8,6 +8,8 @@
 namespace llvm2Col {
     namespace col = vct::col::serialize;
 
+    std::string generateProgramOrigin(llvm::Module &llvmModule);
+
     std::string generateFuncDefOrigin(llvm::Function &llvmFunction);
 
     std::string generateAssignmentOrigin(llvm::Instruction &llvmInstruction);

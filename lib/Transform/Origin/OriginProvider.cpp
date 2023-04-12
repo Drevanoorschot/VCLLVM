@@ -16,6 +16,17 @@ namespace llvm2Col {
     const std::string INLINE_CONTEXT = "inlineContext";
     const std::string SHORT_POSITION = "shortPosition";
 
+    std::string generateProgramOrigin(llvm::Module &llvmModule) {
+        std::unordered_map<std::string, std::string> originMap;
+
+        originMap.insert({PREFERRED_NAME, "program:" + llvmModule.getName().str()});
+        originMap.insert({CONTEXT, "At: " + deriveModuleContext(llvmModule)});
+        originMap.insert({INLINE_CONTEXT, deriveModuleContext(llvmModule)});
+        originMap.insert({SHORT_POSITION, deriveModuleShortPosition(llvmModule)});
+
+        return json(originMap).dump();
+    }
+
     std::string generateFuncDefOrigin(llvm::Function &llvmFunction) {
         std::unordered_map<std::string, std::string> originMap;
 
@@ -62,4 +73,5 @@ namespace llvm2Col {
         // TODO test with vercors
         // TODO other origins: block, function missing parts
     }
+
 }

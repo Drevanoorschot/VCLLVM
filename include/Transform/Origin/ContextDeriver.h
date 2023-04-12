@@ -4,6 +4,9 @@
 #include <llvm/IR/Value.h>
 
 namespace llvm2Col {
+    // module derivers
+    std::string deriveModuleContext(llvm::Module &llvmModule);
+
     // function derivers
     std::string deriveFunctionContext(llvm::Function &llvmFunction);
 
