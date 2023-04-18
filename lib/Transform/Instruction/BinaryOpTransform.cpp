@@ -18,33 +18,27 @@ namespace llvm2Col {
         funcCursor.addVariableMapEntry(llvmInstruction, *varDecl);
         // add variable assignment to the COL block
         col::Assign *assignment = colBlock.add_statements()->mutable_assign();
-        // set origin of assignment
-        assignment->set_origin(llvm2Col::generateAssignmentOrigin(llvmInstruction));
         // set target to refer to var decl
         assignment->mutable_target()->mutable_local()->mutable_ref()->set_index(varDecl->id());
         switch (llvm::Instruction::BinaryOps(llvmInstruction.getOpcode())) {
             case llvm::Instruction::Add: {
                 col::Plus &expr = transformAdd(*assignment);
-                expr.set_origin(generateBinExprOrigin(llvmInstruction));
                 transformOperands(llvmInstruction, expr, funcCursor);
                 break;
             }
             case llvm::Instruction::Sub: {
                 col::Minus &expr = transformSub(*assignment);
-                expr.set_origin(generateBinExprOrigin(llvmInstruction));
                 transformOperands(llvmInstruction, expr, funcCursor);
                 break;
             }
             case llvm::Instruction::Mul: {
                 col::Mult &expr = transformMul(*assignment);
-                expr.set_origin(generateBinExprOrigin(llvmInstruction));
                 transformOperands(llvmInstruction, expr, funcCursor);
                 break;
             }
             case llvm::Instruction::SDiv:
             case llvm::Instruction::UDiv: {
                 col::FloorDiv &expr = transformDiv(*assignment);
-                expr.set_origin(generateBinExprOrigin(llvmInstruction));
                 transformOperands(llvmInstruction, expr, funcCursor);
                 break;
             }
@@ -65,13 +59,11 @@ namespace llvm2Col {
         llvm2Col::transformAndSetExpr(
                 funcCursor, *llvmInstruction.getOperand(0),
                 *lExpr);
-        lExpr->set_origin(generateOperandOrigin(llvmInstruction, *llvmInstruction.getOperand(0)));
         // transform right operand
         col::Expr *rExpr = colBinExpr.mutable_right();
         llvm2Col::transformAndSetExpr(
                 funcCursor, *llvmInstruction.getOperand(1),
                 *rExpr);
-        rExpr->set_origin(generateOperandOrigin(llvmInstruction, *llvmInstruction.getOperand(1)));
     }
 
     col::Plus &transformAdd(col::Assign &assignment) {

@@ -89,8 +89,6 @@ namespace vcllvm {
             errorStream << e.what() << " in return type of function \"" << F.getName().str() << "\"";
             vcllvm::ErrorReporter::addError("Passes::Function::FunctionDeclarer", errorStream.str());
         }
-        // set origin
-        colFunction.set_origin(llvm2Col::generateFuncDefOrigin(F));
         return PreservedAnalyses::all();
     }
 }
