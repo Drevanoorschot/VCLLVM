@@ -5,9 +5,9 @@
 
 #include "Util/Exceptions.h"
 #include "Passes/Function/FunctionBodyTransformer.h"
+#include "Transform/Origin/OriginProvider.h"
 
 
-namespace col = vct::col::serialize;
 
 
 /**
@@ -15,15 +15,17 @@ namespace col = vct::col::serialize;
  * @param type
  */
 namespace llvm2Col {
+    namespace col = vct::col::serialize;
+
     void transformAndSetType(llvm::Type &llvmType,
                              col::Type &colType) {
         // TODO refactor out exceptions
         switch (llvmType.getTypeID()) {
             case llvm::Type::IntegerTyID:
                 if (llvmType.getIntegerBitWidth() == 1) {
-                    colType.mutable_t_bool();
+                    colType.mutable_t_bool()->set_origin(generateTypeOrigin(llvmType));
                 } else {
-                    colType.mutable_t_int();
+                    colType.mutable_t_int()->set_origin(generateTypeOrigin(llvmType));
                 }
                 break;
             default:
@@ -33,32 +35,41 @@ namespace llvm2Col {
 
 
     void transformAndSetExpr(vcllvm::FunctionCursor &functionCursor,
-                             llvm::Value &llvmValue,
+                             llvm::Instruction &llvmInstruction,
+                             llvm::Value &llvmOperand,
                              col::Expr &colExpr) {
-        if (llvm::isa<llvm::Constant>(llvmValue)) {
-            transformAndSetConstExpr(llvm::cast<llvm::Constant>(llvmValue), colExpr);
+        if (llvm::isa<llvm::Constant>(llvmOperand)) {
+            transformAndSetConstExpr(llvmInstruction, llvm::cast<llvm::Constant>(llvmOperand), colExpr);
         } else {
-            transformAndSetVarExpr(functionCursor, llvmValue, colExpr);
+            transformAndSetVarExpr(functionCursor, llvmInstruction, llvmOperand, colExpr);
         }
-
     }
 
     void transformAndSetVarExpr(vcllvm::FunctionCursor &functionCursor,
-                                llvm::Value &llvmValue,
+                                llvm::Instruction &llvmInstruction,
+                                llvm::Value &llvmOperand,
                                 col::Expr &colExpr) {
-        col::Variable colVar = functionCursor.getVariableMapEntry(llvmValue);
-        colExpr.mutable_local()->mutable_ref()->set_index(colVar.id());
+        col::Variable colVar = functionCursor.getVariableMapEntry(llvmOperand);
+        col::Local *colLocal = colExpr.mutable_local();
+        colLocal->set_origin(generateOperandOrigin(llvmInstruction, llvmOperand));
+        colLocal->mutable_ref()->set_index(colVar.id());
     }
 
-    void transformAndSetConstExpr(llvm::Constant &llvmConstant, col::Expr &colExpr) {
+    void transformAndSetConstExpr(llvm::Instruction &llvmInstruction,
+                                  llvm::Constant &llvmConstant,
+                                  col::Expr &colExpr) {
         llvm::Type *constType = llvmConstant.getType();
         switch (llvmConstant.getType()->getTypeID()) {
             case llvm::Type::IntegerTyID:
                 if (constType->getIntegerBitWidth() == 1) {
-                    colExpr.mutable_boolean_value()->set_value(llvmConstant.isOneValue());
+                    col::BooleanValue *boolValue = colExpr.mutable_boolean_value();
+                    boolValue->set_origin(generateOperandOrigin(llvmInstruction, llvmConstant));
+                    boolValue->set_value(llvmConstant.isOneValue());
                 } else {
+                    col::IntegerValue *integerValue = colExpr.mutable_integer_value();
+                    integerValue->set_origin(generateOperandOrigin(llvmInstruction, llvmConstant));
                     llvm::APInt apInt = llvmConstant.getUniqueInteger();
-                    transformAndSetIntegerValue(apInt, *colExpr.mutable_integer_value());
+                    transformAndSetIntegerValue(apInt, *integerValue);
                 }
                 break;
             default:
@@ -71,7 +82,7 @@ namespace llvm2Col {
     }
 
     void transformAndSetIntegerValue(llvm::APInt &apInt, col::IntegerValue &colIntegerValue) {
-        // TODO works for "small" signed and unsigned numbers, may break for values > 2^64
+        // TODO works for "small" signed and unsigned numbers, may break for values >=2^64
         std::vector<u_int64_t> byteVector;
         for (int i = 0; i < apInt.getNumWords(); i++) {
             byteVector.push_back(apInt.getRawData()[i]);

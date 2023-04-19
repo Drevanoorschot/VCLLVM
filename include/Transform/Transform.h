@@ -16,11 +16,13 @@ namespace llvm2Col {
     void transformAndSetIntegerValue(llvm::APInt &apInt, col::IntegerValue &colIntegerValue);
 
     // expression transformers
-    void transformAndSetExpr(vcllvm::FunctionCursor &functionCursor, llvm::Value &llvmValue, col::Expr &colExpr);
+    void transformAndSetExpr(vcllvm::FunctionCursor &functionCursor, llvm::Instruction &llvmInstruction,
+                             llvm::Value &llvmOperand, col::Expr &colExpr);
 
-    void transformAndSetConstExpr(llvm::Constant &llvmConstant, col::Expr &colExpr);
+    void transformAndSetConstExpr(llvm::Instruction &llvmInstruction, llvm::Constant &llvmConstant, col::Expr &colExpr);
 
-    void transformAndSetVarExpr(vcllvm::FunctionCursor &functionCursor, llvm::Value &llvmValue, col::Expr &colExpr);
+    void transformAndSetVarExpr(vcllvm::FunctionCursor &functionCursor, llvm::Instruction &llvmInstruction,
+                                llvm::Value &llvmOperand, col::Expr &colExpr);
 
     template<class IDNode>
     void setColNodeId(IDNode &idNode) {

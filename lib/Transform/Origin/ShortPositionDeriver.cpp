@@ -1,10 +1,11 @@
 #include "Transform/Origin/ShortPositionDeriver.h"
+#include "Transform/Origin/ContextDeriver.h"
 
 namespace llvm2Col {
     const std::string POSITION_POINTER = "\n\t -> ";
 
     std::string deriveModuleShortPosition(llvm::Module &llvmModule) {
-        return llvmModule.getSourceFileName();
+        return "file " + llvmModule.getSourceFileName();
     }
 
     std::string deriveFunctionShortPosition(llvm::Function &llvmFunction) {
@@ -26,8 +27,7 @@ namespace llvm2Col {
     std::string deriveInstructionShortPosition(llvm::Instruction &llvmInstruction) {
         std::string instructionPosition = deriveBlockShortPosition(*llvmInstruction.getParent());
         llvm::raw_string_ostream instructionPosStream = llvm::raw_string_ostream(instructionPosition);
-        instructionPosStream << POSITION_POINTER << "instruction ";
-        llvmInstruction.printAsOperand(instructionPosStream, false);
+        instructionPosStream << POSITION_POINTER << "instruction " << deriveInstructionContext(llvmInstruction);
         return instructionPosition;
     }
 }

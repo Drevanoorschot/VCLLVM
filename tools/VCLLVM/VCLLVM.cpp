@@ -7,13 +7,15 @@
 
 #include "col.pb.h"
 
+#include "Passes/Function/FunctionBodyTransformer.h"
 #include "Passes/Function/FunctionContractDeclarer.h"
 #include "Passes/Function/FunctionDeclarer.h"
 #include "Passes/Function/PureAssigner.h"
 
 #include "Transform/Transform.h"
+#include "Transform/Origin/OriginProvider.h"
+
 #include "Util/Exceptions.h"
-#include "Passes/Function/FunctionBodyTransformer.h"
 
 #include <iostream>
 #include <memory>
@@ -96,6 +98,8 @@ int main(int argc, char **argv) {
     pModule->setSourceFileName(inputFileName);
     vcllvm::Module *module = pModule.release();
     auto pProgram = std::make_shared<col::Program>();
+    // set program origin
+    pProgram->set_origin(llvm2Col::generateProgramOrigin(*module));
     // Create the analysis managers.
     vcllvm::LoopAnalysisManager LAM;
     vcllvm::FunctionAnalysisManager FAM;

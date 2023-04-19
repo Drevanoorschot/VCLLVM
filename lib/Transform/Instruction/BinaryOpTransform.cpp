@@ -10,36 +10,27 @@ namespace llvm2Col {
     void transformBinaryOp(llvm::Instruction &llvmInstruction,
                            col::Block &colBlock,
                            vcllvm::FunctionCursor &funcCursor) {
-        // add var decl to the scope
-        col::Variable *varDecl = funcCursor.getFunctionScope().add_locals();
-        transformAndSetType(*llvmInstruction.getType(), *varDecl->mutable_t());
-        setColNodeId(varDecl);
-        // add var decl to function cursor var look up table
-        funcCursor.addVariableMapEntry(llvmInstruction, *varDecl);
-        // add variable assignment to the COL block
-        col::Assign *assignment = colBlock.add_statements()->mutable_assign();
-        // set target to refer to var decl
-        assignment->mutable_target()->mutable_local()->mutable_ref()->set_index(varDecl->id());
+        col::Assign &assignment = funcCursor.createAssignmentInFunction(llvmInstruction, colBlock);
         switch (llvm::Instruction::BinaryOps(llvmInstruction.getOpcode())) {
             case llvm::Instruction::Add: {
-                col::Plus &expr = transformAdd(*assignment);
-                transformOperands(llvmInstruction, expr, funcCursor);
+                col::Plus &expr = *assignment.mutable_value()->mutable_plus();
+                transformBinExpr(llvmInstruction, expr, funcCursor);
                 break;
             }
             case llvm::Instruction::Sub: {
-                col::Minus &expr = transformSub(*assignment);
-                transformOperands(llvmInstruction, expr, funcCursor);
+                col::Minus &expr = *assignment.mutable_value()->mutable_minus();
+                transformBinExpr(llvmInstruction, expr, funcCursor);
                 break;
             }
             case llvm::Instruction::Mul: {
-                col::Mult &expr = transformMul(*assignment);
-                transformOperands(llvmInstruction, expr, funcCursor);
+                col::Mult &expr = *assignment.mutable_value()->mutable_mult();
+                transformBinExpr(llvmInstruction, expr, funcCursor);
                 break;
             }
             case llvm::Instruction::SDiv:
             case llvm::Instruction::UDiv: {
-                col::FloorDiv &expr = transformDiv(*assignment);
-                transformOperands(llvmInstruction, expr, funcCursor);
+                col::FloorDiv &expr = *assignment.mutable_value()->mutable_floor_div();
+                transformBinExpr(llvmInstruction, expr, funcCursor);
                 break;
             }
             default:
@@ -51,35 +42,20 @@ namespace llvm2Col {
         }
     }
 
-    void transformOperands(llvm::Instruction &llvmInstruction,
-                           auto &colBinExpr,
-                           vcllvm::FunctionCursor &funcCursor) {
+    void transformBinExpr(llvm::Instruction &llvmInstruction,
+                          auto &colBinExpr,
+                          vcllvm::FunctionCursor &funcCursor) {
+        // set origin of entire expression
+        colBinExpr.set_origin(generateBinExprOrigin(llvmInstruction));
         // transform left operand
         col::Expr *lExpr = colBinExpr.mutable_left();
         llvm2Col::transformAndSetExpr(
-                funcCursor, *llvmInstruction.getOperand(0),
+                funcCursor, llvmInstruction, *llvmInstruction.getOperand(0),
                 *lExpr);
         // transform right operand
         col::Expr *rExpr = colBinExpr.mutable_right();
         llvm2Col::transformAndSetExpr(
-                funcCursor, *llvmInstruction.getOperand(1),
+                funcCursor, llvmInstruction, *llvmInstruction.getOperand(1),
                 *rExpr);
-    }
-
-    col::Plus &transformAdd(col::Assign &assignment) {
-        col::Plus *plusExpr = assignment.mutable_value()->mutable_plus();
-        return *plusExpr;
-    }
-
-    col::Minus &transformSub(col::Assign &assignment) {
-        return *assignment.mutable_value()->mutable_minus();
-    }
-
-    col::Mult &transformMul(col::Assign &assignment) {
-        return *assignment.mutable_value()->mutable_mult();
-    }
-
-    col::FloorDiv &transformDiv(col::Assign &assignment) {
-        return *assignment.mutable_value()->mutable_floor_div();
     }
 }

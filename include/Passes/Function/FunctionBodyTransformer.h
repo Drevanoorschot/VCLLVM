@@ -1,8 +1,10 @@
 #ifndef VCLLVM_FUNCTIONBODYTRANSFORMER_H
 #define VCLLVM_FUNCTIONBODYTRANSFORMER_H
+
 #include <llvm/Analysis/LoopInfo.h>
 
 #include "col.pb.h"
+
 namespace vcllvm {
     using namespace llvm;
     namespace col = vct::col::serialize;
@@ -13,6 +15,8 @@ namespace vcllvm {
     };
 
     class FunctionCursor {
+        friend class FunctionBodyTransformerPass;
+
     private:
         col::Scope &functionScope;
 
@@ -23,12 +27,15 @@ namespace vcllvm {
         std::unordered_map<llvm::Value *, col::Variable *> variableMap;
 
         std::unordered_map<llvm::BasicBlock *, LabeledColBlock> llvmBlock2LabeledColBlock;
+
+        void addVariableMapEntry(llvm::Value &llvmValue, col::Variable &colVar);
+
     public:
         explicit FunctionCursor(col::Scope &functionScope, col::Block &functionBody, llvm::LoopInfo &loopInfo);
 
-        col::Scope &getFunctionScope();
+        const col::Scope &getFunctionScope();
 
-        void addVariableMapEntry(llvm::Value &llvmValue, col::Variable &colVar);
+        col::Assign &createAssignmentInFunction(Instruction &llvmInstruction, col::Block &colBlock);
 
         col::Variable &getVariableMapEntry(llvm::Value &llvmValue);
 

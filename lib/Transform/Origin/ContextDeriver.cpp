@@ -20,16 +20,31 @@ namespace llvm2Col {
 
     // block derivers
 
+    std::string deriveLabelContext(llvm::BasicBlock &llvmBlock) {
+        if (llvmBlock.isEntryBlock()) {
+            return "<entryBlock>";
+        }
+        std::string fullContext;
+        llvm::raw_string_ostream(fullContext) << llvmBlock;
+        return fullContext.substr(0, fullContext.find(':') + 1);
+    }
+
+    std::string deriveBlockContext(llvm::BasicBlock &llvmBlock) {
+        std::string context;
+        llvm::raw_string_ostream(context) << llvmBlock;
+        return context;
+    }
+
     // instruction derivers
 
     std::string deriveSurroundingInstructionContext(llvm::Instruction &llvmInstruction) {
         std::string context;
         if (llvmInstruction.getPrevNode() != nullptr) {
-            llvm::raw_string_ostream(context) << llvmInstruction.getPrevNode() << '\n';
+            llvm::raw_string_ostream(context) << *llvmInstruction.getPrevNode() << '\n';
         }
         llvm::raw_string_ostream(context) << llvmInstruction;
         if (llvmInstruction.getNextNode() != nullptr) {
-            llvm::raw_string_ostream(context) << '\n' << llvmInstruction.getNextNode();
+            llvm::raw_string_ostream(context) << '\n' << *llvmInstruction.getNextNode();
         }
         return context;
     }
@@ -38,6 +53,11 @@ namespace llvm2Col {
         std::string context;
         llvm::raw_string_ostream(context) << llvmInstruction;
         return context;
+    }
+
+    std::string deriveInstructionLhs(llvm::Instruction &llvmInstruction) {
+        std::string fullContext = deriveInstructionContext(llvmInstruction);
+        return fullContext.substr(0, fullContext.find('='));
     }
 
     std::string deriveInstructionRhs(llvm::Instruction &llvmInstruction) {

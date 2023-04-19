@@ -3,6 +3,7 @@
 #include "Transform/Transform.h"
 #include "Transform/BlockTransform.h"
 #include "Util/Exceptions.h"
+#include "Transform/Origin/OriginProvider.h"
 
 namespace llvm2Col {
     void transformTermOp(llvm::Instruction &llvmInstruction,
@@ -30,11 +31,12 @@ namespace llvm2Col {
     void transformRet(llvm::ReturnInst &llvmRetInstruction,
                       col::Block &colBlock,
                       vcllvm::FunctionCursor &funcCursor) {
-        col::Expr *returnExpr = colBlock.add_statements()
-                ->mutable_return_()
-                ->mutable_result();
+        col::Return *returnStatement = colBlock.add_statements()->mutable_return_();
+        returnStatement->set_origin(generateSingleStatementOrigin(llvmRetInstruction));
+        col::Expr *returnExpr = returnStatement->mutable_result();
         llvm2Col::transformAndSetExpr(
                 funcCursor,
+                llvmRetInstruction,
                 *llvmRetInstruction.getReturnValue(),
                 *returnExpr);
     }
@@ -48,16 +50,18 @@ namespace llvm2Col {
         col::ExprStatement *colTrueBranch = colBranch->add_branches();
         // set conditional
         transformAndSetExpr(funcCursor,
+                            llvmBrInstruction,
                             *llvmBrInstruction.getCondition(),
                             *colTrueBranch->mutable_v1());
         // get or pre-generate target labeled block
         auto *llvmTrueBlock = cast<llvm::BasicBlock>(llvmBrInstruction.getOperand(1));
         vcllvm::LabeledColBlock labeledTrueColBlock = funcCursor.getOrSetLlvmBlock2LabeledColBlockEntry(*llvmTrueBlock);
-        // goto statement to True block
-        colTrueBranch->mutable_v2()->mutable_goto_()
-                ->mutable_lbl()
-                ->set_index(labeledTrueColBlock.label.decl().id());
-        // transform llvm trueBlock
+        // goto statement to true block
+        col::Goto *trueGoto = colTrueBranch->mutable_v2()->mutable_goto_();
+        trueGoto->mutable_lbl()->set_index(labeledTrueColBlock.label.decl().id());
+        // set origin for goto to true block
+        trueGoto->set_origin(generateSingleStatementOrigin(llvmBrInstruction));
+        // transform llvm true block
         transformLlvmBlock(*llvmTrueBlock, funcCursor);
 
         // false branch
@@ -69,10 +73,11 @@ namespace llvm2Col {
         // get or pre-generate target labeled block
         vcllvm::LabeledColBlock labeledFalseColBlock = funcCursor.getOrSetLlvmBlock2LabeledColBlockEntry(
                 *llvmFalseBlock);
-        // goto statement to False block
-        colFalseBranch->mutable_v2()->mutable_goto_()
-                ->mutable_lbl()
-                ->set_index(labeledFalseColBlock.label.decl().id());
+        // goto statement to false block
+        col::Goto *falseGoto = colFalseBranch->mutable_v2()->mutable_goto_();
+        falseGoto->mutable_lbl()->set_index(labeledFalseColBlock.label.decl().id());
+        // set origin for goto to false block
+        falseGoto->set_origin(llvm2Col::generateSingleStatementOrigin(llvmBrInstruction));
         // transform llvm falseBlock
         transformLlvmBlock(*llvmFalseBlock, funcCursor);
     }
@@ -85,9 +90,10 @@ namespace llvm2Col {
         // get or pre generate target labeled block
         vcllvm::LabeledColBlock labeledColBlock = funcCursor.getOrSetLlvmBlock2LabeledColBlockEntry(*llvmTargetBlock);
         // create goto to target labeled block
-        colBlock.add_statements()->mutable_goto_()
-                ->mutable_lbl()
-                ->set_index(labeledColBlock.label.decl().id());
+        col::Goto *colGoto = colBlock.add_statements()->mutable_goto_();
+        colGoto->mutable_lbl()->set_index(labeledColBlock.label.decl().id());
+        // set origin of goto statement
+        colGoto->set_origin(llvm2Col::generateSingleStatementOrigin(llvmBrInstruction));
         // transform llvm targetBlock
         transformLlvmBlock(*llvmTargetBlock, funcCursor);
     }

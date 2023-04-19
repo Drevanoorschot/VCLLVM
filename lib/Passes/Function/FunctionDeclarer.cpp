@@ -50,12 +50,16 @@ namespace vcllvm {
         // add body block + scope
         ColScopedFuncBody funcScopedBody{};
         funcScopedBody.scope = llvmFuncDef->mutable_function_body()->mutable_scope();
+        funcScopedBody.scope->set_origin(llvm2Col::generateFuncDefOrigin(F));
         funcScopedBody.block = funcScopedBody.scope->mutable_body()->mutable_block();
+        funcScopedBody.block->set_origin(llvm2Col::generateFuncDefOrigin(F));
         FDResult result = FDResult(*llvmFuncDef, funcScopedBody);
         // set args (if present)
         for (llvm::Argument &llvmArg: F.args()) {
             // set in buffer
             col::Variable *colArg = llvmFuncDef->add_args();
+            // set origin
+            colArg->set_origin(llvm2Col::generateArgumentOrigin(llvmArg));
             llvm2Col::setColNodeId(colArg);
             try {
                 llvm2Col::transformAndSetType(*llvmArg.getType(), *colArg->mutable_t());
@@ -80,6 +84,8 @@ namespace vcllvm {
     PreservedAnalyses FunctionDeclarerPass::run(Function &F, FunctionAnalysisManager &FAM) {
         FDResult result = FAM.getResult<FunctionDeclarer>(F);
         col::LlvmFunctionDefinition &colFunction = result.getAssociatedColFuncDef();
+        // set origin
+        colFunction.set_origin(llvm2Col::generateFuncDefOrigin(F));
         // complete the function declaration in proto buffer
         // set return type in protobuf of function
         try {

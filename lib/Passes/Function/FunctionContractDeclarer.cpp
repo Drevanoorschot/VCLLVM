@@ -3,6 +3,7 @@
 #include "Passes/Function/FunctionDeclarer.h"
 #include "Util/Constants.h"
 #include "Util/Exceptions.h"
+#include "Transform/Origin/OriginProvider.h"
 
 
 namespace vcllvm {
@@ -51,6 +52,7 @@ namespace vcllvm {
         if (!F.hasMetadata(vcllvm::constants::METADATA_CONTRACT_KEYWORD)) {
             // empty contract
             colContract.set_value("");
+            colContract.set_origin("{}");
             return PreservedAnalyses::all();
         }
         // concatenate all contract lines with new lines
@@ -68,6 +70,7 @@ namespace vcllvm {
             contractStream << contractLine->getString().str() << '\n';
         }
         colContract.set_value(contractStream.str());
+        colContract.set_origin(llvm2Col::generateFunctionContractOrigin(*contractMDNode));
         return PreservedAnalyses::all();
     }
 }

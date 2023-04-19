@@ -16,6 +16,8 @@ namespace llvm2Col {
     const std::string INLINE_CONTEXT = "inlineContext";
     const std::string SHORT_POSITION = "shortPosition";
 
+    const std::string EMPTY_ORIGIN = json("{}").dump();
+
     std::string generateProgramOrigin(llvm::Module &llvmModule) {
         std::unordered_map<std::string, std::string> originMap;
 
@@ -38,7 +40,45 @@ namespace llvm2Col {
         return json(originMap).dump();
     }
 
-    std::string generateAssignmentOrigin(llvm::Instruction &llvmInstruction) {
+    std::string generateFunctionContractOrigin(llvm::MDNode &contractMDNode) {
+        // assumption: it's going to get parsed by vercors again which will fix the origins.
+        return EMPTY_ORIGIN;
+    }
+
+    std::string generateArgumentOrigin(llvm::Argument &llvmArgument) {
+        std::unordered_map<std::string, std::string> originMap;
+
+        originMap.insert({PREFERRED_NAME, deriveArgumentPreferredName(llvmArgument)});
+        originMap.insert({CONTEXT, "At: " + deriveFunctionContext(*llvmArgument.getParent())});
+        originMap.insert({INLINE_CONTEXT, deriveFunctionContext(*llvmArgument.getParent())});
+        originMap.insert({SHORT_POSITION, deriveFunctionShortPosition(*llvmArgument.getParent())});
+
+        return json(originMap).dump();
+    }
+
+    std::string generateBlockOrigin(llvm::BasicBlock &llvmBlock) {
+        std::unordered_map<std::string, std::string> originMap;
+
+        originMap.insert({PREFERRED_NAME, "block"});
+        originMap.insert({CONTEXT, "At: " + deriveBlockContext(llvmBlock)});
+        originMap.insert({INLINE_CONTEXT, deriveBlockContext(llvmBlock)});
+        originMap.insert({SHORT_POSITION, deriveBlockShortPosition(llvmBlock)});
+
+        return json(originMap).dump();
+    }
+
+    std::string generateLabelOrigin(llvm::BasicBlock &llvmBlock) {
+        std::unordered_map<std::string, std::string> originMap;
+
+        originMap.insert({PREFERRED_NAME, "label"});
+        originMap.insert({CONTEXT, "At: " + deriveLabelContext(llvmBlock)});
+        originMap.insert({INLINE_CONTEXT, deriveLabelContext(llvmBlock)});
+        originMap.insert({SHORT_POSITION, deriveBlockShortPosition(llvmBlock)});
+
+        return json(originMap).dump();
+    }
+
+    std::string generateSingleStatementOrigin(llvm::Instruction &llvmInstruction) {
         std::unordered_map<std::string, std::string> originMap;
 
         // omit preferred name
@@ -49,11 +89,22 @@ namespace llvm2Col {
         return json(originMap).dump();
     }
 
+    std::string generateAssignTargetOrigin(llvm::Instruction &llvmInstruction) {
+        std::unordered_map<std::string, std::string> originMap;
+
+        originMap.insert({PREFERRED_NAME, "var"});
+        originMap.insert({CONTEXT, "At: " + deriveInstructionContext(llvmInstruction)});
+        originMap.insert({INLINE_CONTEXT, deriveInstructionLhs(llvmInstruction)});
+        originMap.insert({SHORT_POSITION, deriveInstructionShortPosition(llvmInstruction)});
+
+        return json(originMap).dump();
+    }
+
     std::string generateBinExprOrigin(llvm::Instruction &llvmInstruction) {
         std::unordered_map<std::string, std::string> originMap;
 
         // omit preferred name
-        originMap.insert({CONTEXT, "At" + deriveInstructionContext(llvmInstruction)});
+        originMap.insert({CONTEXT, "At " + deriveInstructionContext(llvmInstruction)});
         originMap.insert({INLINE_CONTEXT, deriveInstructionRhs(llvmInstruction)});
         originMap.insert({SHORT_POSITION, deriveInstructionShortPosition(llvmInstruction)});
 
@@ -64,14 +115,20 @@ namespace llvm2Col {
         std::unordered_map<std::string, std::string> originMap;
 
         originMap.insert({PREFERRED_NAME, deriveOperandPreferredName(llvmOperand)});
-        originMap.insert({CONTEXT, deriveInstructionContext(llvmInstruction)});
+        originMap.insert({CONTEXT, "At " + deriveInstructionContext(llvmInstruction)});
         originMap.insert({INLINE_CONTEXT, deriveOperandContext(llvmOperand)});
         originMap.insert({SHORT_POSITION, deriveInstructionShortPosition(llvmInstruction)});
 
         return json(originMap).dump();
-        // TODO insert method at relevant places (binaryoptransformer + termoptransformer + func arguments + ...)
-        // TODO test with vercors
-        // TODO other origins: block, function missing parts
     }
+
+    std::string generateTypeOrigin(llvm::Type &llvmType) {
+        std::unordered_map<std::string, std::string> originMap;
+
+        originMap.insert({PREFERRED_NAME, deriveTypePreferredName(llvmType)});
+
+        return json(originMap).dump();
+    }
+
 
 }
