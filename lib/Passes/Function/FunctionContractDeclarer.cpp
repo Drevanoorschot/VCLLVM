@@ -3,11 +3,14 @@
 #include "Passes/Function/FunctionDeclarer.h"
 #include "Util/Constants.h"
 #include "Util/Exceptions.h"
-#include "Transform/Origin/OriginProvider.h"
+#include "Origin/OriginProvider.h"
 
 
 namespace vcllvm {
+    const std::string SOURCE_LOC = "Passes::Function::FunctionContractDeclarer";
+
     using namespace llvm;
+
     /*
      * Function Contract Declarer Result
      */
@@ -62,9 +65,8 @@ namespace vcllvm {
             auto contractLine = dyn_cast<MDString>(contractMDNode->getOperand(i));
             if (contractLine == nullptr) {
                 std::stringstream errorStream;
-                errorStream << "Unable to cast contract string #" << i + 1 << " of function \""
-                            << F.getName().str() << "\" to string type";
-                vcllvm::ErrorReporter::addError("Passes::Function::FunctionContractDeclarer", errorStream.str());
+                errorStream << "Unable to cast contract metadata node #" << i + 1 << "to string type";
+                vcllvm::ErrorReporter::addError(SOURCE_LOC, errorStream.str(), F);
                 break;
             }
             contractStream << contractLine->getString().str() << '\n';

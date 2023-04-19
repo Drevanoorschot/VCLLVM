@@ -1,11 +1,13 @@
 #include "Transform/Instruction/BinaryOpTransform.h"
 
 
-#include "Transform/Origin/OriginProvider.h"
 #include "Transform/Transform.h"
+#include "Transform/BlockTransform.h"
+#include "Origin/OriginProvider.h"
 #include "Util/Exceptions.h"
 
 namespace llvm2Col {
+    const std::string SOURCE_LOC = "Transform::Instruction::BinaryOp";
 
     void transformBinaryOp(llvm::Instruction &llvmInstruction,
                            col::Block &colBlock,
@@ -34,11 +36,7 @@ namespace llvm2Col {
                 break;
             }
             default:
-                std::stringstream errorStream;
-                errorStream << "Unsupported operator \"" << llvmInstruction.getOpcodeName() << "\" in function \""
-                            << llvmInstruction.getFunction()->getName().str() + '\"';
-                vcllvm::ErrorReporter::addError("Util::Transform::Instruction::BinaryOp", errorStream.str());
-                return;
+                reportUnsupportedOperatorError(SOURCE_LOC, llvmInstruction);
         }
     }
 

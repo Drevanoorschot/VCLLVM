@@ -3,10 +3,8 @@
 
 #include <llvm/IR/Value.h>
 
-#include "col.pb.h"
 
 namespace llvm2Col {
-    namespace col = vct::col::serialize;
 
     std::string generateProgramOrigin(llvm::Module &llvmModule);
 
@@ -29,7 +27,6 @@ namespace llvm2Col {
     std::string generateOperandOrigin(llvm::Instruction &llvmInstruction, llvm::Value &llvmOperand);
 
     std::string generateTypeOrigin(llvm::Type &llvmType);
-
 
 }
 #endif //VCLLVM_ORIGINPROVIDER_H

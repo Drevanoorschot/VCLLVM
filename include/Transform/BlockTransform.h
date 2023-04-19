@@ -25,6 +25,8 @@ namespace llvm2Col {
     void transformInstruction(vcllvm::FunctionCursor &funcCursor,
                               llvm::Instruction &llvmInstruction,
                               col::Block &colBodyBlock);
+
+    void reportUnsupportedOperatorError(const std::string &source, llvm::Instruction &llvmInstruction);
 }
 #endif //VCLLVM_BLOCKTRANSFORM_H
 

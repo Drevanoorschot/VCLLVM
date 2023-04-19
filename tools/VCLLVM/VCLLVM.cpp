@@ -13,7 +13,7 @@
 #include "Passes/Function/PureAssigner.h"
 
 #include "Transform/Transform.h"
-#include "Transform/Origin/OriginProvider.h"
+#include "Origin/OriginProvider.h"
 
 #include "Util/Exceptions.h"
 

@@ -1,11 +1,12 @@
 #include "Passes/Function/FunctionDeclarer.h"
 
 #include "Transform/Transform.h"
-#include "Transform/Origin/OriginProvider.h"
+#include "Origin/OriginProvider.h"
 #include "Util/Exceptions.h"
 
 
 namespace vcllvm {
+    const std::string SOURCE_LOC ="Passes::Function::FunctionDeclarer";
     using namespace llvm;
 
     /*
@@ -65,9 +66,8 @@ namespace vcllvm {
                 llvm2Col::transformAndSetType(*llvmArg.getType(), *colArg->mutable_t());
             } catch (vcllvm::UnsupportedTypeException &e) {
                 std::stringstream errorStream;
-                errorStream << e.what() << " in argument #" << llvmArg.getArgNo() << " of function \""
-                            << F.getName().str() << "\"";
-                vcllvm::ErrorReporter::addError("Passes::Function::FunctionDeclarer", errorStream.str());
+                errorStream << e.what() << " in argument #" << llvmArg.getArgNo();
+                vcllvm::ErrorReporter::addError(SOURCE_LOC, errorStream.str(), F);
             }
             // add args mapping to result
             result.addFuncArgMapEntry(llvmArg, *colArg);
@@ -92,8 +92,8 @@ namespace vcllvm {
             llvm2Col::transformAndSetType(*F.getReturnType(), *colFunction.mutable_return_type());
         } catch (vcllvm::UnsupportedTypeException &e) {
             std::stringstream errorStream;
-            errorStream << e.what() << " in return type of function \"" << F.getName().str() << "\"";
-            vcllvm::ErrorReporter::addError("Passes::Function::FunctionDeclarer", errorStream.str());
+            errorStream << e.what() << " in return signature";
+            vcllvm::ErrorReporter::addError(SOURCE_LOC, errorStream.str(), F);
         }
         return PreservedAnalyses::all();
     }

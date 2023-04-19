@@ -5,6 +5,8 @@
 #include "Util/Exceptions.h"
 
 namespace vcllvm {
+    const std::string SOURCE_LOC = "Passes::Function::PureAssigner";
+
     using namespace llvm;
 
     PureAssignerPass::PureAssignerPass(std::shared_ptr<col::Program> pProgram) :
@@ -41,8 +43,8 @@ namespace vcllvm {
 
     void reportError(Function &F, const std::string &explanation) {
         std::stringstream errorStream;
-        errorStream << "Malformed Metadata node of type \"" << vcllvm::constants::METADATA_PURE_KEYWORD <<
-                    "\" in function \"" << F.getName().str() << "\": " << explanation;
-        vcllvm::ErrorReporter::addError("Passes::Function::PureAssigner", errorStream.str());
+        errorStream << "Malformed Metadata node of type \"" << vcllvm::constants::METADATA_PURE_KEYWORD
+                    << "\":" << explanation;
+        vcllvm::ErrorReporter::addError(SOURCE_LOC, errorStream.str(), F);
     }
 }

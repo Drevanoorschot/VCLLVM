@@ -3,7 +3,7 @@
 #include "Passes/Function/FunctionDeclarer.h"
 #include "Transform/BlockTransform.h"
 #include "Transform/Transform.h"
-#include "Transform/Origin/OriginProvider.h"
+#include "Origin/OriginProvider.h"
 
 
 namespace vcllvm {

@@ -5,7 +5,7 @@
 
 #include "Util/Exceptions.h"
 #include "Passes/Function/FunctionBodyTransformer.h"
-#include "Transform/Origin/OriginProvider.h"
+#include "Origin/OriginProvider.h"
 
 
 
@@ -15,11 +15,12 @@
  * @param type
  */
 namespace llvm2Col {
+    const std::string SOURCE_LOC = "Transform::Transform";
+
     namespace col = vct::col::serialize;
 
     void transformAndSetType(llvm::Type &llvmType,
                              col::Type &colType) {
-        // TODO refactor out exceptions
         switch (llvmType.getTypeID()) {
             case llvm::Type::IntegerTyID:
                 if (llvmType.getIntegerBitWidth() == 1) {
@@ -29,7 +30,7 @@ namespace llvm2Col {
                 }
                 break;
             default:
-                throw vcllvm::UnsupportedTypeException("Type not supported");
+                throw vcllvm::UnsupportedTypeException();
         }
     }
 
@@ -77,7 +78,7 @@ namespace llvm2Col {
                 llvm::raw_string_ostream(errCtx) << llvmConstant;
                 std::stringstream errorStream;
                 errorStream << "Unknown constant \"" << errCtx << '\"';
-                vcllvm::ErrorReporter::addError("Transform::Transform", errorStream.str());
+                vcllvm::ErrorReporter::addError(SOURCE_LOC, errorStream.str(), llvmInstruction);
         }
     }
 

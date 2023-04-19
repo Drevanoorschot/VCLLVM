@@ -1,15 +1,15 @@
 #include "Transform/Instruction/MemoryOpTransform.h"
 
+#include "Transform/BlockTransform.h"
 #include "Util/Exceptions.h"
 
 namespace llvm2Col {
+    const std::string SOURCE_LOC = "Transform::Instruction::MemoryOp";
+
     void transformMemoryOp(llvm::Instruction &llvmInstruction,
                            col::Block &colBlock,
                            vcllvm::FunctionCursor &funcCursor) {
         //TODO stub
-        std::stringstream errorStream;
-        errorStream << "Unsupported operator \"" << llvmInstruction.getOpcodeName() << "\" in function \""
-                    << llvmInstruction.getFunction()->getName().str();
-        vcllvm::ErrorReporter::addError("Util::Transform::Instruction::MemoryOp", errorStream.str());
+        reportUnsupportedOperatorError(SOURCE_LOC, llvmInstruction);
     }
 }

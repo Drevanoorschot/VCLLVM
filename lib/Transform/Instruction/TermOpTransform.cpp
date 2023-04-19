@@ -3,9 +3,12 @@
 #include "Transform/Transform.h"
 #include "Transform/BlockTransform.h"
 #include "Util/Exceptions.h"
-#include "Transform/Origin/OriginProvider.h"
+#include "Origin/OriginProvider.h"
 
 namespace llvm2Col {
+    const std::string SOURCE_LOC = "Transform::Instruction::TermOp";
+
+
     void transformTermOp(llvm::Instruction &llvmInstruction,
                          col::Block &colBlock,
                          vcllvm::FunctionCursor &funcCursor) {
@@ -20,10 +23,7 @@ namespace llvm2Col {
                 break;
             }
             default:
-                std::stringstream errorStream;
-                errorStream << "Unsupported operator \"" << llvmInstruction.getOpcodeName() << "\" in function \""
-                            << llvmInstruction.getFunction()->getName().str();
-                vcllvm::ErrorReporter::addError("Util::Transform::Instruction::TermOp", errorStream.str());
+                reportUnsupportedOperatorError(SOURCE_LOC, llvmInstruction);
                 break;
         }
     }

@@ -1,24 +1,28 @@
 #ifndef VCLLVM_EXCEPTIONS_H
 #define VCLLVM_EXCEPTIONS_H
 
-#include <stdexcept>
-#include <vector>
+#include <llvm/IR/Module.h>
+
 
 namespace vcllvm {
-    class UnsupportedTypeException : public std::exception {
-    private:
-        std::string message;
-    public:
-        explicit UnsupportedTypeException(std::string message);
-
-        std::string what();
+    struct UnsupportedTypeException : public std::exception {
+        [[nodiscard]] const char *what();
     };
 
     class ErrorReporter {
     private:
-         static u_int32_t errorCount;
+        static u_int32_t errorCount;
+
+        static void addError(const std::string &source, const std::string &message, const std::string &origin);
+
     public:
-        static void addError(const std::string &source, const std::string &message);
+        static void addError(const std::string &source, const std::string &message, llvm::Module &llvmModule);
+
+        static void addError(const std::string &source, const std::string &message, llvm::Function &llvmFunction);
+
+        static void addError(const std::string &source, const std::string &message, llvm::BasicBlock &llvmBlock);
+
+        static void addError(const std::string &source, const std::string &message, llvm::Instruction &llvmInstruction);
 
         static bool hasErrors();
 

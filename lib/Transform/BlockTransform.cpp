@@ -9,6 +9,8 @@
 #include "Util/Exceptions.h"
 
 namespace llvm2Col {
+    const std::string SOURCE_LOC = "Transform::BlockTransform";
+
     void transformLlvmBlock(llvm::BasicBlock &llvmBlock, vcllvm::FunctionCursor &functionCursor) {
         col::Block &colBlock = functionCursor.getOrSetLlvmBlock2LabeledColBlockEntry(llvmBlock).block;
         for (auto *B: llvm::predecessors(&llvmBlock)) {
@@ -40,17 +42,17 @@ namespace llvm2Col {
         } else if (llvm::Instruction::OtherOpsBegin <= opCode && opCode < llvm::Instruction::OtherOpsEnd) {
             llvm2Col::transformOtherOp(llvmInstruction, colBodyBlock, funcCursor);
         } else {
-            std::stringstream errorStream;
-            errorStream << "Unknown operator \"" << llvmInstruction.getOpcodeName() << "\" in function \""
-                        << llvmInstruction.getFunction()->getName().str() << "\"";
-            vcllvm::ErrorReporter::addError("Transform::BlockTransform", errorStream.str());
+            reportUnsupportedOperatorError(SOURCE_LOC, llvmInstruction);
         }
     }
 
     void transformLoop(llvm::BasicBlock &llvmBlock, vcllvm::FunctionCursor &functionCursor) {
+        vcllvm::ErrorReporter::addError(SOURCE_LOC, "Unsupported loop detected", llvmBlock);
+    }
+
+    void reportUnsupportedOperatorError(const std::string &source, llvm::Instruction &llvmInstruction) {
         std::stringstream errorStream;
-        errorStream << "Loops are unsupported. Loop detected in function \"" << llvmBlock.getParent()->getName().str()
-                    << "\"\n";
-        vcllvm::ErrorReporter::addError("Transform::BlockTransform", errorStream.str());
+        errorStream << "Unsupported operator \"" << llvmInstruction.getOpcodeName() << '"';
+        vcllvm::ErrorReporter::addError(source, errorStream.str(), llvmInstruction);
     }
 }

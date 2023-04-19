@@ -1,12 +1,12 @@
-#include "Transform/Origin/OriginProvider.h"
+#include "Origin/OriginProvider.h"
 
 #include <llvm/IR/Module.h>
 
 #include "nlohmann/json.hpp"
 
-#include "Transform/Origin/PreferredNameDeriver.h"
-#include "Transform/Origin/ContextDeriver.h"
-#include "Transform/Origin/ShortPositionDeriver.h"
+#include "Origin/PreferredNameDeriver.h"
+#include "Origin/ContextDeriver.h"
+#include "Origin/ShortPositionDeriver.h"
 
 namespace llvm2Col {
     using json = nlohmann::json;

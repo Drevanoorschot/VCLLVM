@@ -1,5 +1,5 @@
-#include "Transform/Origin/ShortPositionDeriver.h"
-#include "Transform/Origin/ContextDeriver.h"
+#include "Origin/ShortPositionDeriver.h"
+#include "Origin/ContextDeriver.h"
 
 namespace llvm2Col {
     const std::string POSITION_POINTER = "\n\t -> ";
