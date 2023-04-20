@@ -61,7 +61,7 @@ namespace vcllvm {
         // concatenate all contract lines with new lines
         MDNode *contractMDNode = F.getMetadata(vcllvm::constants::METADATA_CONTRACT_KEYWORD);
         std::stringstream contractStream;
-        for (int i = 0; i < contractMDNode->getNumOperands(); i++) {
+        for (u_int32_t i = 0; i < contractMDNode->getNumOperands(); i++) {
             auto contractLine = dyn_cast<MDString>(contractMDNode->getOperand(i));
             if (contractLine == nullptr) {
                 std::stringstream errorStream;

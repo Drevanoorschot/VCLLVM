@@ -85,7 +85,7 @@ namespace llvm2Col {
     void transformAndSetIntegerValue(llvm::APInt &apInt, col::IntegerValue &colIntegerValue) {
         // TODO works for "small" signed and unsigned numbers, may break for values >=2^64
         std::vector<u_int64_t> byteVector;
-        for (int i = 0; i < apInt.getNumWords(); i++) {
+        for (uint32_t i = 0; i < apInt.getNumWords(); i++) {
             byteVector.push_back(apInt.getRawData()[i]);
         }
         colIntegerValue.mutable_value()->set_data(byteVector.data(), byteVector.size());
