@@ -8,6 +8,8 @@ namespace llvm2Col {
     void transformOtherOp(llvm::Instruction &llvmInstruction,
                           col::Block &colBlock,
                           vcllvm::FunctionCursor &funcCursor);
+
+    void transformPhi(llvm::PHINode &phiInstruction, col::Block &colBlock, vcllvm::FunctionCursor &funcCursor);
 }
 
 #endif //VCLLVM_OTHEROPTRANSFORM_H

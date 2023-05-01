@@ -34,8 +34,34 @@ namespace vcllvm {
         explicit FunctionCursor(col::Scope &functionScope, col::Block &functionBody, llvm::LoopInfo &loopInfo);
 
         const col::Scope &getFunctionScope();
+        /**
+         * declares variable in the function scope
+         * @param llvmInstruction
+         * @return the created variable declaration
+         */
+        col::Variable &declareVariable(Instruction &llvmInstruction);
 
+        /**
+         * Functionality is twofold:
+         * <ol>
+         *  <li>Creates a variable declaration in the function scope (declare variable)</li>
+         *  <li>Creates an assignment in the provided colBlock</li>
+         * </ol>
+         * @param llvmInstruction
+         * @param colBlock
+         * @return The created col assignment
+         */
         col::Assign &createAssignmentInFunction(Instruction &llvmInstruction, col::Block &colBlock);
+
+        /**
+         * Creates an assignment in the provided colBlock referencing the provided variable declaration
+         *
+         * @param llvmInstruction
+         * @param colBlock
+         * @param varDecl
+         * @return the created col assignment
+         */
+        col::Assign &createAssignmentInFunction(Instruction &llvmInstruction, col::Block &colBlock, col::Variable &varDecl);
 
         col::Variable &getVariableMapEntry(llvm::Value &llvmValue);
 

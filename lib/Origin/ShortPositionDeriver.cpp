@@ -35,7 +35,7 @@ namespace llvm2Col {
                 break;
             }
         }
-        instructionPosStream << POSITION_POINTER << "instruction #" << pos << "("
+        instructionPosStream << POSITION_POINTER << "instruction #" << pos << " ("
                              << deriveInstructionContext(llvmInstruction) << ')';
         return instructionPosition;
     }

@@ -14,7 +14,7 @@ namespace vcllvm {
     u_int32_t ErrorReporter::errorCount;
 
     void ErrorReporter::addError(const std::string &source, const std::string &message, const std::string &origin) {
-        llvm::errs() << "[" << source << "] " << message << "\n  @" << origin << "\n\n";
+        llvm::errs() << "[VCLLVM] [" << source << "] " << message << " @\n  " << origin << "\n\n";
         ErrorReporter::errorCount++;
     }
 

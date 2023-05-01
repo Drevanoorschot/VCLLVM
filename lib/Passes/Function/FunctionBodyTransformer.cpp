@@ -56,16 +56,8 @@ namespace vcllvm {
         return loopInfo;
     }
 
-    /**
-     * Functionality is twofold:
-     * <ol>
-     * <li>Creates a variable declaration in the function scope</li>
-     * <li>Creates an assignment in the provided colBlock</li>
-     * </ol>
-     * @param llvmInstruction
-     * @return The created col assignment
-     */
-    col::Assign &FunctionCursor::createAssignmentInFunction(Instruction &llvmInstruction, col::Block &colBlock) {
+
+    col::Variable &FunctionCursor::declareVariable(Instruction &llvmInstruction) {
         // create declaration in buffer
         col::Variable *varDecl = functionScope.add_locals();
         // set type of declaration
@@ -82,16 +74,24 @@ namespace vcllvm {
         varDecl->set_origin(llvm2Col::generateSingleStatementOrigin(llvmInstruction));
         // add to the variable lut
         this->addVariableMapEntry(llvmInstruction, *varDecl);
+        return *varDecl;
+    }
 
-        // create assignment in buffer and set origin
+    col::Assign &FunctionCursor::createAssignmentInFunction(Instruction &llvmInstruction, col::Block &colBlock) {
+        col::Variable &varDecl = declareVariable(llvmInstruction);
+        return createAssignmentInFunction(llvmInstruction, colBlock, varDecl);
+    }
+
+    col::Assign &FunctionCursor::createAssignmentInFunction(Instruction &llvmInstruction,
+                                                            col::Block &colBlock,
+                                                            col::Variable &varDecl) {
         col::Assign *assignment = colBlock.add_statements()->mutable_assign();
         assignment->set_origin(llvm2Col::generateSingleStatementOrigin(llvmInstruction));
         // create local target in buffer and set origin
         col::Local *colLocal = assignment->mutable_target()->mutable_local();
         colLocal->set_origin(llvm2Col::generateAssignTargetOrigin(llvmInstruction));
         // set target to refer to var decl
-        colLocal->mutable_ref()->set_index(varDecl->id());
-
+        colLocal->mutable_ref()->set_index(varDecl.id());
         return *assignment;
     }
 
