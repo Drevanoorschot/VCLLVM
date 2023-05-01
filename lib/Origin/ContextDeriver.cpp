@@ -62,7 +62,7 @@ namespace llvm2Col {
 
     std::string deriveInstructionRhs(llvm::Instruction &llvmInstruction) {
         std::string fullContext = deriveInstructionContext(llvmInstruction);
-        return fullContext.substr(fullContext.find('='));
+        return fullContext.substr(fullContext.find('=') + 1);
     }
 
     std::string deriveOperandContext(llvm::Value &llvmOperand) {

@@ -6,7 +6,7 @@
 
 namespace vcllvm {
     struct UnsupportedTypeException : public std::exception {
-        const char * what() const noexcept override;
+        [[nodiscard]] const char * what() const noexcept override;
     };
 
     class ErrorReporter {

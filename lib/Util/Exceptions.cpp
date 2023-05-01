@@ -7,7 +7,7 @@
 #include <llvm/IR/Module.h>
 
 namespace vcllvm {
-    const char *UnsupportedTypeException::what() const noexcept {
+    [[nodiscard]] const char *UnsupportedTypeException::what() const noexcept {
         return "Type not supported";
     }
 

@@ -4,9 +4,11 @@
 #include "Transform/BlockTransform.h"
 #include "Transform/Transform.h"
 #include "Origin/OriginProvider.h"
+#include "Util/Exceptions.h"
 
 
 namespace vcllvm {
+    const std::string SOURCE_LOC = "Passes::Function::FunctionBodyTransformer";
 
     FunctionCursor::FunctionCursor(col::Scope &functionScope, col::Block &functionBody, llvm::LoopInfo &loopInfo) :
             functionScope(functionScope), functionBody(functionBody), loopInfo(loopInfo) {}
@@ -67,7 +69,13 @@ namespace vcllvm {
         // create declaration in buffer
         col::Variable *varDecl = functionScope.add_locals();
         // set type of declaration
-        llvm2Col::transformAndSetType(*llvmInstruction.getType(), *varDecl->mutable_t());
+        try {
+            llvm2Col::transformAndSetType(*llvmInstruction.getType(), *varDecl->mutable_t());
+        } catch (vcllvm::UnsupportedTypeException &e) {
+            std::stringstream errorStream;
+            errorStream << e.what() << " in variable declaration.";
+            ErrorReporter::addError(SOURCE_LOC, errorStream.str(), llvmInstruction);
+        }
         // set id
         llvm2Col::setColNodeId(varDecl);
         // set origin

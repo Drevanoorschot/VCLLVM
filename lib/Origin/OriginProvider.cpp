@@ -22,7 +22,7 @@ namespace llvm2Col {
         std::unordered_map<std::string, std::string> originMap;
 
         originMap.insert({PREFERRED_NAME, "program:" + llvmModule.getName().str()});
-        originMap.insert({CONTEXT, "At: " + deriveModuleContext(llvmModule)});
+        originMap.insert({CONTEXT, deriveModuleContext(llvmModule)});
         originMap.insert({INLINE_CONTEXT, deriveModuleContext(llvmModule)});
         originMap.insert({SHORT_POSITION, deriveModuleShortPosition(llvmModule)});
 
@@ -33,7 +33,7 @@ namespace llvm2Col {
         std::unordered_map<std::string, std::string> originMap;
 
         originMap.insert({PREFERRED_NAME, llvmFunction.getName().str()});
-        originMap.insert({CONTEXT, "At " + deriveFunctionContext(llvmFunction)});
+        originMap.insert({CONTEXT, deriveFunctionContext(llvmFunction)});
         originMap.insert({INLINE_CONTEXT, deriveFunctionContext(llvmFunction)});
         originMap.insert({SHORT_POSITION, deriveFunctionShortPosition(llvmFunction)});
 
@@ -49,7 +49,7 @@ namespace llvm2Col {
         std::unordered_map<std::string, std::string> originMap;
 
         originMap.insert({PREFERRED_NAME, deriveArgumentPreferredName(llvmArgument)});
-        originMap.insert({CONTEXT, "At: " + deriveFunctionContext(*llvmArgument.getParent())});
+        originMap.insert({CONTEXT, deriveFunctionContext(*llvmArgument.getParent())});
         originMap.insert({INLINE_CONTEXT, deriveFunctionContext(*llvmArgument.getParent())});
         originMap.insert({SHORT_POSITION, deriveFunctionShortPosition(*llvmArgument.getParent())});
 
@@ -60,7 +60,7 @@ namespace llvm2Col {
         std::unordered_map<std::string, std::string> originMap;
 
         originMap.insert({PREFERRED_NAME, "block"});
-        originMap.insert({CONTEXT, "At: " + deriveBlockContext(llvmBlock)});
+        originMap.insert({CONTEXT, deriveBlockContext(llvmBlock)});
         originMap.insert({INLINE_CONTEXT, deriveBlockContext(llvmBlock)});
         originMap.insert({SHORT_POSITION, deriveBlockShortPosition(llvmBlock)});
 
@@ -71,7 +71,7 @@ namespace llvm2Col {
         std::unordered_map<std::string, std::string> originMap;
 
         originMap.insert({PREFERRED_NAME, "label"});
-        originMap.insert({CONTEXT, "At: " + deriveLabelContext(llvmBlock)});
+        originMap.insert({CONTEXT, deriveLabelContext(llvmBlock)});
         originMap.insert({INLINE_CONTEXT, deriveLabelContext(llvmBlock)});
         originMap.insert({SHORT_POSITION, deriveBlockShortPosition(llvmBlock)});
 
@@ -82,7 +82,7 @@ namespace llvm2Col {
         std::unordered_map<std::string, std::string> originMap;
 
         // omit preferred name
-        originMap.insert({CONTEXT, "At: " + deriveSurroundingInstructionContext(llvmInstruction)});
+        originMap.insert({CONTEXT, deriveSurroundingInstructionContext(llvmInstruction)});
         originMap.insert({INLINE_CONTEXT, deriveInstructionContext(llvmInstruction)});
         originMap.insert({SHORT_POSITION, deriveInstructionShortPosition(llvmInstruction)});
 
@@ -93,7 +93,7 @@ namespace llvm2Col {
         std::unordered_map<std::string, std::string> originMap;
 
         originMap.insert({PREFERRED_NAME, "var"});
-        originMap.insert({CONTEXT, "At: " + deriveInstructionContext(llvmInstruction)});
+        originMap.insert({CONTEXT, deriveInstructionContext(llvmInstruction)});
         originMap.insert({INLINE_CONTEXT, deriveInstructionLhs(llvmInstruction)});
         originMap.insert({SHORT_POSITION, deriveInstructionShortPosition(llvmInstruction)});
 
@@ -104,7 +104,7 @@ namespace llvm2Col {
         std::unordered_map<std::string, std::string> originMap;
 
         // omit preferred name
-        originMap.insert({CONTEXT, "At " + deriveInstructionContext(llvmInstruction)});
+        originMap.insert({CONTEXT, deriveSurroundingInstructionContext(llvmInstruction)});
         originMap.insert({INLINE_CONTEXT, deriveInstructionRhs(llvmInstruction)});
         originMap.insert({SHORT_POSITION, deriveInstructionShortPosition(llvmInstruction)});
 
@@ -115,7 +115,7 @@ namespace llvm2Col {
         std::unordered_map<std::string, std::string> originMap;
 
         originMap.insert({PREFERRED_NAME, deriveOperandPreferredName(llvmOperand)});
-        originMap.insert({CONTEXT, "At " + deriveInstructionContext(llvmInstruction)});
+        originMap.insert({CONTEXT, deriveInstructionContext(llvmInstruction)});
         originMap.insert({INLINE_CONTEXT, deriveOperandContext(llvmOperand)});
         originMap.insert({SHORT_POSITION, deriveInstructionShortPosition(llvmInstruction)});
 

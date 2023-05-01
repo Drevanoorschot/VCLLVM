@@ -21,13 +21,22 @@ namespace llvm2Col {
         llvm::raw_string_ostream blockPosStream = llvm::raw_string_ostream(blockPosition);
         blockPosStream << POSITION_POINTER << "block ";
         llvmBlock.printAsOperand(blockPosStream, false);
+        blockPosStream << (llvmBlock.isEntryBlock() ? " (entryblock)" : "");
         return blockPosition;
     }
 
     std::string deriveInstructionShortPosition(llvm::Instruction &llvmInstruction) {
         std::string instructionPosition = deriveBlockShortPosition(*llvmInstruction.getParent());
         llvm::raw_string_ostream instructionPosStream = llvm::raw_string_ostream(instructionPosition);
-        instructionPosStream << POSITION_POINTER << "instruction " << deriveInstructionContext(llvmInstruction);
+        int pos = 0;
+        for (auto &I: llvmInstruction.getParent()->getInstList()) {
+            pos++;
+            if (&I == &llvmInstruction) {
+                break;
+            }
+        }
+        instructionPosStream << POSITION_POINTER << "instruction #" << pos << "("
+                             << deriveInstructionContext(llvmInstruction) << ')';
         return instructionPosition;
     }
 }
