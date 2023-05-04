@@ -3,7 +3,7 @@
 ## Requirements
 - CMake (>=3.4.3)
 - LLVM (15.0.7)
-- Protobuf (3.21.9)
+- Protobuf (3.22.0)
 
 ## Building
 To build the project with ninja, run the following:

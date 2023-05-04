@@ -4,6 +4,8 @@ add_library(proto-objects OBJECT "col.proto")
 
 target_link_libraries(proto-objects PUBLIC protobuf::libprotobuf)
 
+file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/generated")
+
 set(PROTO_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
 
 target_include_directories(proto-objects PUBLIC "$<BUILD_INTERFACE:${PROTO_BINARY_DIR}>")

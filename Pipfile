@@ -7,6 +7,3 @@ name = "pypi"
 lit = "==15.0.6"
 
 [dev-packages]
-
-[requires]
-python_version = "3.9"
