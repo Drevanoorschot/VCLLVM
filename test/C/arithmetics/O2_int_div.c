@@ -1,3 +1,6 @@
+// RUN: clang -S -O2 -emit-llvm %s -o %t
+// RUN: %VCLLVM %t
+
 #include "stdint.h"
 
 uint32_t unsignedDiv(uint32_t x, uint32_t y) {
