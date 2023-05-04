@@ -11,10 +11,5 @@ namespace llvm2Col {
                            col::Block &colBlock,
                            vcllvm::FunctionCursor &funcCursor);
 
-
-    void transformBinExpr(llvm::Instruction &llvmInstruction,
-                          auto &colBinExpr,
-                          vcllvm::FunctionCursor &funcCursor);
-
 }
 #endif //VCLLVM_BINARYOPTRANSFORM_H

@@ -45,6 +45,7 @@ namespace llvm2Col {
                                     col::Block &colBlock,
                                     vcllvm::FunctionCursor &funcCursor) {
         col::Branch *colBranch = colBlock.add_statements()->mutable_branch();
+        colBranch->set_origin(generateSingleStatementOrigin(llvmBrInstruction));
 
         // true branch
         col::ExprStatement *colTrueBranch = colBranch->add_branches();
@@ -67,7 +68,10 @@ namespace llvm2Col {
         // false branch
         col::ExprStatement *colFalseBranch = colBranch->add_branches();
         // set conditional (which is a true constant as else == else if(true)))
-        colFalseBranch->mutable_v1()->mutable_boolean_value()->set_value(true);
+        col::BooleanValue *elseCondition = colFalseBranch->mutable_v1()->mutable_boolean_value();
+        elseCondition->set_value(true);
+        // set origin of else condition
+        elseCondition->set_origin(generateOperandOrigin(llvmBrInstruction, *llvmBrInstruction.getCondition()));
         // get llvm block targeted by the llvm branch
         auto *llvmFalseBlock = cast<llvm::BasicBlock>(llvmBrInstruction.getOperand(2));
         // get or pre-generate target labeled block

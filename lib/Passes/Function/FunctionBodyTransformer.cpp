@@ -77,14 +77,14 @@ namespace vcllvm {
         return *varDecl;
     }
 
-    col::Assign &FunctionCursor::createAssignmentInFunction(Instruction &llvmInstruction, col::Block &colBlock) {
+    col::Assign &FunctionCursor::createAssignmentAndDeclaration(Instruction &llvmInstruction, col::Block &colBlock) {
         col::Variable &varDecl = declareVariable(llvmInstruction);
-        return createAssignmentInFunction(llvmInstruction, colBlock, varDecl);
+        return createAssignment(llvmInstruction, colBlock, varDecl);
     }
 
-    col::Assign &FunctionCursor::createAssignmentInFunction(Instruction &llvmInstruction,
-                                                            col::Block &colBlock,
-                                                            col::Variable &varDecl) {
+    col::Assign &FunctionCursor::createAssignment(Instruction &llvmInstruction,
+                                                  col::Block &colBlock,
+                                                  col::Variable &varDecl) {
         col::Assign *assignment = colBlock.add_statements()->mutable_assign();
         assignment->set_origin(llvm2Col::generateSingleStatementOrigin(llvmInstruction));
         // create local target in buffer and set origin

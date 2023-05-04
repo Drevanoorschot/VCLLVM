@@ -2,6 +2,7 @@
 #define VCLLVM_TRANSFORM_H
 
 #include "Passes/Function/FunctionBodyTransformer.h"
+#include "Origin/OriginProvider.h"
 
 /**
  * General helper functions for transformations
@@ -23,11 +24,29 @@ namespace llvm2Col {
 
     void transformAndSetVarExpr(vcllvm::FunctionCursor &functionCursor, llvm::Instruction &llvmInstruction,
                                 llvm::Value &llvmOperand, col::Expr &colExpr);
+    template<class ColBinExpr>
+    void transformBinExpr(llvm::Instruction &llvmInstruction,
+                          ColBinExpr &colBinExpr,
+                          vcllvm::FunctionCursor &funcCursor) {
+        // set origin of entire expression
+        colBinExpr.set_origin(generateBinExprOrigin(llvmInstruction));
+        // transform left operand
+        col::Expr *lExpr = colBinExpr.mutable_left();
+        llvm2Col::transformAndSetExpr(
+                funcCursor, llvmInstruction, *llvmInstruction.getOperand(0),
+                *lExpr);
+        // transform right operand
+        col::Expr *rExpr = colBinExpr.mutable_right();
+        llvm2Col::transformAndSetExpr(
+                funcCursor, llvmInstruction, *llvmInstruction.getOperand(1),
+                *rExpr);
+    }
 
     template<class IDNode>
     void setColNodeId(IDNode &idNode) {
         idNode->set_id(reinterpret_cast<int64_t>(idNode));
     }
+
 
 }
 #endif //VCLLVM_TRANSFORM_H

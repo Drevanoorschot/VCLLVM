@@ -9,7 +9,15 @@ namespace llvm2Col {
                           col::Block &colBlock,
                           vcllvm::FunctionCursor &funcCursor);
 
-    void transformPhi(llvm::PHINode &phiInstruction, col::Block &colBlock, vcllvm::FunctionCursor &funcCursor);
+    void transformPhi(llvm::PHINode &phiInstruction, vcllvm::FunctionCursor &funcCursor);
+
+    void transformICmp(llvm::ICmpInst &icmpInstruction,
+                       col::Block &colBlock,
+                       vcllvm::FunctionCursor &funcCursor);
+
+    void transformCmpExpr(llvm::CmpInst &cmpInstruction,
+                          auto &colCompareExpr,
+                          vcllvm::FunctionCursor &funcCursor);
 }
 
 #endif //VCLLVM_OTHEROPTRANSFORM_H

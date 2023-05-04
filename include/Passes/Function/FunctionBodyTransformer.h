@@ -51,7 +51,7 @@ namespace vcllvm {
          * @param colBlock
          * @return The created col assignment
          */
-        col::Assign &createAssignmentInFunction(Instruction &llvmInstruction, col::Block &colBlock);
+        col::Assign &createAssignmentAndDeclaration(Instruction &llvmInstruction, col::Block &colBlock);
 
         /**
          * Creates an assignment in the provided colBlock referencing the provided variable declaration
@@ -61,7 +61,7 @@ namespace vcllvm {
          * @param varDecl
          * @return the created col assignment
          */
-        col::Assign &createAssignmentInFunction(Instruction &llvmInstruction, col::Block &colBlock, col::Variable &varDecl);
+        col::Assign &createAssignment(Instruction &llvmInstruction, col::Block &colBlock, col::Variable &varDecl);
 
         col::Variable &getVariableMapEntry(llvm::Value &llvmValue);
 
