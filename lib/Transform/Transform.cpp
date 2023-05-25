@@ -90,4 +90,11 @@ namespace llvm2Col {
         }
         colIntegerValue.mutable_value()->set_data(byteVector.data(), byteVector.size());
     }
+
+    std::string getValueName(llvm::Value &llvmValue) {
+        std::string name;
+        llvm::raw_string_ostream contextStream = llvm::raw_string_ostream(name);
+        llvmValue.printAsOperand(contextStream, false);
+        return name;
+    }
 }

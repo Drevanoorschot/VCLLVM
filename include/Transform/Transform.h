@@ -47,6 +47,6 @@ namespace llvm2Col {
         idNode->set_id(reinterpret_cast<int64_t>(idNode));
     }
 
-
+    std::string getValueName(llvm::Value &llvmValue);
 }
 #endif //VCLLVM_TRANSFORM_H

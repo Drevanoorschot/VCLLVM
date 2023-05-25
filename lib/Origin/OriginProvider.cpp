@@ -16,8 +16,6 @@ namespace llvm2Col {
     const std::string INLINE_CONTEXT = "inlineContext";
     const std::string SHORT_POSITION = "shortPosition";
 
-    const std::string EMPTY_ORIGIN = json("{}").dump();
-
     std::string generateProgramOrigin(llvm::Module &llvmModule) {
         std::unordered_map<std::string, std::string> originMap;
 
@@ -41,8 +39,9 @@ namespace llvm2Col {
     }
 
     std::string generateFunctionContractOrigin(llvm::MDNode &contractMDNode) {
-        // assumption: it's going to get parsed by vercors again which will fix the origins.
-        return EMPTY_ORIGIN;
+        std::unordered_map<std::string, std::string> originMap;
+        // empty origin, origin to be determined by VerCors
+        return json(originMap).dump();
     }
 
     std::string generateArgumentOrigin(llvm::Argument &llvmArgument) {

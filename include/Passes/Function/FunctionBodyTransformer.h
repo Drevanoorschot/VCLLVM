@@ -4,6 +4,7 @@
 #include <llvm/Analysis/LoopInfo.h>
 
 #include "col.pb.h"
+#include "FunctionDeclarer.h"
 
 namespace vcllvm {
     using namespace llvm;
@@ -22,7 +23,9 @@ namespace vcllvm {
 
         col::Block &functionBody;
 
-        llvm::LoopInfo &loopInfo;
+        llvm::Function &llvmFunction;
+
+        llvm::FunctionAnalysisManager &FAM;
 
         std::unordered_map<llvm::Value *, col::Variable *> variableMap;
 
@@ -31,7 +34,10 @@ namespace vcllvm {
         void addVariableMapEntry(llvm::Value &llvmValue, col::Variable &colVar);
 
     public:
-        explicit FunctionCursor(col::Scope &functionScope, col::Block &functionBody, llvm::LoopInfo &loopInfo);
+        explicit FunctionCursor(col::Scope &functionScope,
+                                col::Block &functionBody,
+                                llvm::Function &llvmFunction,
+                                llvm::FunctionAnalysisManager &FAM);
 
         const col::Scope &getFunctionScope();
         /**
@@ -70,6 +76,12 @@ namespace vcllvm {
         bool isVisited(llvm::BasicBlock &llvmBlock);
 
         LoopInfo &getLoopInfo();
+
+        LoopInfo &getLoopInfo(llvm::Function &otherLlvmFunction);
+
+        FDResult &getFDResult();
+
+        FDResult &getFDResult(llvm::Function &otherLlvmFunction);
 
     };
 

@@ -1,6 +1,7 @@
 #include "Passes/Function/FunctionBodyTransformer.h"
 
 #include "Passes/Function/FunctionDeclarer.h"
+#include "Passes/Function/FunctionContractDeclarer.h"
 #include "Transform/BlockTransform.h"
 #include "Transform/Transform.h"
 #include "Origin/OriginProvider.h"
@@ -10,8 +11,11 @@
 namespace vcllvm {
     const std::string SOURCE_LOC = "Passes::Function::FunctionBodyTransformer";
 
-    FunctionCursor::FunctionCursor(col::Scope &functionScope, col::Block &functionBody, llvm::LoopInfo &loopInfo) :
-            functionScope(functionScope), functionBody(functionBody), loopInfo(loopInfo) {}
+    FunctionCursor::FunctionCursor(col::Scope &functionScope,
+                                   col::Block &functionBody,
+                                   llvm::Function &llvmFunction,
+                                   llvm::FunctionAnalysisManager &FAM) :
+            functionScope(functionScope), functionBody(functionBody), llvmFunction(llvmFunction), FAM(FAM) {}
 
     const col::Scope &FunctionCursor::getFunctionScope() {
         return functionScope;
@@ -19,6 +23,10 @@ namespace vcllvm {
 
     void FunctionCursor::addVariableMapEntry(Value &llvmValue, col::Variable &colVar) {
         variableMap.insert({&llvmValue, &colVar});
+        // add reference to reference lut of function contract
+        col::StringRef *ref = FAM.getResult<FunctionContractDeclarer>(llvmFunction).getAssociatedColFuncContract().add_references();
+        ref->set_v1(llvm2Col::getValueName(llvmValue));
+        ref->mutable_v2()->set_index(colVar.id());
     }
 
     col::Variable &FunctionCursor::getVariableMapEntry(Value &llvmValue) {
@@ -53,9 +61,20 @@ namespace vcllvm {
     }
 
     LoopInfo &FunctionCursor::getLoopInfo() {
-        return loopInfo;
+        return FAM.getResult<LoopAnalysis>(llvmFunction);
     }
 
+    LoopInfo &FunctionCursor::getLoopInfo(Function &otherLlvmFunction) {
+        return FAM.getResult<LoopAnalysis>(otherLlvmFunction);
+    }
+
+    FDResult &FunctionCursor::getFDResult() {
+        return FAM.getResult<FunctionDeclarer>(llvmFunction);
+    }
+
+    FDResult &FunctionCursor::getFDResult(Function &otherLlvmFunction) {
+        return FAM.getResult<FunctionDeclarer>(otherLlvmFunction);
+    }
 
     col::Variable &FunctionCursor::declareVariable(Instruction &llvmInstruction) {
         // create declaration in buffer
@@ -100,8 +119,7 @@ namespace vcllvm {
 
     PreservedAnalyses FunctionBodyTransformerPass::run(Function &F, FunctionAnalysisManager &FAM) {
         ColScopedFuncBody scopedFuncBody = FAM.getResult<FunctionDeclarer>(F).getAssociatedScopedColFuncBody();
-        LoopInfo &loopInfo = FAM.getResult<LoopAnalysis>(F);
-        FunctionCursor funcCursor = FunctionCursor(*scopedFuncBody.scope, *scopedFuncBody.block, loopInfo);
+        FunctionCursor funcCursor = FunctionCursor(*scopedFuncBody.scope, *scopedFuncBody.block, F, FAM);
         // add function arguments to the variableMap
         for (auto &A: F.args()) {
             funcCursor.addVariableMapEntry(A, FAM.getResult<FunctionDeclarer>(F).getFuncArgMapEntry(A));

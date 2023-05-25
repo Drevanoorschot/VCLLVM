@@ -53,8 +53,8 @@ namespace vcllvm {
         col::LlvmFunctionContract &colContract = result.getAssociatedColFuncContract();
         // check if contract keyword is present
         if (!F.hasMetadata(vcllvm::constants::METADATA_CONTRACT_KEYWORD)) {
-            // empty contract
-            colContract.set_value("");
+            // set contract to a tautology
+            colContract.set_value("requires true;");
             colContract.set_origin("{}");
             return PreservedAnalyses::all();
         }

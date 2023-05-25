@@ -8,8 +8,8 @@
 ## Building
 To build the project with ninja, run the following:
 ```bash
-$ cmake -G ninja -B _build
-$ cmake --build _build --target VCLLVM
+$ cmake -G ninja -B .build
+$ cmake --build .build --target VCLLVM
 ```
 Run with:
 ```bash
@@ -17,13 +17,13 @@ $ ./_build/bin/VCLLVM <input_file>
 ```
 Installation is required to be used alongside [VerCors](https://github.com/utwente-fmt/vercors):
 ```bash
-$ cmake --install _build
+$ cmake --install .build
 ```
 
 ## Testing
 Regression testing is implemented using LLVM 
 [lit](https://llvm.org/docs/CommandGuide/lit.html#local-configuration-files).
-This requires Python (>=3.9) to be installed as well the lit package:
+This requires Python (>=3.9) to be installed as well as the lit package:
 ```bash
 $ pip install lit==15.0.6
 ```
