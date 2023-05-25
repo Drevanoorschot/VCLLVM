@@ -31,6 +31,9 @@ namespace llvm2Col {
             }
             case llvm::Instruction::SDiv:
             case llvm::Instruction::UDiv: {
+                if(llvmInstruction.isExact()) {
+                    vcllvm::ErrorReporter::addError(SOURCE_LOC, "Exact division not supported", llvmInstruction);
+                }
                 col::FloorDiv &expr = *assignment.mutable_value()->mutable_floor_div();
                 transformBinExpr(llvmInstruction, expr, funcCursor);
                 break;

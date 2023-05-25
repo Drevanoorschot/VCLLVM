@@ -9,6 +9,15 @@ namespace vcllvm {
     const std::string SOURCE_LOC ="Passes::Function::FunctionDeclarer";
     using namespace llvm;
 
+    /**
+     * Checks function definition for unsupported features that might change semantics and
+     * adds warning if this is the case.
+     * @param llvmFunction: the function to be checked
+     */
+    void checkFunctionSupport(llvm::Function &llvmFunction) {
+        // TODO add syntax support checks that change the semantics of the program to function definitions
+    }
+
     /*
      * Function Declarer Result
      */
@@ -43,6 +52,7 @@ namespace vcllvm {
             pProgram(std::move(pProgram)) {}
 
     FDResult FunctionDeclarer::run(Function &F, FunctionAnalysisManager &FAM) {
+        checkFunctionSupport(F);
         // create llvmFuncDef declaration in buffer
         col::GlobalDeclaration *llvmFuncDefDecl = pProgram->add_declarations();
         // generate id
