@@ -3,6 +3,11 @@
 
 #include <llvm/IR/Value.h>
 
+/**
+ * Generators for VerCors origin objects context fields for various LLVM Value types.
+ *
+ * For more info on VerCors origins see: https://github.com/utwente-fmt/vercors/discussions/884
+ */
 namespace llvm2Col {
     // module derivers
     std::string deriveModuleContext(llvm::Module &llvmModule);

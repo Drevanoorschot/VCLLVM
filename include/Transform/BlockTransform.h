@@ -20,8 +20,28 @@ namespace llvm2Col {
      */
     void transformLlvmBlock(llvm::BasicBlock &llvmBlock, vcllvm::FunctionCursor &functionCursor);
 
+    /**
+     * Unimplemented
+     * @param llvmBlock
+     * @param functionCursor
+     */
     void transformLoop(llvm::BasicBlock &llvmBlock, vcllvm::FunctionCursor &functionCursor);
 
+    /**
+     * Instructions are split up in their separate LLVM categories and transformed by their respective transformer.
+     * These are:
+     * <ol>
+     * <li>Binary operators</li>
+     * <li>Casting operators</li>
+     * <li>Funclet pad operators</li>
+     * <li>Memory operators</li>
+     * <li>Terminal operators</li>
+     * <li>Unary operators</li>
+     * </ol>
+     * @param funcCursor
+     * @param llvmInstruction
+     * @param colBodyBlock
+     */
     void transformInstruction(vcllvm::FunctionCursor &funcCursor,
                               llvm::Instruction &llvmInstruction,
                               col::Block &colBodyBlock);

@@ -3,7 +3,11 @@
 
 #include <llvm/IR/Value.h>
 
-
+/**
+ * Generators for VerCors origin objects for various LLVM Value types.
+ *
+ * For more info on VerCors origins see: https://github.com/utwente-fmt/vercors/discussions/884
+ */
 namespace llvm2Col {
 
     std::string generateProgramOrigin(llvm::Module &llvmModule);

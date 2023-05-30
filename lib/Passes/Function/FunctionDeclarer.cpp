@@ -6,7 +6,7 @@
 
 
 namespace vcllvm {
-    const std::string SOURCE_LOC ="Passes::Function::FunctionDeclarer";
+    const std::string SOURCE_LOC = "Passes::Function::FunctionDeclarer";
     using namespace llvm;
 
     /**
@@ -16,6 +16,7 @@ namespace vcllvm {
      */
     void checkFunctionSupport(llvm::Function &llvmFunction) {
         // TODO add syntax support checks that change the semantics of the program to function definitions
+        // TODO see: https://releases.llvm.org/15.0.0/docs/LangRef.html#functions
     }
 
     /*
@@ -58,7 +59,9 @@ namespace vcllvm {
         // generate id
         llvm2Col::setColNodeId(llvmFuncDefDecl);
         col::LlvmFunctionDefinition *llvmFuncDef = llvmFuncDefDecl->mutable_llvm_function_definition();
-        // add body block + scope
+        // add body block + scope + origin
+        // set origin
+        llvmFuncDef->set_origin(llvm2Col::generateFuncDefOrigin(F));
         ColScopedFuncBody funcScopedBody{};
         funcScopedBody.scope = llvmFuncDef->mutable_function_body()->mutable_scope();
         funcScopedBody.scope->set_origin(llvm2Col::generateFuncDefOrigin(F));
@@ -94,8 +97,6 @@ namespace vcllvm {
     PreservedAnalyses FunctionDeclarerPass::run(Function &F, FunctionAnalysisManager &FAM) {
         FDResult result = FAM.getResult<FunctionDeclarer>(F);
         col::LlvmFunctionDefinition &colFunction = result.getAssociatedColFuncDef();
-        // set origin
-        colFunction.set_origin(llvm2Col::generateFuncDefOrigin(F));
         // complete the function declaration in proto buffer
         // set return type in protobuf of function
         try {

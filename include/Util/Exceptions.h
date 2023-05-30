@@ -3,7 +3,11 @@
 
 #include <llvm/IR/Module.h>
 
-
+/**
+ * Error handler for VCLLVM. Contains exception types and a static ErrorReporter class to which errors can be added from
+ * anywhere in the program. Before attempting to serialize the buffer, VCLLVM will check for errors. If there are errors,
+ * VCLLVM will present them and aboard the program.
+ */
 namespace vcllvm {
     struct UnsupportedTypeException : public std::exception {
         [[nodiscard]] const char * what() const noexcept override;

@@ -1,7 +1,9 @@
 #ifndef VCLLVM_CONSTANTS_H
 #define VCLLVM_CONSTANTS_H
 #include <string>
-
+/**
+ * Useful string constants to use for searching out metadata nodes
+ */
 namespace vcllvm::constants {
     const std::string VC_PREFIX = "VC.";
 

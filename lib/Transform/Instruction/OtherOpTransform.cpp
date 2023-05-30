@@ -1,3 +1,4 @@
+#include <llvm/IR/FMF.h>
 #include "Transform/Instruction/OtherOpTransform.h"
 
 #include "Transform/BlockTransform.h"
@@ -16,6 +17,9 @@ namespace llvm2Col {
                 break;
             case llvm::Instruction::ICmp:
                 transformICmp(llvm::cast<llvm::ICmpInst>(llvmInstruction), colBlock, funcCursor);
+                break;
+            case llvm::Instruction::Call:
+                transformCallExpr(llvm::cast<llvm::CallInst>(llvmInstruction), colBlock, funcCursor);
                 break;
             default:
                 reportUnsupportedOperatorError(SOURCE_LOC, llvmInstruction);
@@ -89,5 +93,36 @@ namespace llvm2Col {
                           auto &colCompareExpr,
                           vcllvm::FunctionCursor &funcCursor) {
         transformBinExpr(cmpInstruction, colCompareExpr, funcCursor);
+    }
+
+    void checkCallSupport(llvm::CallInst &callInstruction) {
+        // tail recursion
+        if (callInstruction.isMustTailCall() || callInstruction.isNoTailCall()) {
+            vcllvm::ErrorReporter::addError(SOURCE_LOC, "Tail call optimization not supported", callInstruction);
+        }
+        // fast math
+        if (callInstruction.getFastMathFlags().any()) {
+            vcllvm::ErrorReporter::addError(SOURCE_LOC, "Fast math not supported", callInstruction);
+        }
+        // return attributes
+        for(auto &A: callInstruction.getAttributes().getRetAttrs()) {
+            std::stringstream errorStream;
+            errorStream << "Return attribute" << A.getKindAsString().str() << "\" not supported";
+            vcllvm::ErrorReporter::addError(SOURCE_LOC, errorStream.str(), callInstruction);
+        }
+        // address space is platform dependent (unlikely to change semantics)
+        // function attributes are just extra compiler information (no semanatic changes)
+
+        // operand bundles
+        if (callInstruction.hasOperandBundles()) {
+            vcllvm::ErrorReporter::addError(SOURCE_LOC, "Operand bundles not supported", callInstruction);
+        }
+    }
+
+    void transformCallExpr(llvm::CallInst &callInstruction,
+                           col::Block &colBlock,
+                           vcllvm::FunctionCursor &funcCursor) {
+        checkCallSupport(callInstruction);
+
     }
 }

@@ -2,7 +2,11 @@
 #define VCLLVM_PREFERREDNAMEDERIVER_H
 
 #include <llvm/IR/Value.h>
-
+/**
+ * Generators for VerCors origin objects preferredName fields for various LLVM Value types.
+ *
+ * For more info on VerCors origins see: https://github.com/utwente-fmt/vercors/discussions/884
+ */
 namespace llvm2Col {
     std::string deriveOperandPreferredName(llvm::Value &llvmOperand);
 

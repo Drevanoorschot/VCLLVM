@@ -14,14 +14,38 @@ namespace llvm2Col {
     // type transformers
     void transformAndSetType(llvm::Type &llvmType, col::Type &colType);
 
+    /**
+     * ATTEMPTS to convert any integer constant to a BigInt representation.
+     * @param apInt
+     * @param colIntegerValue
+     */
     void transformAndSetIntegerValue(llvm::APInt &apInt, col::IntegerValue &colIntegerValue);
 
-    // expression transformers
+    /**
+     * Transforms and set LLVM expression in the buffer which in practice are either constants (e.g. 0, 0.1, false etc..)
+     * or variables (i.e. LLVM Values) (e.g. %3, %variable)
+     * @param functionCursor
+     * @param llvmInstruction
+     * @param llvmOperand
+     * @param colExpr
+     */
     void transformAndSetExpr(vcllvm::FunctionCursor &functionCursor, llvm::Instruction &llvmInstruction,
                              llvm::Value &llvmOperand, col::Expr &colExpr);
-
+    /**
+     * Used by TransformAndSetExpr
+     * @param llvmInstruction
+     * @param llvmConstant
+     * @param colExpr
+     */
     void transformAndSetConstExpr(llvm::Instruction &llvmInstruction, llvm::Constant &llvmConstant, col::Expr &colExpr);
 
+    /**
+     * Used by TransformAndSetExpr
+     * @param functionCursor
+     * @param llvmInstruction
+     * @param llvmOperand
+     * @param colExpr
+     */
     void transformAndSetVarExpr(vcllvm::FunctionCursor &functionCursor, llvm::Instruction &llvmInstruction,
                                 llvm::Value &llvmOperand, col::Expr &colExpr);
     template<class ColBinExpr>
@@ -46,7 +70,11 @@ namespace llvm2Col {
     void setColNodeId(IDNode &idNode) {
         idNode->set_id(reinterpret_cast<int64_t>(idNode));
     }
-
+    /**
+     * Returns a string representation of any LLVM value as it would be displayed in human readable LLVM IR
+     * @param llvmValue
+     * @return
+     */
     std::string getValueName(llvm::Value &llvmValue);
 }
 #endif //VCLLVM_TRANSFORM_H
