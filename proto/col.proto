@@ -10,6 +10,11 @@ message BigDecimal {
   required BigInt unscaled_value = 2;
 }
 
+message BitString {
+  required bytes data = 1;
+  required int32 skip_at_last_byte = 2;
+}
+
 message Ref {
   required int64 index = 1;
 }
@@ -135,15 +140,22 @@ message Type {
     TAxiomatic t_axiomatic = 36;
     TEnum t_enum = 37;
     TProverType t_prover_type = 38;
-    CPrimitiveType c_primitive_type = 39;
-    CTPointer c_t_pointer = 40;
-    CTArray c_t_array = 41;
-    CTCudaVec c_t_cuda_vec = 42;
-    JavaNamedType java_named_type = 43;
-    JavaTClass java_t_class = 44;
-    JavaWildcard java_wildcard = 45;
-    PVLNamedType p_v_l_named_type = 46;
-    SilverPartialTAxiomatic silver_partial_t_axiomatic = 47;
+    TSmtlibArray t_smtlib_array = 39;
+    TSmtlibBitVector t_smtlib_bit_vector = 40;
+    TSmtlibRoundingMode t_smtlib_rounding_mode = 41;
+    TSmtlibFloatingPoint t_smtlib_floating_point = 42;
+    TSmtlibString t_smtlib_string = 43;
+    TSmtlibRegLan t_smtlib_reg_lan = 44;
+    TSmtlibSeq t_smtlib_seq = 45;
+    CPrimitiveType c_primitive_type = 46;
+    CTPointer c_t_pointer = 47;
+    CTArray c_t_array = 48;
+    CTCudaVec c_t_cuda_vec = 49;
+    JavaNamedType java_named_type = 50;
+    JavaTClass java_t_class = 51;
+    JavaWildcard java_wildcard = 52;
+    PVLNamedType p_v_l_named_type = 53;
+    SilverPartialTAxiomatic silver_partial_t_axiomatic = 54;
   }
 }
 
@@ -530,38 +542,155 @@ message Expr {
     ModelChoose model_choose = 216;
     ModelPerm model_perm = 217;
     ActionPerm action_perm = 218;
-    CLocal c_local = 219;
-    CInvocation c_invocation = 220;
-    CStructAccess c_struct_access = 221;
-    CStructDeref c_struct_deref = 222;
-    GpgpuCudaKernelInvocation gpgpu_cuda_kernel_invocation = 223;
-    CCast c_cast = 224;
-    JavaLocal java_local = 225;
-    JavaDeref java_deref = 226;
-    JavaLiteralArray java_literal_array = 227;
-    JavaInvocation java_invocation = 228;
-    JavaNewClass java_new_class = 229;
-    JavaNewLiteralArray java_new_literal_array = 230;
-    JavaNewDefaultArray java_new_default_array = 231;
-    JavaStringValue java_string_value = 232;
-    JavaBipGlue java_bip_glue = 233;
-    BipLocalIncomingData bip_local_incoming_data = 234;
-    BipGuardInvocation bip_guard_invocation = 235;
-    PVLLocal p_v_l_local = 236;
-    PVLDeref p_v_l_deref = 237;
-    PVLInvocation p_v_l_invocation = 238;
-    PVLNew p_v_l_new = 239;
-    SilverDeref silver_deref = 240;
-    SilverIntToRat silver_int_to_rat = 241;
-    SilverNull silver_null = 242;
-    SilverSeqSize silver_seq_size = 243;
-    SilverSetSize silver_set_size = 244;
-    SilverBagSize silver_bag_size = 245;
-    SilverMapSize silver_map_size = 246;
-    SilverCurFieldPerm silver_cur_field_perm = 247;
-    SilverCurPredPerm silver_cur_pred_perm = 248;
-    SilverPartialADTFunctionInvocation silver_partial_a_d_t_function_invocation = 249;
-    SilverUntypedNonemptyLiteralMap silver_untyped_nonempty_literal_map = 250;
+    SmtlibSelect smtlib_select = 219;
+    SmtlibStore smtlib_store = 220;
+    SmtlibBitvecLiteral smtlib_bitvec_literal = 221;
+    SmtlibConcat smtlib_concat = 222;
+    SmtlibExtract smtlib_extract = 223;
+    SmtlibBvNot smtlib_bv_not = 224;
+    SmtlibBvAnd smtlib_bv_and = 225;
+    SmtlibBvOr smtlib_bv_or = 226;
+    SmtlibBvNeg smtlib_bv_neg = 227;
+    SmtlibBvAdd smtlib_bv_add = 228;
+    SmtlibBvMul smtlib_bv_mul = 229;
+    SmtlibBvUDiv smtlib_bv_u_div = 230;
+    SmtlibBvURem smtlib_bv_u_rem = 231;
+    SmtlibBvShl smtlib_bv_shl = 232;
+    SmtlibBvShr smtlib_bv_shr = 233;
+    SmtlibBvULt smtlib_bv_u_lt = 234;
+    SmtlibRNE smtlib_r_n_e = 235;
+    SmtlibRNA smtlib_r_n_a = 236;
+    SmtlibRTP smtlib_r_t_p = 237;
+    SmtlibRTN smtlib_r_t_n = 238;
+    SmtlibRTZ smtlib_r_t_z = 239;
+    SmtlibFp smtlib_fp = 240;
+    SmtlibFpAbs smtlib_fp_abs = 241;
+    SmtlibFpNeg smtlib_fp_neg = 242;
+    SmtlibFpAdd smtlib_fp_add = 243;
+    SmtlibFpSub smtlib_fp_sub = 244;
+    SmtlibFpMul smtlib_fp_mul = 245;
+    SmtlibFpDiv smtlib_fp_div = 246;
+    SmtlibFpFma smtlib_fp_fma = 247;
+    SmtlibFpSqrt smtlib_fp_sqrt = 248;
+    SmtlibFpRem smtlib_fp_rem = 249;
+    SmtlibFpRoundToIntegral smtlib_fp_round_to_integral = 250;
+    SmtlibFpMin smtlib_fp_min = 251;
+    SmtlibFpMax smtlib_fp_max = 252;
+    SmtlibFpLeq smtlib_fp_leq = 253;
+    SmtlibFpLt smtlib_fp_lt = 254;
+    SmtlibFpGeq smtlib_fp_geq = 255;
+    SmtlibFpGt smtlib_fp_gt = 256;
+    SmtlibFpEq smtlib_fp_eq = 257;
+    SmtlibFpIsNormal smtlib_fp_is_normal = 258;
+    SmtlibFpIsSubnormal smtlib_fp_is_subnormal = 259;
+    SmtlibFpIsZero smtlib_fp_is_zero = 260;
+    SmtlibFpIsInfinite smtlib_fp_is_infinite = 261;
+    SmtlibFpIsNaN smtlib_fp_is_na_n = 262;
+    SmtlibFpIsNegative smtlib_fp_is_negative = 263;
+    SmtlibFpIsPositive smtlib_fp_is_positive = 264;
+    SmtlibToFp smtlib_to_fp = 265;
+    SmtlibFpCast smtlib_fp_cast = 266;
+    SmtlibFpFromReal smtlib_fp_from_real = 267;
+    SmtlibFpFromSInt smtlib_fp_from_s_int = 268;
+    SmtlibFpFromUInt smtlib_fp_from_u_int = 269;
+    SmtlibFpToReal smtlib_fp_to_real = 270;
+    SmtlibFpToSInt smtlib_fp_to_s_int = 271;
+    SmtlibFpToUInt smtlib_fp_to_u_int = 272;
+    SmtlibLiteralString smtlib_literal_string = 273;
+    SmtlibStrConcat smtlib_str_concat = 274;
+    SmtlibStrLen smtlib_str_len = 275;
+    SmtlibStrLt smtlib_str_lt = 276;
+    SmtlibStrLeq smtlib_str_leq = 277;
+    SmtlibStrAt smtlib_str_at = 278;
+    SmtlibSubstr smtlib_substr = 279;
+    SmtlibStrPrefixOf smtlib_str_prefix_of = 280;
+    SmtlibStrSuffixOf smtlib_str_suffix_of = 281;
+    SmtlibStrContains smtlib_str_contains = 282;
+    SmtlibStrIndexOf smtlib_str_index_of = 283;
+    SmtlibStrReplace smtlib_str_replace = 284;
+    SmtlibStrReplaceAll smtlib_str_replace_all = 285;
+    SmtlibStrReplaceRe smtlib_str_replace_re = 286;
+    SmtlibStrReplaceReAll smtlib_str_replace_re_all = 287;
+    SmtlibStrIsDigit smtlib_str_is_digit = 288;
+    SmtlibStrToCode smtlib_str_to_code = 289;
+    SmtlibStrFromCode smtlib_str_from_code = 290;
+    SmtlibStrToInt smtlib_str_to_int = 291;
+    SmtlibStrFromInt smtlib_str_from_int = 292;
+    SmtlibReFromStr smtlib_re_from_str = 293;
+    SmtlibReContains smtlib_re_contains = 294;
+    SmtlibReNone smtlib_re_none = 295;
+    SmtlibReAll smtlib_re_all = 296;
+    SmtlibReAllChar smtlib_re_all_char = 297;
+    SmtlibReConcat smtlib_re_concat = 298;
+    SmtlibReUnion smtlib_re_union = 299;
+    SmtlibReInter smtlib_re_inter = 300;
+    SmtlibReStar smtlib_re_star = 301;
+    SmtlibReComp smtlib_re_comp = 302;
+    SmtlibReDiff smtlib_re_diff = 303;
+    SmtlibRePlus smtlib_re_plus = 304;
+    SmtlibReOpt smtlib_re_opt = 305;
+    SmtlibReRange smtlib_re_range = 306;
+    SmtlibReRepeat smtlib_re_repeat = 307;
+    SmtlibReRepeatRange smtlib_re_repeat_range = 308;
+    Z3BvSub z3_bv_sub = 309;
+    Z3BvSRem z3_bv_s_rem = 310;
+    Z3BvSMod z3_bv_s_mod = 311;
+    Z3BvSShr z3_bv_s_shr = 312;
+    Z3BvNand z3_bv_nand = 313;
+    Z3BvNor z3_bv_nor = 314;
+    Z3BvXnor z3_bv_xnor = 315;
+    Z3ArrayConst z3_array_const = 316;
+    Z3ArrayOfFunction z3_array_of_function = 317;
+    Z3ArrayMap z3_array_map = 318;
+    Z3SeqEmpty z3_seq_empty = 319;
+    Z3SeqUnit z3_seq_unit = 320;
+    Z3SeqConcat z3_seq_concat = 321;
+    Z3SeqLen z3_seq_len = 322;
+    Z3SeqExtract z3_seq_extract = 323;
+    Z3SeqAt z3_seq_at = 324;
+    Z3SeqNth z3_seq_nth = 325;
+    Z3SeqContains z3_seq_contains = 326;
+    Z3SeqPrefixOf z3_seq_prefix_of = 327;
+    Z3SeqSuffixOf z3_seq_suffix_of = 328;
+    Z3SeqReplace z3_seq_replace = 329;
+    Z3SeqMap z3_seq_map = 330;
+    Z3SeqMapI z3_seq_map_i = 331;
+    Z3SeqFoldl z3_seq_foldl = 332;
+    Z3SeqFoldlI z3_seq_foldl_i = 333;
+    Z3TransitiveClosure z3_transitive_closure = 334;
+    CLocal c_local = 335;
+    CInvocation c_invocation = 336;
+    CStructAccess c_struct_access = 337;
+    CStructDeref c_struct_deref = 338;
+    GpgpuCudaKernelInvocation gpgpu_cuda_kernel_invocation = 339;
+    CCast c_cast = 340;
+    JavaLocal java_local = 341;
+    JavaDeref java_deref = 342;
+    JavaLiteralArray java_literal_array = 343;
+    JavaInvocation java_invocation = 344;
+    JavaNewClass java_new_class = 345;
+    JavaNewLiteralArray java_new_literal_array = 346;
+    JavaNewDefaultArray java_new_default_array = 347;
+    JavaStringValue java_string_value = 348;
+    JavaBipGlue java_bip_glue = 349;
+    BipLocalIncomingData bip_local_incoming_data = 350;
+    BipGuardInvocation bip_guard_invocation = 351;
+    LlvmFunctionInvocation llvm_function_invocation = 352;
+    PVLLocal p_v_l_local = 353;
+    PVLDeref p_v_l_deref = 354;
+    PVLInvocation p_v_l_invocation = 355;
+    PVLNew p_v_l_new = 356;
+    SilverDeref silver_deref = 357;
+    SilverIntToRat silver_int_to_rat = 358;
+    SilverNull silver_null = 359;
+    SilverSeqSize silver_seq_size = 360;
+    SilverSetSize silver_set_size = 361;
+    SilverBagSize silver_bag_size = 362;
+    SilverMapSize silver_map_size = 363;
+    SilverCurFieldPerm silver_cur_field_perm = 364;
+    SilverCurPredPerm silver_cur_pred_perm = 365;
+    SilverPartialADTFunctionInvocation silver_partial_a_d_t_function_invocation = 366;
+    SilverUntypedNonemptyLiteralMap silver_untyped_nonempty_literal_map = 367;
   }
 }
 
@@ -575,6 +704,13 @@ message Location {
     PredicateLocation predicate_location = 6;
     InstancePredicateLocation instance_predicate_location = 7;
     AmbiguousLocation ambiguous_location = 8;
+  }
+}
+
+message SmtlibFunctionSymbol {
+  oneof v {
+    SmtlibADTFunctionSymbol smtlib_a_d_t_function_symbol = 1;
+    SmtlibProverFunctionSymbol smtlib_prover_function_symbol = 2;
   }
 }
 
@@ -3272,6 +3408,722 @@ message ActionPerm {
   required Expr perm = 3;
 }
 
+message TSmtlibArray {
+  required string origin = 1;
+  repeated Type index = 2;
+  required Type value = 3;
+}
+
+message TSmtlibBitVector {
+  required string origin = 1;
+  required int32 size = 2;
+}
+
+message TSmtlibRoundingMode {
+  required string origin = 1;
+}
+
+message TSmtlibFloatingPoint {
+  required string origin = 1;
+  required int32 exponent_bits = 2;
+  required int32 mantissa_and_sign_bits = 3;
+}
+
+message TSmtlibString {
+  required string origin = 1;
+}
+
+message TSmtlibRegLan {
+  required string origin = 1;
+}
+
+message TSmtlibSeq {
+  required string origin = 1;
+  required Type element = 2;
+}
+
+message SmtlibADTFunctionSymbol {
+  required string origin = 1;
+  required Ref ref = 2;
+}
+
+message SmtlibProverFunctionSymbol {
+  required string origin = 1;
+  required Ref ref = 2;
+}
+
+message SmtlibSelect {
+  required string origin = 1;
+  required Expr arr = 2;
+  repeated Expr is = 3;
+}
+
+message SmtlibStore {
+  required string origin = 1;
+  required Expr arr = 2;
+  repeated Expr is = 3;
+  required Expr x = 4;
+}
+
+message SmtlibBitvecLiteral {
+  required string origin = 1;
+  required BitString data = 2;
+}
+
+message SmtlibConcat {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibExtract {
+  required string origin = 1;
+  required int32 inclusive_end_index_from_right = 2;
+  required int32 start_index_from_right = 3;
+  required Expr bv = 4;
+}
+
+message SmtlibBvNot {
+  required string origin = 1;
+  required Expr bv = 2;
+}
+
+message SmtlibBvAnd {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibBvOr {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibBvNeg {
+  required string origin = 1;
+  required Expr bv = 2;
+}
+
+message SmtlibBvAdd {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibBvMul {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibBvUDiv {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibBvURem {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibBvShl {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibBvShr {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibBvULt {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibRNE {
+  required string origin = 1;
+}
+
+message SmtlibRNA {
+  required string origin = 1;
+}
+
+message SmtlibRTP {
+  required string origin = 1;
+}
+
+message SmtlibRTN {
+  required string origin = 1;
+}
+
+message SmtlibRTZ {
+  required string origin = 1;
+}
+
+message SmtlibFp {
+  required string origin = 1;
+  required Expr sign = 2;
+  required Expr exponent = 3;
+  required Expr mantissa = 4;
+}
+
+message SmtlibFpAbs {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibFpNeg {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibFpAdd {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibFpSub {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibFpMul {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibFpDiv {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibFpFma {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+  required Expr addend = 4;
+}
+
+message SmtlibFpSqrt {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibFpRem {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibFpRoundToIntegral {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibFpMin {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibFpMax {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibFpLeq {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibFpLt {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibFpGeq {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibFpGt {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibFpEq {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibFpIsNormal {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibFpIsSubnormal {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibFpIsZero {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibFpIsInfinite {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibFpIsNaN {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibFpIsNegative {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibFpIsPositive {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibToFp {
+  required string origin = 1;
+  required Expr bv = 2;
+  required int32 exponent_bits = 3;
+  required int32 mantissa_and_sign_bits = 4;
+}
+
+message SmtlibFpCast {
+  required string origin = 1;
+  required Expr arg = 2;
+  required int32 exponent_bits = 3;
+  required int32 mantissa_and_sign_bits = 4;
+}
+
+message SmtlibFpFromReal {
+  required string origin = 1;
+  required Expr arg = 2;
+  required int32 exponent_bits = 3;
+  required int32 mantissa_and_sign_bits = 4;
+}
+
+message SmtlibFpFromSInt {
+  required string origin = 1;
+  required Expr bv = 2;
+  required int32 exponent_bits = 3;
+  required int32 mantissa_and_sign_bits = 4;
+}
+
+message SmtlibFpFromUInt {
+  required string origin = 1;
+  required Expr bv = 2;
+  required int32 exponent_bits = 3;
+  required int32 mantissa_and_sign_bits = 4;
+}
+
+message SmtlibFpToReal {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibFpToSInt {
+  required string origin = 1;
+  required Expr arg = 2;
+  required int32 bits = 3;
+}
+
+message SmtlibFpToUInt {
+  required string origin = 1;
+  required Expr arg = 2;
+  required int32 bits = 3;
+}
+
+message SmtlibLiteralString {
+  required string origin = 1;
+  required string data = 2;
+}
+
+message SmtlibStrConcat {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibStrLen {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibStrLt {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibStrLeq {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibStrAt {
+  required string origin = 1;
+  required Expr str = 2;
+  required Expr i = 3;
+}
+
+message SmtlibSubstr {
+  required string origin = 1;
+  required Expr str = 2;
+  required Expr i = 3;
+  required Expr n = 4;
+}
+
+message SmtlibStrPrefixOf {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibStrSuffixOf {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibStrContains {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibStrIndexOf {
+  required string origin = 1;
+  required Expr haystack = 2;
+  required Expr needle = 3;
+  required Expr from_index = 4;
+}
+
+message SmtlibStrReplace {
+  required string origin = 1;
+  required Expr haystack = 2;
+  required Expr needle = 3;
+  required Expr replacement = 4;
+}
+
+message SmtlibStrReplaceAll {
+  required string origin = 1;
+  required Expr haystack = 2;
+  required Expr needle = 3;
+  required Expr replacement = 4;
+}
+
+message SmtlibStrReplaceRe {
+  required string origin = 1;
+  required Expr haystack = 2;
+  required Expr re = 3;
+  required Expr replacement = 4;
+}
+
+message SmtlibStrReplaceReAll {
+  required string origin = 1;
+  required Expr haystack = 2;
+  required Expr re = 3;
+  required Expr replacement = 4;
+}
+
+message SmtlibStrIsDigit {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibStrToCode {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibStrFromCode {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibStrToInt {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibStrFromInt {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibReFromStr {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibReContains {
+  required string origin = 1;
+  required Expr re = 2;
+  required Expr str = 3;
+}
+
+message SmtlibReNone {
+  required string origin = 1;
+}
+
+message SmtlibReAll {
+  required string origin = 1;
+}
+
+message SmtlibReAllChar {
+  required string origin = 1;
+}
+
+message SmtlibReConcat {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibReUnion {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibReInter {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibReStar {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibReComp {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibReDiff {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibRePlus {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibReOpt {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message SmtlibReRange {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message SmtlibReRepeat {
+  required string origin = 1;
+  required int32 count = 2;
+  required Expr arg = 3;
+}
+
+message SmtlibReRepeatRange {
+  required string origin = 1;
+  required int32 from = 2;
+  required int32 to = 3;
+  required Expr arg = 4;
+}
+
+message Z3BvSub {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message Z3BvSRem {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message Z3BvSMod {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message Z3BvSShr {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message Z3BvNand {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message Z3BvNor {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message Z3BvXnor {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message Z3ArrayConst {
+  required string origin = 1;
+  repeated Type domain = 2;
+  required Type codomain = 3;
+  required Expr value = 4;
+}
+
+message Z3ArrayOfFunction {
+  required string origin = 1;
+  required SmtlibFunctionSymbol ref = 2;
+}
+
+message Z3ArrayMap {
+  required string origin = 1;
+  required SmtlibFunctionSymbol ref = 2;
+  repeated Expr args = 3;
+}
+
+message Z3SeqEmpty {
+  required string origin = 1;
+  required Type element_type = 2;
+}
+
+message Z3SeqUnit {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message Z3SeqConcat {
+  required string origin = 1;
+  required Expr left = 2;
+  required Expr right = 3;
+}
+
+message Z3SeqLen {
+  required string origin = 1;
+  required Expr arg = 2;
+}
+
+message Z3SeqExtract {
+  required string origin = 1;
+  required Expr seq = 2;
+  required Expr offset = 3;
+  required Expr len = 4;
+}
+
+message Z3SeqAt {
+  required string origin = 1;
+  required Expr seq = 2;
+  required Expr offset = 3;
+}
+
+message Z3SeqNth {
+  required string origin = 1;
+  required Expr seq = 2;
+  required Expr offset = 3;
+}
+
+message Z3SeqContains {
+  required string origin = 1;
+  required Expr seq = 2;
+  required Expr subseq = 3;
+}
+
+message Z3SeqPrefixOf {
+  required string origin = 1;
+  required Expr pre = 2;
+  required Expr subseq = 3;
+}
+
+message Z3SeqSuffixOf {
+  required string origin = 1;
+  required Expr post = 2;
+  required Expr seq = 3;
+}
+
+message Z3SeqReplace {
+  required string origin = 1;
+  required Expr haystack = 2;
+  required Expr needle = 3;
+  required Expr replacement = 4;
+}
+
+message Z3SeqMap {
+  required string origin = 1;
+  required Expr f = 2;
+  required Expr seq = 3;
+}
+
+message Z3SeqMapI {
+  required string origin = 1;
+  required Expr f = 2;
+  required Expr offset = 3;
+  required Expr seq = 4;
+}
+
+message Z3SeqFoldl {
+  required string origin = 1;
+  required Expr f = 2;
+  required Expr base = 3;
+  required Expr seq = 4;
+}
+
+message Z3SeqFoldlI {
+  required string origin = 1;
+  required Expr f = 2;
+  required Expr offset = 3;
+  required Expr base = 4;
+  required Expr seq = 5;
+}
+
+message Z3TransitiveClosure {
+  required string origin = 1;
+  required SmtlibFunctionSymbol ref = 2;
+  repeated Expr args = 3;
+}
+
 message CPure {
   required string origin = 1;
 }
@@ -3763,6 +4615,14 @@ message LlvmFunctionContract {
   required string origin = 1;
   required string value = 2;
   repeated StringRef references = 3;
+}
+
+message LlvmFunctionInvocation {
+  required string origin = 1;
+  required Ref ref = 2;
+  repeated Expr args = 3;
+  repeated RefExpr given_map = 4;
+  repeated ExprRef yields = 5;
 }
 
 message LlvmLoop {

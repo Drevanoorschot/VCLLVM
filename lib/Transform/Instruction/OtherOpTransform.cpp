@@ -105,7 +105,7 @@ namespace llvm2Col {
             vcllvm::ErrorReporter::addError(SOURCE_LOC, "Fast math not supported", callInstruction);
         }
         // return attributes
-        for(auto &A: callInstruction.getAttributes().getRetAttrs()) {
+        for (auto &A: callInstruction.getAttributes().getRetAttrs()) {
             std::stringstream errorStream;
             errorStream << "Return attribute" << A.getKindAsString().str() << "\" not supported";
             vcllvm::ErrorReporter::addError(SOURCE_LOC, errorStream.str(), callInstruction);
@@ -123,6 +123,28 @@ namespace llvm2Col {
                            col::Block &colBlock,
                            vcllvm::FunctionCursor &funcCursor) {
         checkCallSupport(callInstruction);
-
+        // allocate expression to host the function call in advance
+        col::Expr *functionCallExpr;
+        // if void function add an eval expression
+        if (callInstruction.getType()->isVoidTy()) {
+            col::Eval *eval = colBlock.add_statements()->mutable_eval();
+            eval->set_origin(llvm2Col::generateSingleStatementOrigin(callInstruction));
+            functionCallExpr = eval->mutable_expr();
+        } else { // else create an assignment
+            col::Assign &assignment = funcCursor.createAssignmentAndDeclaration(callInstruction, colBlock);
+            functionCallExpr = assignment.mutable_value();
+        }
+        // create actual invocation
+        col::LlvmFunctionInvocation *invocation = functionCallExpr->mutable_llvm_function_invocation();
+        // set origin
+        invocation->set_origin(llvm2Col::generateFunctionCallOrigin(callInstruction));
+        // set function reference
+        invocation->mutable_ref()->set_index(
+                funcCursor.getFDResult(*callInstruction.getCalledFunction()).getFunctionId()
+        );
+        // process function arguments
+        for (auto &A: callInstruction.args()) {
+            llvm2Col::transformAndSetExpr(funcCursor, callInstruction, *A, *invocation->add_args());
+        }
     }
 }

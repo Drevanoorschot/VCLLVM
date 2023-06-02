@@ -110,6 +110,18 @@ namespace llvm2Col {
         return json(originMap).dump();
     }
 
+    std::string generateFunctionCallOrigin(llvm::CallInst &callInstruction) {
+        std::unordered_map<std::string, std::string> originMap;
+
+        originMap.insert({PREFERRED_NAME, callInstruction.getCalledFunction()->getName().str()});
+        originMap.insert({CONTEXT, deriveSurroundingInstructionContext(callInstruction)});
+        originMap.insert({INLINE_CONTEXT, deriveInstructionRhs(callInstruction)});
+        originMap.insert({SHORT_POSITION, deriveInstructionShortPosition(callInstruction)});
+
+        return json(originMap).dump();
+
+    }
+
     std::string generateOperandOrigin(llvm::Instruction &llvmInstruction, llvm::Value &llvmOperand) {
         std::unordered_map<std::string, std::string> originMap;
 

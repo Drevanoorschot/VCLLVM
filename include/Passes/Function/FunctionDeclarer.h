@@ -32,6 +32,7 @@ namespace vcllvm {
     private:
         col::LlvmFunctionDefinition &associatedColFuncDef;
         ColScopedFuncBody associatedScopedColFuncBody;
+        int64_t functionId;
         /// contains the 1-to-1 mapping from LLVM function arguments to COL variables that are used as function
         /// arguments.
         std::unordered_map<llvm::Argument *, col::Variable *> funcArgMap;
@@ -39,13 +40,17 @@ namespace vcllvm {
         void addFuncArgMapEntry(llvm::Argument &llvmArg, col::Variable &colArg);
 
     public:
-        explicit FDResult(col::LlvmFunctionDefinition &colFuncDef, ColScopedFuncBody associatedScopedColFuncBody);
+        explicit FDResult(col::LlvmFunctionDefinition &colFuncDef,
+                          ColScopedFuncBody associatedScopedColFuncBody,
+                          int64_t functionId);
 
         col::LlvmFunctionDefinition &getAssociatedColFuncDef();
 
         ColScopedFuncBody getAssociatedScopedColFuncBody();
 
         col::Variable &getFuncArgMapEntry(llvm::Argument &arg);
+
+        int64_t &getFunctionId();
     };
 
     class FunctionDeclarer : public AnalysisInfoMixin<FunctionDeclarer> {

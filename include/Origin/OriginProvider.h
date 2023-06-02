@@ -2,6 +2,7 @@
 #define VCLLVM_ORIGINPROVIDER_H
 
 #include <llvm/IR/Value.h>
+#include <llvm/IR/Instructions.h>
 
 /**
  * Generators for VerCors origin objects for various LLVM Value types.
@@ -27,6 +28,8 @@ namespace llvm2Col {
     std::string generateAssignTargetOrigin(llvm::Instruction &llvmInstruction);
 
     std::string generateBinExprOrigin(llvm::Instruction &llvmInstruction);
+
+    std::string generateFunctionCallOrigin(llvm::CallInst &callInstruction);
 
     std::string generateOperandOrigin(llvm::Instruction &llvmInstruction, llvm::Value &llvmOperand);
 

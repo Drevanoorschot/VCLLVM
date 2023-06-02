@@ -23,9 +23,12 @@ namespace vcllvm {
      * Function Declarer Result
      */
 
-    FDResult::FDResult(col::LlvmFunctionDefinition &colFuncDef, ColScopedFuncBody associatedScopedColFuncBody) :
+    FDResult::FDResult(col::LlvmFunctionDefinition &colFuncDef,
+                       ColScopedFuncBody associatedScopedColFuncBody,
+                       int64_t functionId) :
             associatedColFuncDef(colFuncDef),
-            associatedScopedColFuncBody(associatedScopedColFuncBody) {}
+            associatedScopedColFuncBody(associatedScopedColFuncBody),
+            functionId(functionId) {}
 
     col::LlvmFunctionDefinition &FDResult::getAssociatedColFuncDef() {
         return associatedColFuncDef;
@@ -43,6 +46,10 @@ namespace vcllvm {
         return *funcArgMap.at(&arg);
     }
 
+    int64_t &FDResult::getFunctionId() {
+        return functionId;
+    }
+
 
     /*
      * Function Declarer (Analysis)
@@ -57,7 +64,7 @@ namespace vcllvm {
         // create llvmFuncDef declaration in buffer
         col::GlobalDeclaration *llvmFuncDefDecl = pProgram->add_declarations();
         // generate id
-        llvm2Col::setColNodeId(llvmFuncDefDecl);
+        int64_t functionId = llvm2Col::setColNodeId(llvmFuncDefDecl);
         col::LlvmFunctionDefinition *llvmFuncDef = llvmFuncDefDecl->mutable_llvm_function_definition();
         // add body block + scope + origin
         // set origin
@@ -67,7 +74,7 @@ namespace vcllvm {
         funcScopedBody.scope->set_origin(llvm2Col::generateFuncDefOrigin(F));
         funcScopedBody.block = funcScopedBody.scope->mutable_body()->mutable_block();
         funcScopedBody.block->set_origin(llvm2Col::generateFuncDefOrigin(F));
-        FDResult result = FDResult(*llvmFuncDef, funcScopedBody);
+        FDResult result = FDResult(*llvmFuncDef, funcScopedBody, functionId);
         // set args (if present)
         for (llvm::Argument &llvmArg: F.args()) {
             // set in buffer

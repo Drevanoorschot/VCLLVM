@@ -67,8 +67,10 @@ namespace llvm2Col {
     }
 
     template<class IDNode>
-    void setColNodeId(IDNode &idNode) {
-        idNode->set_id(reinterpret_cast<int64_t>(idNode));
+    int64_t setColNodeId(IDNode &idNode) {
+        auto id = reinterpret_cast<int64_t>(idNode);
+        idNode->set_id(id);
+        return id;
     }
     /**
      * Returns a string representation of any LLVM value as it would be displayed in human readable LLVM IR
