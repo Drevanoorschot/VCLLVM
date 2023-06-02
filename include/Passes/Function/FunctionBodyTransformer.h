@@ -44,6 +44,10 @@ namespace vcllvm {
         /// block
         std::unordered_map<llvm::BasicBlock *, LabeledColBlock> llvmBlock2LabeledColBlock;
 
+        /// set of all COL blocks that have been completed. Completed meaning all instructions of the corresponding LLVM
+        /// block have been transformed. This excludes possible future phi node back transformations.
+        std::set<col::Block *> completedColBlocks;
+
         /// Almost always when adding a variable to the variableMap, some extra processing is required which is why this
         /// method is private as to not accidentally use it outside the functionCursor
         void addVariableMapEntry(llvm::Value &llvmValue, col::Variable &colVar);
@@ -55,6 +59,7 @@ namespace vcllvm {
                                 llvm::FunctionAnalysisManager &FAM);
 
         const col::Scope &getFunctionScope();
+
         /**
          * declares variable in the function scope
          * @param llvmInstruction
@@ -101,11 +106,26 @@ namespace vcllvm {
         LabeledColBlock &getOrSetLlvmBlock2LabeledColBlockEntry(BasicBlock &llvmBlock);
 
         /**
-         * indicates whether a LLVM block has been visited (i.e. whether a mapping exists to a COL block).
+         * Indicates whether a LLVM block has been visited (i.e. whether a mapping exists to a COL block).
+         * Note that does not mean that it has been fully transformed. For that see the isComplete
+         *
          * @param llvmBlock
          * @return
          */
         bool isVisited(llvm::BasicBlock &llvmBlock);
+
+        /**
+         * Mark COL Block as complete by adding it to the completedColBlocks set.
+         * @param llvmBlock
+         */
+        void complete(col::Block &colBlock);
+
+        /**
+         * Indicates whether an llvmBlock has been fully transformed (excluding possible phi node back transformations).
+         * Any completed block is also visited.
+         * @return true if block is in the completedColBlocks set, false otherwise.
+         */
+        bool isComplete(col::Block &colBlock);
 
         LoopInfo &getLoopInfo();
 

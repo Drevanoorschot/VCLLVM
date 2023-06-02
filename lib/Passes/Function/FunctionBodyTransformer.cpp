@@ -37,6 +37,13 @@ namespace vcllvm {
         return llvmBlock2LabeledColBlock.contains(&llvmBlock);
     }
 
+    void FunctionCursor::complete(col::Block &colBlock) {
+        completedColBlocks.insert(&colBlock);
+    }
+    bool FunctionCursor::isComplete(col::Block &colBlock) {
+        return completedColBlocks.contains(&colBlock);
+    }
+
     LabeledColBlock &FunctionCursor::getOrSetLlvmBlock2LabeledColBlockEntry(BasicBlock &llvmBlock) {
         if (!llvmBlock2LabeledColBlock.contains(&llvmBlock)) {
             // create label in buffer
@@ -111,6 +118,14 @@ namespace vcllvm {
         colLocal->set_origin(llvm2Col::generateAssignTargetOrigin(llvmInstruction));
         // set target to refer to var decl
         colLocal->mutable_ref()->set_index(varDecl.id());
+        if(isComplete(colBlock)) {
+            // if the colBlock is completed, the assignment will be inserted after the goto/branch statement
+            // this can occur due to e.g. phi nodes back tracking assignments in their origin blocks.
+            // therefore we need to swap the last two elements of the block
+            // (i.e. the goto statement and the newest assignment)
+            int lastIndex = colBlock.statements_size() - 1;
+            colBlock.mutable_statements()->SwapElements(lastIndex, lastIndex - 1);
+        }
         return *assignment;
     }
 

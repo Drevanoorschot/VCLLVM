@@ -23,6 +23,7 @@ namespace llvm2Col {
         for (auto &I: llvmBlock.getInstList()) {
             transformInstruction(functionCursor, I, colBlock);
         }
+        functionCursor.complete(colBlock);
     }
 
     void transformInstruction(vcllvm::FunctionCursor &funcCursor,

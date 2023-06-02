@@ -46,7 +46,8 @@ namespace llvm2Col {
                                     vcllvm::FunctionCursor &funcCursor) {
         col::Branch *colBranch = colBlock.add_statements()->mutable_branch();
         colBranch->set_origin(generateSingleStatementOrigin(llvmBrInstruction));
-
+        // pre-declare completion because the final branch is already present
+        funcCursor.complete(colBlock);
         // true branch
         col::ExprStatement *colTrueBranch = colBranch->add_branches();
         // set conditional
@@ -98,6 +99,8 @@ namespace llvm2Col {
         colGoto->mutable_lbl()->set_index(labeledColBlock.label.decl().id());
         // set origin of goto statement
         colGoto->set_origin(llvm2Col::generateSingleStatementOrigin(llvmBrInstruction));
+        // pre-declare completion because the final goto is already present
+        funcCursor.complete(colBlock);
         // transform llvm targetBlock
         transformLlvmBlock(*llvmTargetBlock, funcCursor);
     }
