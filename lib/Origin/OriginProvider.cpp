@@ -38,9 +38,15 @@ namespace llvm2Col {
         return json(originMap).dump();
     }
 
-    std::string generateFunctionContractOrigin(llvm::MDNode &contractMDNode) {
+    std::string generateFunctionContractOrigin(llvm::Function &llvmFunction, const std::string& contract) {
         std::unordered_map<std::string, std::string> originMap;
-        // empty origin, origin to be determined by VerCors
+
+        // no prefered name
+        originMap.insert({CONTEXT, contract});
+        originMap.insert({INLINE_CONTEXT, contract});
+        originMap.insert({SHORT_POSITION, deriveFunctionShortPosition(llvmFunction)});
+
+
         return json(originMap).dump();
     }
 

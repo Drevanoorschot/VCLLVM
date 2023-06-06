@@ -72,7 +72,7 @@ namespace vcllvm {
             contractStream << contractLine->getString().str() << '\n';
         }
         colContract.set_value(contractStream.str());
-        colContract.set_origin(llvm2Col::generateFunctionContractOrigin(*contractMDNode));
+        colContract.set_origin(llvm2Col::generateFunctionContractOrigin(F, contractStream.str()));
         return PreservedAnalyses::all();
     }
 }
