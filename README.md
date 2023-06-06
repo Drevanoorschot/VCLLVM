@@ -1,4 +1,4 @@
-# VcLLVM
+# VCLLVM
 
 ![logo](https://i.imgur.com/ERcNUPV.png)
 
