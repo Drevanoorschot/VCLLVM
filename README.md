@@ -1,5 +1,7 @@
 # VcLLVM
 
+![logo](https://i.imgur.com/ERcNUPV.png)
+
 ## Requirements
 - CMake (>=3.4.3)
 - LLVM (15.0.7)
