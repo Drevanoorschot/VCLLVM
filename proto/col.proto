@@ -4615,6 +4615,7 @@ message LlvmFunctionContract {
   required string origin = 1;
   required string value = 2;
   repeated StringRef references = 3;
+  repeated StringRef invokable_refs = 4;
 }
 
 message LlvmFunctionInvocation {

@@ -3,8 +3,6 @@
 #include <llvm/Passes/PassBuilder.h>
 #include <llvm/Support/CommandLine.h>
 
-#include <google/protobuf/text_format.h>
-
 #include "col.pb.h"
 
 #include "Passes/Function/FunctionBodyTransformer.h"

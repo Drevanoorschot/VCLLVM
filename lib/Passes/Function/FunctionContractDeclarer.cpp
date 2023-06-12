@@ -73,6 +73,14 @@ namespace vcllvm {
         }
         colContract.set_value(contractStream.str());
         colContract.set_origin(llvm2Col::generateFunctionContractOrigin(F, contractStream.str()));
+        // add all callable functions to the contracts invokables
+        for(auto &moduleF : F.getParent()->functions()) {
+            std::string fName = '@' + moduleF.getName().str();
+            int64_t fId = FAM.getResult<FunctionDeclarer>(moduleF).getFunctionId();
+            col::StringRef *invokeRef = colContract.add_invokable_refs();
+            invokeRef->set_v1(fName);
+            invokeRef->mutable_v2()->set_index(fId);
+        }
         return PreservedAnalyses::all();
     }
 }

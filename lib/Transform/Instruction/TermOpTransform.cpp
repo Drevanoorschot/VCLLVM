@@ -46,7 +46,7 @@ namespace llvm2Col {
                                     vcllvm::FunctionCursor &funcCursor) {
         col::Branch *colBranch = colBlock.add_statements()->mutable_branch();
         colBranch->set_origin(generateSingleStatementOrigin(llvmBrInstruction));
-        // pre-declare completion because the final branch is already present
+        // pre-declare completion because the final branch statement is already present
         funcCursor.complete(colBlock);
         // true branch
         col::ExprStatement *colTrueBranch = colBranch->add_branches();
@@ -56,7 +56,20 @@ namespace llvm2Col {
                             *llvmBrInstruction.getCondition(),
                             *colTrueBranch->mutable_v1());
         // get or pre-generate target labeled block
-        auto *llvmTrueBlock = cast<llvm::BasicBlock>(llvmBrInstruction.getOperand(1));
+        /*
+         * I hear you think, why query the 2nd operand? wouldn't that be the false branch i.e the else branch?
+         * While any logical implementation of getting operands would give the operands in order, the branch instruction
+         * is no ordinary instruction. For you see to get the branch argument we use the 0th index (so far so good), for the true evaluation
+         * of the branch instruction we use the 2nd index (uhhh okay, we might be skipping an index?) and the false evaluation of the
+         * branch instruction we use the 1st index (WHAT!?!?)
+         *
+         * Visualized:
+         * br i1 %var, label %yay, label %nay
+         *      0           2           1
+         *
+         * Just smile and wave, don't question LLVM.
+         */
+        auto *llvmTrueBlock = cast<llvm::BasicBlock>(llvmBrInstruction.getOperand(2));
         vcllvm::LabeledColBlock labeledTrueColBlock = funcCursor.getOrSetLlvmBlock2LabeledColBlockEntry(*llvmTrueBlock);
         // goto statement to true block
         col::Goto *trueGoto = colTrueBranch->mutable_v2()->mutable_goto_();
@@ -74,7 +87,7 @@ namespace llvm2Col {
         // set origin of else condition
         elseCondition->set_origin(generateOperandOrigin(llvmBrInstruction, *llvmBrInstruction.getCondition()));
         // get llvm block targeted by the llvm branch
-        auto *llvmFalseBlock = cast<llvm::BasicBlock>(llvmBrInstruction.getOperand(2));
+        auto *llvmFalseBlock = cast<llvm::BasicBlock>(llvmBrInstruction.getOperand(1));
         // get or pre-generate target labeled block
         vcllvm::LabeledColBlock labeledFalseColBlock = funcCursor.getOrSetLlvmBlock2LabeledColBlockEntry(
                 *llvmFalseBlock);
