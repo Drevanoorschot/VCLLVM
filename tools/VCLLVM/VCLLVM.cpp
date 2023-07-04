@@ -9,6 +9,7 @@
 #include "Passes/Function/FunctionContractDeclarer.h"
 #include "Passes/Function/FunctionDeclarer.h"
 #include "Passes/Function/PureAssigner.h"
+#include "Passes/Module/ModuleSpecCollector.h"
 
 #include "Transform/Transform.h"
 #include "Origin/OriginProvider.h"
@@ -125,6 +126,7 @@ int main(int argc, char **argv) {
     FPM.addPass(vcllvm::FunctionContractDeclarerPass(pProgram));
     FPM.addPass(vcllvm::FunctionBodyTransformerPass(pProgram));
     vcllvm::ModulePassManager MPM;
+    MPM.addPass(vcllvm::ModuleSpecCollectorPass(pProgram));
     MPM.addPass(createModuleToFunctionPassAdaptor(std::move(FPM)));
     MPM.run(*module, MAM);
     if (vcllvm::ErrorReporter::hasErrors()) {

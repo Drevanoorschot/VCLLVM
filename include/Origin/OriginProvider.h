@@ -17,6 +17,8 @@ namespace llvm2Col {
 
     std::string generateFunctionContractOrigin(llvm::Function &llvmFunction, const std::string& contract);
 
+    std::string generateGlobalValOrigin(llvm::Module &llvmModule, const std::string &globVal);
+
     std::string generateArgumentOrigin(llvm::Argument &llvmArgument);
 
     std::string generateBlockOrigin(llvm::BasicBlock &llvmBlock);

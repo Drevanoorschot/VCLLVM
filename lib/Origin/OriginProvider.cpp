@@ -50,6 +50,18 @@ namespace llvm2Col {
         return json(originMap).dump();
     }
 
+    std::string generateGlobalValOrigin(llvm::Module &llvmModule, const std::string &globVal) {
+        std::unordered_map<std::string, std::string> originMap;
+
+        // no prefered name
+        originMap.insert({CONTEXT, globVal});
+        originMap.insert({INLINE_CONTEXT, globVal});
+        originMap.insert({SHORT_POSITION, deriveModuleShortPosition(llvmModule)});
+
+        return json(originMap).dump();
+
+    }
+
     std::string generateArgumentOrigin(llvm::Argument &llvmArgument) {
         std::unordered_map<std::string, std::string> originMap;
 

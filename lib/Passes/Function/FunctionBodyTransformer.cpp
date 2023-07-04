@@ -24,7 +24,7 @@ namespace vcllvm {
     void FunctionCursor::addVariableMapEntry(Value &llvmValue, col::Variable &colVar) {
         variableMap.insert({&llvmValue, &colVar});
         // add reference to reference lut of function contract
-        col::StringRef *ref = FAM.getResult<FunctionContractDeclarer>(llvmFunction).getAssociatedColFuncContract().add_references();
+        col::StringRef *ref = FAM.getResult<FunctionContractDeclarer>(llvmFunction).getAssociatedColFuncContract().add_variable_refs();
         ref->set_v1(llvm2Col::getValueName(llvmValue));
         ref->mutable_v2()->set_index(colVar.id());
     }

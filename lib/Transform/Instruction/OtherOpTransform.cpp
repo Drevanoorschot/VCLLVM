@@ -107,7 +107,7 @@ namespace llvm2Col {
         // return attributes
         for (auto &A: callInstruction.getAttributes().getRetAttrs()) {
             std::stringstream errorStream;
-            errorStream << "Return attribute" << A.getKindAsString().str() << "\" not supported";
+            errorStream << "Return attribute \"" << A.getAsString() << "\" not supported";
             vcllvm::ErrorReporter::addError(SOURCE_LOC, errorStream.str(), callInstruction);
         }
         // address space is platform dependent (unlikely to change semantics)
