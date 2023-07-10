@@ -16,6 +16,6 @@ int32_t signedByUnsigned(int32_t x, uint32_t y) {
     return x / y;
 }
 
-int32_t unsignedBysigned(uint32_t x, int32_t y) {
+int32_t unsignedBySigned(uint32_t x, int32_t y) {
     return x / y;
 }
