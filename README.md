@@ -3,6 +3,7 @@
 ![logo](https://i.imgur.com/ERcNUPV.png)
 
 ## Requirements
+- Debian 11 (Most other Linux distros will probably work fine too, but are untested)
 - CMake (>=3.4.3)
 - LLVM (15.0.7)
 - Protobuf (3.22.0)
