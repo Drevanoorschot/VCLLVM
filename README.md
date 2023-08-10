@@ -2,6 +2,8 @@
 
 ![logo](https://i.imgur.com/ERcNUPV.png)
 
+This project was part of the following [Master Thesis](https://essay.utwente.nl/96536/).
+
 ## Requirements
 - Debian 11 (Most other Linux distros will probably work fine too, but are untested)
 - CMake (>=3.4.3)
